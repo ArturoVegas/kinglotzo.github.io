@@ -1,0 +1,15 @@
+.row-logo{
+    background-image: url("../Recursos/imagenes/54786610-afc8-11ed-83d3-634e6077be0e-ECEN-MarCielo-Web.webp");
+}
+.logo {
+  max-width: 120px;
+  height: auto;
+}
+
+.bienvenido {
+  text-align: center;
+  font-size: 60px;
+  color: white;
+  text-shadow: 2px 2px 5px black; /* Opcional: mejora la visibilidad sobre fondo claro */
+  margin-top: 50px;
+}
