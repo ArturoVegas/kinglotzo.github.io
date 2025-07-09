@@ -1,17 +1,29 @@
-/* Estilo para la fila con fondo personalizado */
-.row-personalizada {
-  background-color: #1101f5;
-  color: white;
+body {
+  background-color: black;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  margin: 0;
+  padding: 0;
 }
 
-/* Imagen del logo */
+/* Primera fila: fondo sólido y texto blanco */
+.row-personalizada {
+  background-color: #007bff;
+  color: white;
+  z-index: 10;
+  position: relative;
+}
+
+/* Logo */
 .logo-img {
   width: 100%;
   max-width: 80px;
   height: auto;
 }
 
-/* Imagen del nombre del scan */
+/* Nombre del scan */
 .nombre-img {
   width: 100%;
   max-width: 100px;
@@ -19,7 +31,7 @@
   object-fit: contain;
 }
 
-/* Responsive: tamaños menores para móviles */
+/* Responsive ajustes logo/nombre */
 @media (max-width: 576px) {
   .logo-img {
     max-width: 60px;
@@ -30,7 +42,24 @@
   }
 }
 
-/* Carrusel: ocupa todo el ancho, altura fija */
+/* En móvil: menú hamburguesa a la derecha */
+@media (max-width: 767.98px) {
+  #navbarContent ul.navbar-nav {
+    justify-content: flex-end !important;
+    width: 100%;
+  }
+
+  .navbar-toggler {
+    margin-left: auto;
+  }
+}
+
+/* Centrar botón hamburguesa */
+.navbar-toggler {
+  margin: 0 auto;
+}
+
+/* Carrusel */
 #carouselWrapper {
   width: 100vw;
   max-height: 800px;
@@ -41,7 +70,7 @@
 
 #carouselExampleCaptions {
   width: 100vw;
-  height: 800px;
+  height: 300px;
   overflow: hidden;
 }
 
@@ -54,15 +83,16 @@
   display: block;
 }
 
-/* Texto del carrusel visible y legible */
+/* Texto sobre imágenes del carrusel */
 .carousel-caption {
   background-color: rgba(0, 0, 0, 0.5);
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   border-radius: 10px;
   color: white;
+  line-height: 1.2;
 }
 
-/* Reducir altura del carrusel en móviles */
+/* Carrusel en móviles */
 @media (max-width: 576px) {
   #carouselExampleCaptions,
   #carouselExampleCaptions .carousel-item img {
@@ -70,7 +100,54 @@
   }
 }
 
-/* Centrar botón hamburguesa */
-.navbar-toggler {
-  margin: 0 auto;
+/* Título "Nuestros mangas más populares" */
+.maspopulares {
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 8px;
+  display: inline-block;
+  font-weight: 600;
+  font-size: 1.5rem;
+  user-select: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  background-color: rgba(0, 0, 0, 0.6);
+  margin: 20px auto;
+}
+
+/* Tarjetas con fondo translúcido y tamaño reducido */
+.card {
+  background-color: transparent !important;
+  color: white;
+  border: none;
+  box-shadow: 0 4px 8px rgba(17, 52, 189, 0.5);
+  transform: scale(0.95); /* Reduce tamaño */
+}
+
+.card img {
+  max-height: 150px;
+  object-fit: cover;
+}
+
+/* Botón en las tarjetas */
+.card .btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+  font-size: 0.85rem;
+  padding: 5px 10px;
+}
+
+/* Ajuste para tarjetas en móviles: 3 por fila */
+@media (max-width: 576px) {
+  .col-4 {
+    flex: 0 0 auto;
+    width: 33.3333%;
+  }
+
+  .card .card-title {
+    font-size: 0.9rem;
+  }
+
+  .card .card-text {
+    font-size: 0.75rem;
+  }
 }
