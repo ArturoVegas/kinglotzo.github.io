@@ -16,8 +16,6 @@
   <div class="container-fluid p-0">
     <!-- Encabezado -->
     <div class="row row-personalizada py-2 px-3 align-items-center">
-
-      <!-- Logo + nombre -->
       <div class="col-6 col-md-2 d-flex align-items-center justify-content-start">
         <img src="./Recursos/imagenes/imagen al principio.png" alt="Logo" class="img-fluid logo-img" />
         <a href="index.html" class="d-flex align-items-center ms-2">
@@ -25,19 +23,10 @@
         </a>
       </div>
 
-      <!-- Navbar -->
-      <div class="col-12 col-md-5 d-flex justify-content-center justify-content-md-center order-2 order-md-0 mt-3 mt-md-0">
+      <div class="col-12 col-md-5 d-flex justify-content-center order-2 order-md-0 mt-3 mt-md-0">
         <nav class="navbar navbar-expand-lg p-0 w-100">
           <div class="container-fluid p-0 d-flex justify-content-center">
-            <button
-              class="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarContent"
-              aria-controls="navbarContent"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
               <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
@@ -52,14 +41,12 @@
         </nav>
       </div>
 
-      <!-- Buscador -->
       <div class="col-6 col-md-5 d-flex justify-content-start justify-content-md-end px-3 order-1 order-md-0">
         <form class="d-flex w-100 w-md-75" role="search">
-          <input class="form-control" type="search" placeholder="🔍 Buscar..." aria-label="Buscar" />
+          <input class="form-control" type="search" placeholder="🔍 Buscar..." />
           <button class="btn btn-outline-light ms-2" type="submit">Buscar</button>
         </form>
       </div>
-
     </div>
 
     <!-- Carrusel -->
@@ -68,8 +55,8 @@
         <div id="carouselWrapper">
           <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
             <div class="carousel-indicators">
-              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Slide 2"></button>
+              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"></button>
+              <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"></button>
             </div>
 
             <div class="carousel-inner">
@@ -90,11 +77,11 @@
             </div>
 
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+              <span class="carousel-control-prev-icon"></span>
               <span class="visually-hidden">Anterior</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
+              <span class="carousel-control-next-icon"></span>
               <span class="visually-hidden">Siguiente</span>
             </button>
           </div>
@@ -110,9 +97,10 @@
     </div>
 
     <!-- Tarjetas -->
-    <div class="row m-0 p-0">
-      <div class="col-4 col-md-2 mb-3">
-        <div class="card" style="width: 100%;">
+    <div class="row m-0 p-0 contenedor-cards justify-content-center">
+      <!-- Repite este bloque para más cards -->
+      <div>
+        <div class="card">
           <img src="./Recursos/imagenes/a5ece245-398c-417c-b929-10a5881e5244.png" class="card-img-top" alt="Imagen 1" />
           <div class="card-body">
             <h5 class="card-title">Título 1</h5>
@@ -122,62 +110,72 @@
         </div>
       </div>
 
-      <div class="col-4 col-md-2 mb-3">
-        <div class="card" style="width: 100%;">
-          <img src="./Recursos/imagenes/a5ece245-398c-417c-b929-10a5881e5244.png" class="card-img-top" alt="Imagen 2" />
+       <div>
+        <div class="card">
+          <img src="./Recursos/imagenes/a5ece245-398c-417c-b929-10a5881e5244.png" class="card-img-top" alt="Imagen 1" />
           <div class="card-body">
-            <h5 class="card-title">Título 2</h5>
-            <p class="card-text">Texto de ejemplo para la tarjeta 2.</p>
+            <h5 class="card-title">Título 1</h5>
+            <p class="card-text">Texto de ejemplo para la tarjeta 1.</p>
             <a href="#" class="btn btn-primary">Ir a algún lugar</a>
           </div>
         </div>
       </div>
-
-      <div class="col-4 col-md-2 mb-3">
-        <div class="card" style="width: 100%;">
-          <img src="./Recursos/imagenes/a5ece245-398c-417c-b929-10a5881e5244.png" class="card-img-top" alt="Imagen 3" />
+       <div>
+        <div class="card">
+          <img src="./Recursos/imagenes/a5ece245-398c-417c-b929-10a5881e5244.png" class="card-img-top" alt="Imagen 1" />
           <div class="card-body">
-            <h5 class="card-title">Título 3</h5>
-            <p class="card-text">Texto de ejemplo para la tarjeta 3.</p>
+            <h5 class="card-title">Título 1</h5>
+            <p class="card-text">Texto de ejemplo para la tarjeta 1.</p>
             <a href="#" class="btn btn-primary">Ir a algún lugar</a>
           </div>
         </div>
       </div>
-
-      <div class="col-4 col-md-2 mb-3">
-        <div class="card" style="width: 100%;">
-          <img src="./Recursos/imagenes/a5ece245-398c-417c-b929-10a5881e5244.png" class="card-img-top" alt="Imagen 4" />
+       <div>
+        <div class="card">
+          <img src="./Recursos/imagenes/a5ece245-398c-417c-b929-10a5881e5244.png" class="card-img-top" alt="Imagen 1" />
           <div class="card-body">
-            <h5 class="card-title">Título 4</h5>
-            <p class="card-text">Texto de ejemplo para la tarjeta 4.</p>
+            <h5 class="card-title">Título 1</h5>
+            <p class="card-text">Texto de ejemplo para la tarjeta 1.</p>
             <a href="#" class="btn btn-primary">Ir a algún lugar</a>
           </div>
         </div>
       </div>
-
-      <div class="col-4 col-md-2 mb-3">
-        <div class="card" style="width: 100%;">
-          <img src="./Recursos/imagenes/a5ece245-398c-417c-b929-10a5881e5244.png" class="card-img-top" alt="Imagen 5" />
+       <div>
+        <div class="card">
+          <img src="./Recursos/imagenes/a5ece245-398c-417c-b929-10a5881e5244.png" class="card-img-top" alt="Imagen 1" />
           <div class="card-body">
-            <h5 class="card-title">Título 5</h5>
-            <p class="card-text">Texto de ejemplo para la tarjeta 5.</p>
+            <h5 class="card-title">Título 1</h5>
+            <p class="card-text">Texto de ejemplo para la tarjeta 1.</p>
             <a href="#" class="btn btn-primary">Ir a algún lugar</a>
           </div>
         </div>
       </div>
-
-      <div class="col-4 col-md-2 mb-3">
-        <div class="card" style="width: 100%;">
-          <img src="./Recursos/imagenes/a5ece245-398c-417c-b929-10a5881e5244.png" class="card-img-top" alt="Imagen 6" />
+       <div>
+        <div class="card">
+          <img src="./Recursos/imagenes/a5ece245-398c-417c-b929-10a5881e5244.png" class="card-img-top" alt="Imagen 1" />
           <div class="card-body">
-            <h5 class="card-title">Título 6</h5>
-            <p class="card-text">Texto de ejemplo para la tarjeta 6.</p>
+            <h5 class="card-title">Título 1</h5>
+            <p class="card-text">Texto de ejemplo para la tarjeta 1.</p>
             <a href="#" class="btn btn-primary">Ir a algún lugar</a>
           </div>
         </div>
       </div>
     </div>
   </div>
+  <!-- Sección Redes Sociales -->
+<footer class="footer-redes py-4">
+  <div class="container text-center">
+    <h5 class="mb-3 text-light">Síguenos en nuestras redes</h5>
+    <div class="d-flex justify-content-center gap-4">
+      <a href="https://web.facebook.com/profile.php?id=61556342730848" target="_blank" class="red-social text-decoration-none text-light fs-3">
+        <i class="bi bi-facebook"></i>
+      </a>
+      <a href="https://discord.com/invite/sJJZkrkXz6" target="_blank" class="red-social text-decoration-none text-light fs-3">
+        <i class="bi bi-discord"></i>
+      </a>
+    </div>
+  </div>
+</footer>
 
   <!-- Bootstrap JS -->
   <script src="./java/scripts.js"></script>

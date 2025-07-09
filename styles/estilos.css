@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   background-color: black;
   background-size: cover;
@@ -6,11 +10,12 @@ body {
   background-attachment: fixed;
   margin: 0;
   padding: 0;
+  overflow-x: hidden;
 }
 
-/* Primera fila: fondo sólido y texto blanco */
+/* Encabezado */
 .row-personalizada {
-  background-color: #007bff;
+  background-color: #054283;
   color: white;
   z-index: 10;
   position: relative;
@@ -18,20 +23,17 @@ body {
 
 /* Logo */
 .logo-img {
-  width: 100%;
   max-width: 80px;
   height: auto;
 }
 
 /* Nombre del scan */
 .nombre-img {
-  width: 100%;
   max-width: 100px;
   height: auto;
   object-fit: contain;
 }
 
-/* Responsive ajustes logo/nombre */
 @media (max-width: 576px) {
   .logo-img {
     max-width: 60px;
@@ -42,7 +44,6 @@ body {
   }
 }
 
-/* En móvil: menú hamburguesa a la derecha */
 @media (max-width: 767.98px) {
   #navbarContent ul.navbar-nav {
     justify-content: flex-end !important;
@@ -54,45 +55,29 @@ body {
   }
 }
 
-/* Centrar botón hamburguesa */
 .navbar-toggler {
   margin: 0 auto;
 }
 
 /* Carrusel */
 #carouselWrapper {
-  width: 100vw;
+  width: 100%;
   max-height: 800px;
   overflow: hidden;
-  margin: 0;
-  padding: 0;
 }
 
 #carouselExampleCaptions {
-  width: 100vw;
+  width: 100%;
   height: 300px;
   overflow: hidden;
 }
 
 #carouselExampleCaptions .carousel-item img {
-  width: 100vw;
+  width: 100%;
   height: 300px;
   object-fit: cover;
-  margin: 0;
-  padding: 0;
-  display: block;
 }
 
-/* Texto sobre imágenes del carrusel */
-.carousel-caption {
-  background-color: rgba(0, 0, 0, 0.5);
-  padding: 0.5rem 1rem;
-  border-radius: 10px;
-  color: white;
-  line-height: 1.2;
-}
-
-/* Carrusel en móviles */
 @media (max-width: 576px) {
   #carouselExampleCaptions,
   #carouselExampleCaptions .carousel-item img {
@@ -100,27 +85,60 @@ body {
   }
 }
 
-/* Título "Nuestros mangas más populares" */
+.carousel-caption {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+  color: white;
+}
+
+/* Título */
 .maspopulares {
   color: #fff;
   padding: 8px 20px;
   border-radius: 8px;
-  display: inline-block;
   font-weight: 600;
   font-size: 1.5rem;
-  user-select: none;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
   background-color: rgba(0, 0, 0, 0.6);
   margin: 20px auto;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
-/* Tarjetas con fondo translúcido y tamaño reducido */
+/* Cards container centrado */
+.contenedor-cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0 1rem;
+}
+
+/* Cards individuales */
+.contenedor-cards > div {
+  flex: 0 0 calc(16.66% - 1rem);
+  max-width: calc(16.66% - 1rem);
+}
+
+@media (max-width: 768px) {
+  .contenedor-cards > div {
+    flex: 0 0 calc(33.33% - 1rem);
+    max-width: calc(33.33% - 1rem);
+  }
+}
+
+@media (max-width: 576px) {
+  .contenedor-cards > div {
+    flex: 0 0 calc(50% - 1rem);
+    max-width: calc(50% - 1rem);
+  }
+}
+
 .card {
   background-color: transparent !important;
   color: white;
   border: none;
   box-shadow: 0 4px 8px rgba(17, 52, 189, 0.5);
-  transform: scale(0.95); /* Reduce tamaño */
+  transform: scale(0.95);
 }
 
 .card img {
@@ -128,7 +146,6 @@ body {
   object-fit: cover;
 }
 
-/* Botón en las tarjetas */
 .card .btn-primary {
   background-color: #007bff;
   border-color: #007bff;
@@ -136,18 +153,22 @@ body {
   padding: 5px 10px;
 }
 
-/* Ajuste para tarjetas en móviles: 3 por fila */
-@media (max-width: 576px) {
-  .col-4 {
-    flex: 0 0 auto;
-    width: 33.3333%;
-  }
-
-  .card .card-title {
-    font-size: 0.9rem;
-  }
-
-  .card .card-text {
-    font-size: 0.75rem;
-  }
+.card .card-title {
+  font-size: 0.9rem;
 }
+
+.card .card-text {
+  font-size: 0.75rem;
+}
+.footer-redes {
+  background-color: #111;
+  color: white;
+  margin-top: 40px;
+  border-top: 2px solid #007bff;
+}
+
+.footer-redes .red-social:hover {
+  color: #007bff;
+  transition: color 0.3s ease;
+}
+
