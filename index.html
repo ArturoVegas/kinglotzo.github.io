@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -13,23 +13,17 @@
   <link rel="stylesheet" href="./styles/estilos.css" />
 </head>
 <body>
-  <div class="container-fluid p-0">
+  <div class="container-fluid p-0 overflow-hidden">
     <!-- Encabezado -->
     <div class="row row-personalizada py-2 px-3 align-items-center">
-      <div class="col-6 col-md-2 d-flex align-items-center justify-content-start">
-        <img src="./Recursos/imagenes/imagen al principio.png" alt="Logo" class="img-fluid logo-img" />
-        <a href="index.html" class="d-flex align-items-center ms-2">
-          <img src="./Recursos/imagenes/whitePearltranslation.png" alt="Nombre Scan" class="img-fluid nombre-img" />
-        </a>
-      </div>
-
-      <div class="col-12 col-md-5 d-flex justify-content-center order-2 order-md-0 mt-3 mt-md-0">
-        <nav class="navbar navbar-expand-lg p-0 w-100">
-          <div class="container-fluid p-0 d-flex justify-content-center">
+      <!-- Navbar (izquierda móvil, centro en PC) -->
+      <div class="col-6 col-md-5 order-0 order-md-1 d-flex align-items-center">
+        <nav class="navbar navbar-expand-lg w-100">
+          <div class="container-fluid p-0">
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
               <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse justify-content-center" id="navbarContent">
+            <div class="collapse navbar-collapse justify-content-md-center" id="navbarContent">
               <ul class="navbar-nav">
                 <li class="nav-item"><a class="nav-link active" href="#">Inicio</a></li>
                 <li class="nav-item"><a class="nav-link" href="#">Series</a></li>
@@ -41,7 +35,16 @@
         </nav>
       </div>
 
-      <div class="col-6 col-md-5 d-flex justify-content-start justify-content-md-end px-3 order-1 order-md-0">
+      <!-- Logo -->
+      <div class="col-6 col-md-2 order-1 order-md-0 d-flex align-items-center justify-content-end justify-content-md-start">
+        <img src="./Recursos/imagenes/imagen al principio.png" alt="Logo" class="img-fluid logo-img" />
+        <a href="index.html" class="d-flex align-items-center ms-2">
+          <img src="./Recursos/imagenes/whitePearltranslation.png" alt="Nombre Scan" class="img-fluid nombre-img" />
+        </a>
+      </div>
+
+      <!-- Buscador -->
+      <div class="col-12 col-md-5 mt-3 mt-md-0 order-2 d-flex justify-content-center justify-content-md-end px-3">
         <form class="d-flex w-100 w-md-75" role="search">
           <input class="form-control" type="search" placeholder="🔍 Buscar..." />
           <button class="btn btn-outline-light ms-2" type="submit">Buscar</button>
@@ -98,84 +101,83 @@
 
     <!-- Tarjetas -->
     <div class="row m-0 p-0 contenedor-cards justify-content-center">
-      <!-- Repite este bloque para más cards -->
       <div>
         <div class="card">
-          <img src="./Recursos/imagenes/a5ece245-398c-417c-b929-10a5881e5244.png" class="card-img-top" alt="Imagen 1" />
+          <img src="./Recursos/imagenes/a5ece245-398c-417c-b929-10a5881e5244.png" class="card-img-top" alt="Manga 1" />
           <div class="card-body">
-            <h5 class="card-title">Título 1</h5>
-            <p class="card-text">Texto de ejemplo para la tarjeta 1.</p>
-            <a href="#" class="btn btn-primary">Ir a algún lugar</a>
+            <h5 class="card-title">Manga 1</h5>
+            <p class="card-text">Una historia épica de aventuras.</p>
+            <a href="#" class="btn btn-primary">Leer</a>
           </div>
         </div>
       </div>
+      <div>
+        <div class="card">
+          <img src="./Recursos/imagenes/a5ece245-398c-417c-b929-10a5881e5244.png" class="card-img-top" alt="Manga 2" />
+          <div class="card-body">
+            <h5 class="card-title">Manga 2</h5>
+            <p class="card-text">Acción, drama y más.</p>
+            <a href="#" class="btn btn-primary">Leer</a>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <img src="./Recursos/imagenes/a5ece245-398c-417c-b929-10a5881e5244.png" class="card-img-top" alt="Manga 3" />
+          <div class="card-body">
+            <h5 class="card-title">Manga 3</h5>
+            <p class="card-text">Romance y fantasía.</p>
+            <a href="#" class="btn btn-primary">Leer</a>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <img src="./Recursos/imagenes/a5ece245-398c-417c-b929-10a5881e5244.png" class="card-img-top" alt="Manga 4" />
+          <div class="card-body">
+            <h5 class="card-title">Manga 4</h5>
+            <p class="card-text">Un viaje emocionante.</p>
+            <a href="#" class="btn btn-primary">Leer</a>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <img src="./Recursos/imagenes/a5ece245-398c-417c-b929-10a5881e5244.png" class="card-img-top" alt="Manga 5" />
+          <div class="card-body">
+            <h5 class="card-title">Manga 5</h5>
+            <p class="card-text">Misterio y suspenso.</p>
+            <a href="#" class="btn btn-primary">Leer</a>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card">
+          <img src="./Recursos/imagenes/a5ece245-398c-417c-b929-10a5881e5244.png" class="card-img-top" alt="Manga 6" />
+          <div class="card-body">
+            <h5 class="card-title">Manga 6</h5>
+            <p class="card-text">Una historia inolvidable.</p>
+            <a href="#" class="btn btn-primary">Leer</a>
+          </div>
+        </div>
+      </div>
+    </div>
 
-       <div>
-        <div class="card">
-          <img src="./Recursos/imagenes/a5ece245-398c-417c-b929-10a5881e5244.png" class="card-img-top" alt="Imagen 1" />
-          <div class="card-body">
-            <h5 class="card-title">Título 1</h5>
-            <p class="card-text">Texto de ejemplo para la tarjeta 1.</p>
-            <a href="#" class="btn btn-primary">Ir a algún lugar</a>
-          </div>
+    <!-- Redes Sociales -->
+    <footer class="footer-redes py-4">
+      <div class="container text-center">
+        <h5 class="mb-3 text-light">Síguenos en nuestras redes</h5>
+        <div class="d-flex justify-content-center gap-4">
+          <a href="https://web.facebook.com/profile.php?id=61556342730848" target="_blank" class="red-social text-decoration-none text-light fs-3">
+            <i class="bi bi-facebook"></i>
+          </a>
+          <a href="https://discord.com/invite/sJJZkrkXz6" target="_blank" class="red-social text-decoration-none text-light fs-3">
+            <i class="bi bi-discord"></i>
+          </a>
         </div>
       </div>
-       <div>
-        <div class="card">
-          <img src="./Recursos/imagenes/a5ece245-398c-417c-b929-10a5881e5244.png" class="card-img-top" alt="Imagen 1" />
-          <div class="card-body">
-            <h5 class="card-title">Título 1</h5>
-            <p class="card-text">Texto de ejemplo para la tarjeta 1.</p>
-            <a href="#" class="btn btn-primary">Ir a algún lugar</a>
-          </div>
-        </div>
-      </div>
-       <div>
-        <div class="card">
-          <img src="./Recursos/imagenes/a5ece245-398c-417c-b929-10a5881e5244.png" class="card-img-top" alt="Imagen 1" />
-          <div class="card-body">
-            <h5 class="card-title">Título 1</h5>
-            <p class="card-text">Texto de ejemplo para la tarjeta 1.</p>
-            <a href="#" class="btn btn-primary">Ir a algún lugar</a>
-          </div>
-        </div>
-      </div>
-       <div>
-        <div class="card">
-          <img src="./Recursos/imagenes/a5ece245-398c-417c-b929-10a5881e5244.png" class="card-img-top" alt="Imagen 1" />
-          <div class="card-body">
-            <h5 class="card-title">Título 1</h5>
-            <p class="card-text">Texto de ejemplo para la tarjeta 1.</p>
-            <a href="#" class="btn btn-primary">Ir a algún lugar</a>
-          </div>
-        </div>
-      </div>
-       <div>
-        <div class="card">
-          <img src="./Recursos/imagenes/a5ece245-398c-417c-b929-10a5881e5244.png" class="card-img-top" alt="Imagen 1" />
-          <div class="card-body">
-            <h5 class="card-title">Título 1</h5>
-            <p class="card-text">Texto de ejemplo para la tarjeta 1.</p>
-            <a href="#" class="btn btn-primary">Ir a algún lugar</a>
-          </div>
-        </div>
-      </div>
-    </div>
+    </footer>
   </div>
-  <!-- Sección Redes Sociales -->
-<footer class="footer-redes py-4">
-  <div class="container text-center">
-    <h5 class="mb-3 text-light">Síguenos en nuestras redes</h5>
-    <div class="d-flex justify-content-center gap-4">
-      <a href="https://web.facebook.com/profile.php?id=61556342730848" target="_blank" class="red-social text-decoration-none text-light fs-3">
-        <i class="bi bi-facebook"></i>
-      </a>
-      <a href="https://discord.com/invite/sJJZkrkXz6" target="_blank" class="red-social text-decoration-none text-light fs-3">
-        <i class="bi bi-discord"></i>
-      </a>
-    </div>
-  </div>
-</footer>
 
   <!-- Bootstrap JS -->
   <script src="./java/scripts.js"></script>

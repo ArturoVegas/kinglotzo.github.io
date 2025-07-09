@@ -27,7 +27,6 @@ body {
   height: auto;
 }
 
-/* Nombre del scan */
 .nombre-img {
   max-width: 100px;
   height: auto;
@@ -44,19 +43,9 @@ body {
   }
 }
 
-@media (max-width: 767.98px) {
-  #navbarContent ul.navbar-nav {
-    justify-content: flex-end !important;
-    width: 100%;
-  }
-
-  .navbar-toggler {
-    margin-left: auto;
-  }
-}
-
+/* Navbar */
 .navbar-toggler {
-  margin: 0 auto;
+  margin-left: auto;
 }
 .navbar-nav .nav-link {
   color: white !important;
@@ -64,8 +53,16 @@ body {
 
 .navbar-nav .nav-link:hover,
 .navbar-nav .nav-link.active {
-  color: #007bff !important; /* o blanco más brillante si prefieres */
+  color: #ffffff !important;
 }
+
+@media (max-width: 767.98px) {
+  #navbarContent ul.navbar-nav {
+    justify-content: flex-start !important;
+    width: 100%;
+  }
+}
+
 /* Carrusel */
 #carouselWrapper {
   width: 100%;
@@ -126,7 +123,7 @@ body {
   max-width: calc(16.66% - 1rem);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   .contenedor-cards > div {
     flex: 0 0 calc(33.33% - 1rem);
     max-width: calc(33.33% - 1rem);
@@ -135,8 +132,8 @@ body {
 
 @media (max-width: 576px) {
   .contenedor-cards > div {
-    flex: 0 0 calc(50% - 1rem);
-    max-width: calc(50% - 1rem);
+    flex: 0 0 calc(33.33% - 1rem);
+    max-width: calc(33.33% - 1rem);
   }
 }
 
@@ -146,6 +143,11 @@ body {
   border: none;
   box-shadow: 0 4px 8px rgba(17, 52, 189, 0.5);
   transform: scale(0.95);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: scale(1);
 }
 
 .card img {
@@ -167,6 +169,8 @@ body {
 .card .card-text {
   font-size: 0.75rem;
 }
+
+/* Footer Redes Sociales */
 .footer-redes {
   background-color: #111;
   color: white;
@@ -178,4 +182,3 @@ body {
   color: #007bff;
   transition: color 0.3s ease;
 }
-
