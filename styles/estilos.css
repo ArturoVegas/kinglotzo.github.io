@@ -1,15 +1,76 @@
-.row-logo{
-    background-image: url("../Recursos/imagenes/54786610-afc8-11ed-83d3-634e6077be0e-ECEN-MarCielo-Web.webp");
+/* Estilo para la fila con fondo personalizado */
+.row-personalizada {
+  background-color: #1101f5;
+  color: white;
 }
-.logo {
-  max-width: 120px;
+
+/* Imagen del logo */
+.logo-img {
+  width: 100%;
+  max-width: 80px;
   height: auto;
 }
 
-.bienvenido {
-  text-align: center;
-  font-size: 60px;
+/* Imagen del nombre del scan */
+.nombre-img {
+  width: 100%;
+  max-width: 100px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Responsive: tamaños menores para móviles */
+@media (max-width: 576px) {
+  .logo-img {
+    max-width: 60px;
+  }
+
+  .nombre-img {
+    max-width: 140px;
+  }
+}
+
+/* Carrusel: ocupa todo el ancho, altura fija */
+#carouselWrapper {
+  width: 100vw;
+  max-height: 800px;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+#carouselExampleCaptions {
+  width: 100vw;
+  height: 800px;
+  overflow: hidden;
+}
+
+#carouselExampleCaptions .carousel-item img {
+  width: 100vw;
+  height: 300px;
+  object-fit: cover;
+  margin: 0;
+  padding: 0;
+  display: block;
+}
+
+/* Texto del carrusel visible y legible */
+.carousel-caption {
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 1rem;
+  border-radius: 10px;
   color: white;
-  text-shadow: 2px 2px 5px black; /* Opcional: mejora la visibilidad sobre fondo claro */
-  margin-top: 50px;
+}
+
+/* Reducir altura del carrusel en móviles */
+@media (max-width: 576px) {
+  #carouselExampleCaptions,
+  #carouselExampleCaptions .carousel-item img {
+    height: 150px;
+  }
+}
+
+/* Centrar botón hamburguesa */
+.navbar-toggler {
+  margin: 0 auto;
 }
