@@ -194,4 +194,8 @@ body {
   background-color: #054283;     /* Celeste más oscuro al pasar el mouse */
   color: white;
 }
-
+.footer-redes {
+  border: none !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
+}
