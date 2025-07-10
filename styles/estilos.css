@@ -199,3 +199,10 @@ body {
   box-shadow: none !important;
   background-color: transparent !important;
 }
+.img-manga-ajustada {
+  max-width: 60%;
+  height: auto;
+}
+.tituloMangaDescripcion{
+  color: #fff;;
+}
