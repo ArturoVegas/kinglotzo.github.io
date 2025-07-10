@@ -11,20 +11,6 @@
 
   <!-- CSS personalizado -->
   <link rel="stylesheet" href="../styles/estilos.css" />
-  <style>
-    .btn-celeste {
-      background-color: #00bfff;
-      color: white;
-    }
-    .btn-celeste:hover {
-      background-color: #00a5dd;
-      color: white;
-    }
-    .card-link {
-      text-decoration: none;
-      color: inherit;
-    }
-  </style>
 </head>
 <body>
   <div class="container-fluid">
@@ -73,7 +59,7 @@
           <h5 class="text-light mb-3">Listas de Manga</h5>
           <div class="d-flex flex-wrap gap-2">
             <div class="dropdown">
-              <button class="btn btn-celeste btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">Género All</button>
+              <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">Género All</button>
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="#">Acción</a></li>
                 <li><a class="dropdown-item" href="#">Aventura</a></li>
@@ -81,7 +67,7 @@
               </ul>
             </div>
             <div class="dropdown">
-              <button class="btn btn-celeste btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">Estado Todo</button>
+              <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">Estado Todo</button>
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="#">En emisión</a></li>
                 <li><a class="dropdown-item" href="#">Finalizado</a></li>
@@ -89,7 +75,7 @@
               </ul>
             </div>
             <div class="dropdown">
-              <button class="btn btn-celeste btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">Tipo Todo</button>
+              <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">Tipo Todo</button>
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="#">Manga</a></li>
                 <li><a class="dropdown-item" href="#">Manhwa</a></li>
@@ -98,13 +84,13 @@
             </div>
           </div>
 
-          <!-- Tarjetas de Manga -->
+          <!-- Tarjetas -->
           <div class="row mt-3">
-            <div class="col-12 col-md-10">
-              <div class="row row-cols-4 g-3 px-2 px-sm-3 px-md-0">
+            <div class="col-12">
+              <div class="row row-cols-3 row-cols-xl-5 g-3git">
                 <!-- Tarjeta 1 -->
                 <div class="col">
-                  <a href="#" class="card-link">
+                  <a href="#" class="text-decoration-none text-reset">
                     <div class="card h-100">
                       <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga 1" />
                       <div class="card-body text-center">
@@ -116,7 +102,7 @@
                 </div>
                 <!-- Tarjeta 2 -->
                 <div class="col">
-                  <a href="#" class="card-link">
+                  <a href="#" class="text-decoration-none text-reset">
                     <div class="card h-100">
                       <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga 2" />
                       <div class="card-body text-center">
@@ -128,7 +114,7 @@
                 </div>
                 <!-- Tarjeta 3 -->
                 <div class="col">
-                  <a href="#" class="card-link">
+                  <a href="#" class="text-decoration-none text-reset">
                     <div class="card h-100">
                       <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga 3" />
                       <div class="card-body text-center">
@@ -140,7 +126,7 @@
                 </div>
                 <!-- Tarjeta 4 -->
                 <div class="col">
-                  <a href="#" class="card-link">
+                  <a href="#" class="text-decoration-none text-reset">
                     <div class="card h-100">
                       <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga 4" />
                       <div class="card-body text-center">
@@ -152,7 +138,7 @@
                 </div>
                 <!-- Tarjeta 5 -->
                 <div class="col">
-                  <a href="#" class="card-link">
+                  <a href="#" class="text-decoration-none text-reset">
                     <div class="card h-100">
                       <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga 5" />
                       <div class="card-body text-center">
@@ -164,7 +150,7 @@
                 </div>
                 <!-- Tarjeta 6 -->
                 <div class="col">
-                  <a href="#" class="card-link">
+                  <a href="#" class="text-decoration-none text-reset">
                     <div class="card h-100">
                       <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga 6" />
                       <div class="card-body text-center">
@@ -179,13 +165,12 @@
           </div>
 
           <!-- Paginación -->
-          <nav aria-label="Paginación" class="mt-4">
+          <nav class="mt-4" aria-label="Paginación">
             <ul class="pagination justify-content-center">
-              <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Anterior</a></li>
+              <li class="page-item disabled"><a class="page-link" href="#">Anterior</a></li>
               <li class="page-item active"><a class="page-link" href="#">1</a></li>
               <li class="page-item"><a class="page-link" href="#">2</a></li>
               <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item"><a class="page-link" href="#">4</a></li>
               <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
             </ul>
           </nav>
@@ -229,13 +214,17 @@
     </div>
   </div>
 
-  <!-- Redes Sociales -->
+  <!-- Footer -->
   <footer class="footer-redes py-4">
     <div class="container text-center">
       <h5 class="mb-3 text-light">Síguenos en nuestras redes</h5>
       <div class="d-flex justify-content-center gap-4">
-        <a href="https://web.facebook.com/profile.php?id=61556342730848" target="_blank" class="red-social text-decoration-none text-light fs-3"><i class="bi bi-facebook"></i></a>
-        <a href="https://discord.com/invite/sJJZkrkXz6" target="_blank" class="red-social text-decoration-none text-light fs-3"><i class="bi bi-discord"></i></a>
+        <a href="https://web.facebook.com/profile.php?id=61556342730848" target="_blank" class="text-decoration-none text-light fs-3">
+          <i class="bi bi-facebook"></i>
+        </a>
+        <a href="https://discord.com/invite/sJJZkrkXz6" target="_blank" class="text-decoration-none text-light fs-3">
+          <i class="bi bi-discord"></i>
+        </a>
       </div>
     </div>
   </footer>
