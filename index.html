@@ -14,9 +14,10 @@
 </head>
 <body>
   <div class="container-fluid p-0 overflow-hidden">
+
     <!-- Encabezado -->
     <div class="row row-personalizada py-2 px-3 align-items-center">
-      <!-- Navbar (izquierda móvil, centro en PC) -->
+      <!-- Navbar -->
       <div class="col-6 col-md-5 order-0 order-md-1 d-flex align-items-center">
         <nav class="navbar navbar-expand-lg w-100">
           <div class="container-fluid p-0">
@@ -61,7 +62,6 @@
               <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active"></button>
               <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1"></button>
             </div>
-
             <div class="carousel-inner">
               <div class="carousel-item active">
                 <img src="./Recursos/imagenes/barco-pirata-12094.webp" class="d-block w-100" alt="Barco pirata" />
@@ -78,7 +78,6 @@
                 </div>
               </div>
             </div>
-
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
               <span class="carousel-control-prev-icon"></span>
               <span class="visually-hidden">Anterior</span>
@@ -164,126 +163,108 @@
     </div>
 
     <!-- Últimas actualizaciones y Noticias -->
-     <div class="row justify-content-center my-2">
-  <!-- Últimas actualizaciones -->
-  <div class="col-12 col-md-6">
-    <h1 class="maspopulares text-center mb-3">Últimas actualizaciones</h1>
-    <div class="row row-cols-3 g-3 px-2 px-sm-3 px-md-0">
-      <!-- Card 1 -->
-      <div class="col">
-        <div class="card h-100">
-          <img src="./Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga 1">
-          <div class="card-body text-center">
-            <h5 class="card-title">Manga 1</h5>
-            <p class="card-text">Nueva entrega semanal</p>
+    <div class="row justify-content-center my-2">
+      <!-- Últimas actualizaciones -->
+      <div class="col-12 col-md-6">
+        <h1 class="maspopulares text-center mb-3">Últimas actualizaciones</h1>
+        <div class="row row-cols-3 g-3 px-2 px-sm-3 px-md-0">
+          <!-- Tarjetas 1 a 6 -->
+          <div class="col">
+            <div class="card h-100">
+              <img src="./Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga 1" />
+              <div class="card-body text-center">
+                <h5 class="card-title">Manga 1</h5>
+                <p class="card-text">Nueva entrega semanal</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100">
+              <img src="./Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga 2" />
+              <div class="card-body text-center">
+                <h5 class="card-title">Manga 2</h5>
+                <p class="card-text">Actualizado hace 2 días</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100">
+              <img src="./Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga 3" />
+              <div class="card-body text-center">
+                <h5 class="card-title">Manga 3</h5>
+                <p class="card-text">Capítulo extra disponible</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100">
+              <img src="./Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga 4" />
+              <div class="card-body text-center">
+                <h5 class="card-title">Manga 4</h5>
+                <p class="card-text">¡Recién salido del horno!</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100">
+              <img src="./Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga 5" />
+              <div class="card-body text-center">
+                <h5 class="card-title">Manga 5</h5>
+                <p class="card-text">Disponible ahora</p>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="card h-100">
+              <img src="./Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga 6" />
+              <div class="card-body text-center">
+                <h5 class="card-title">Manga 6</h5>
+                <p class="card-text">Actualización sorpresa</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <!-- Card 2 -->
-      <div class="col">
-        <div class="card h-100">
-          <img src="./Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga 2">
-          <div class="card-body text-center">
-            <h5 class="card-title">Manga 2</h5>
-            <p class="card-text">Actualizado hace 2 días</p>
+
+      <!-- Noticias -->
+      <div class="col-12 col-md-4 mt-4 mt-md-0">
+        <h1 class="maspopulares text-center mb-3">Noticias</h1>
+        <div id="carouselNoticias" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner rounded">
+            <div class="carousel-item active">
+              <img src="./Recursos/imagenes/istockphoto-1181476528-612x612.jpg" class="d-block w-100 rounded" alt="Noticia 1">
+              <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded">
+                <p>¡Nuevo proyecto en camino!</p>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <img src="./Recursos/imagenes/istockphoto-1181476528-612x612.jpg" class="d-block w-100 rounded" alt="Noticia 2">
+              <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded">
+                <p>Actualización de capítulos el viernes</p>
+              </div>
+            </div>
+            <div class="carousel-item">
+              <img src="./Recursos/imagenes/istockphoto-1181476528-612x612.jpg" class="d-block w-100 rounded" alt="Noticia 3">
+              <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded">
+                <p>Buscamos editores ✍️</p>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      <!-- Card 3 -->
-      <div class="col">
-        <div class="card h-100">
-          <img src="./Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga 3">
-          <div class="card-body text-center">
-            <h5 class="card-title">Manga 3</h5>
-            <p class="card-text">Capítulo extra disponible</p>
-          </div>
-        </div>
-      </div>
-      <!-- Card 4 -->
-      <div class="col">
-        <div class="card h-100">
-          <img src="./Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga 4">
-          <div class="card-body text-center">
-            <h5 class="card-title">Manga 4</h5>
-            <p class="card-text">¡Recién salido del horno!</p>
-          </div>
-        </div>
-      </div>
-      <!-- Card 5 -->
-      <div class="col">
-        <div class="card h-100">
-          <img src="./Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga 5">
-          <div class="card-body text-center">
-            <h5 class="card-title">Manga 5</h5>
-            <p class="card-text">Disponible ahora</p>
-          </div>
-        </div>
-      </div>
-      <!-- Card 6 -->
-      <div class="col">
-        <div class="card h-100">
-          <img src="./Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga 6">
-          <div class="card-body text-center">
-            <h5 class="card-title">Manga 6</h5>
-            <p class="card-text">Actualización sorpresa</p>
-          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselNoticias" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+            <span class="visually-hidden">Anterior</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselNoticias" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+            <span class="visually-hidden">Siguiente</span>
+          </button>
         </div>
       </div>
     </div>
-  </div>
 
-  <!-- Noticias debajo en móviles -->
-  <div class="col-12 col-md-4 mt-4 mt-md-0">
+  </div> <!-- Cierre container-fluid -->
 
-  <h1 class="maspopulares text-center mb-3">Noticias</h1>
-
-  <div id="carouselNoticias" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner rounded">
-
-      <!-- Slide 1 -->
-      <div class="carousel-item active">
-        <img src="./Recursos/imagenes/istockphoto-1181476528-612x612.jpg" class="d-block w-100 rounded" alt="Noticia 1">
-        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded">
-          <p>¡Nuevo proyecto en camino!</p>
-        </div>
-      </div>
-
-      <!-- Slide 2 -->
-      <div class="carousel-item">
-        <img src="./Recursos/imagenes/istockphoto-1181476528-612x612.jpg" class="d-block w-100 rounded" alt="Noticia 2">
-        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded">
-          <p>Actualización de capítulos el viernes</p>
-        </div>
-      </div>
-
-      <!-- Slide 3 -->
-      <div class="carousel-item">
-        <img src="./Recursos/imagenes/istockphoto-1181476528-612x612.jpg" class="d-block w-100 rounded" alt="Noticia 3">
-        <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded">
-          <p>Buscamos editores ✍️</p>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- Botones de navegación -->
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselNoticias" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon"></span>
-      <span class="visually-hidden">Anterior</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselNoticias" data-bs-slide="next">
-      <span class="carousel-control-next-icon"></span>
-      <span class="visually-hidden">Siguiente</span>
-    </button>
-  </div>
-</div>
-
-</div>
-
-
-  </div>
-
-  <!-- Redes Sociales -->
+  <!-- Footer -->
   <footer class="footer-redes py-4">
     <div class="container text-center">
       <h5 class="mb-3 text-light">Síguenos en nuestras redes</h5>
@@ -298,7 +279,7 @@
     </div>
   </footer>
 
-  <!-- Bootstrap JS -->
+  <!-- Scripts -->
   <script src="./java/scripts.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 </body>

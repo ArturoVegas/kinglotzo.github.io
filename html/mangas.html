@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -11,12 +11,26 @@
 
   <!-- CSS personalizado -->
   <link rel="stylesheet" href="../styles/estilos.css" />
+  <style>
+    .btn-celeste {
+      background-color: #00bfff;
+      color: white;
+    }
+    .btn-celeste:hover {
+      background-color: #00a5dd;
+      color: white;
+    }
+    .card-link {
+      text-decoration: none;
+      color: inherit;
+    }
+  </style>
 </head>
 <body>
   <div class="container-fluid">
     <!-- Encabezado -->
     <div class="row row-personalizada py-2 px-3 align-items-center">
-      <!-- Navbar (izquierda en móvil, centrado en PC) -->
+      <!-- Navbar -->
       <div class="col-6 col-md-5 order-0 order-md-1 d-flex align-items-center">
         <nav class="navbar navbar-expand-lg w-100">
           <div class="container-fluid p-0">
@@ -52,42 +66,156 @@
       </div>
     </div>
 
-    <!-- Noticias -->
-    <div class="row justify-content-center my-2">
+    <!-- Filtros -->
+    <div class="row justify-content-center align-items-start my-2">
       <div class="col-12 col-md-6">
-        <!-- Espacio vacío o contenido futuro -->
-      </div>
-      <div class="col-12 col-md-3 mt-4 mt-md-0">
-        <h1 class="maspopulares text-center mb-3">Noticias</h1>
+        <div class="p-3 rounded">
+          <h5 class="text-light mb-3">Listas de Manga</h5>
+          <div class="d-flex flex-wrap gap-2">
+            <div class="dropdown">
+              <button class="btn btn-celeste btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">Género All</button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Acción</a></li>
+                <li><a class="dropdown-item" href="#">Aventura</a></li>
+                <li><a class="dropdown-item" href="#">Romance</a></li>
+              </ul>
+            </div>
+            <div class="dropdown">
+              <button class="btn btn-celeste btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">Estado Todo</button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">En emisión</a></li>
+                <li><a class="dropdown-item" href="#">Finalizado</a></li>
+                <li><a class="dropdown-item" href="#">Pausado</a></li>
+              </ul>
+            </div>
+            <div class="dropdown">
+              <button class="btn btn-celeste btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">Tipo Todo</button>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Manga</a></li>
+                <li><a class="dropdown-item" href="#">Manhwa</a></li>
+                <li><a class="dropdown-item" href="#">Novela</a></li>
+              </ul>
+            </div>
+          </div>
 
+          <!-- Tarjetas de Manga -->
+          <div class="row mt-3">
+            <div class="col-12 col-md-10">
+              <div class="row row-cols-4 g-3 px-2 px-sm-3 px-md-0">
+                <!-- Tarjeta 1 -->
+                <div class="col">
+                  <a href="#" class="card-link">
+                    <div class="card h-100">
+                      <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga 1" />
+                      <div class="card-body text-center">
+                        <h5 class="card-title">Manga 1</h5>
+                        <p class="card-text">Nueva entrega semanal</p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <!-- Tarjeta 2 -->
+                <div class="col">
+                  <a href="#" class="card-link">
+                    <div class="card h-100">
+                      <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga 2" />
+                      <div class="card-body text-center">
+                        <h5 class="card-title">Manga 2</h5>
+                        <p class="card-text">Actualizado hace 2 días</p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <!-- Tarjeta 3 -->
+                <div class="col">
+                  <a href="#" class="card-link">
+                    <div class="card h-100">
+                      <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga 3" />
+                      <div class="card-body text-center">
+                        <h5 class="card-title">Manga 3</h5>
+                        <p class="card-text">Capítulo extra disponible</p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <!-- Tarjeta 4 -->
+                <div class="col">
+                  <a href="#" class="card-link">
+                    <div class="card h-100">
+                      <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga 4" />
+                      <div class="card-body text-center">
+                        <h5 class="card-title">Manga 4</h5>
+                        <p class="card-text">¡Recién salido del horno!</p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <!-- Tarjeta 5 -->
+                <div class="col">
+                  <a href="#" class="card-link">
+                    <div class="card h-100">
+                      <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga 5" />
+                      <div class="card-body text-center">
+                        <h5 class="card-title">Manga 5</h5>
+                        <p class="card-text">Disponible ahora</p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <!-- Tarjeta 6 -->
+                <div class="col">
+                  <a href="#" class="card-link">
+                    <div class="card h-100">
+                      <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga 6" />
+                      <div class="card-body text-center">
+                        <h5 class="card-title">Manga 6</h5>
+                        <p class="card-text">Actualización sorpresa</p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Paginación -->
+          <nav aria-label="Paginación" class="mt-4">
+            <ul class="pagination justify-content-center">
+              <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1">Anterior</a></li>
+              <li class="page-item active"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item"><a class="page-link" href="#">4</a></li>
+              <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+      <!-- Noticias -->
+      <div class="col-12 col-md-3 mt-md-0">
+        <h1 class="maspopulares text-center mb-3">Noticias</h1>
         <div id="carouselNoticias" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-inner rounded">
-            <!-- Slide 1 -->
             <div class="carousel-item active">
-              <img src="../Recursos/imagenes/istockphoto-1181476528-612x612.jpg" class="d-block w-100 rounded" alt="Noticia 1">
+              <img src="../Recursos/imagenes/istockphoto-1181476528-612x612.jpg" class="d-block w-100 rounded" alt="Noticia 1" />
               <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded">
                 <p>¡Nuevo proyecto en camino!</p>
               </div>
             </div>
-
-            <!-- Slide 2 -->
             <div class="carousel-item">
-              <img src="../Recursos/imagenes/istockphoto-1181476528-612x612.jpg" class="d-block w-100 rounded" alt="Noticia 2">
+              <img src="../Recursos/imagenes/istockphoto-1181476528-612x612.jpg" class="d-block w-100 rounded" alt="Noticia 2" />
               <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded">
                 <p>Actualización de capítulos el viernes</p>
               </div>
             </div>
-
-            <!-- Slide 3 -->
             <div class="carousel-item">
-              <img src="../Recursos/imagenes/istockphoto-1181476528-612x612.jpg" class="d-block w-100 rounded" alt="Noticia 3">
+              <img src="../Recursos/imagenes/istockphoto-1181476528-612x612.jpg" class="d-block w-100 rounded" alt="Noticia 3" />
               <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded">
                 <p>Buscamos editores ✍️</p>
               </div>
             </div>
           </div>
-
-          <!-- Botones de navegación -->
           <button class="carousel-control-prev" type="button" data-bs-target="#carouselNoticias" data-bs-slide="prev">
             <span class="carousel-control-prev-icon"></span>
             <span class="visually-hidden">Anterior</span>
@@ -106,12 +234,8 @@
     <div class="container text-center">
       <h5 class="mb-3 text-light">Síguenos en nuestras redes</h5>
       <div class="d-flex justify-content-center gap-4">
-        <a href="https://web.facebook.com/profile.php?id=61556342730848" target="_blank" class="red-social text-decoration-none text-light fs-3">
-          <i class="bi bi-facebook"></i>
-        </a>
-        <a href="https://discord.com/invite/sJJZkrkXz6" target="_blank" class="red-social text-decoration-none text-light fs-3">
-          <i class="bi bi-discord"></i>
-        </a>
+        <a href="https://web.facebook.com/profile.php?id=61556342730848" target="_blank" class="red-social text-decoration-none text-light fs-3"><i class="bi bi-facebook"></i></a>
+        <a href="https://discord.com/invite/sJJZkrkXz6" target="_blank" class="red-social text-decoration-none text-light fs-3"><i class="bi bi-discord"></i></a>
       </div>
     </div>
   </footer>
