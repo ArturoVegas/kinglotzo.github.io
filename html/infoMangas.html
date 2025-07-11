@@ -14,8 +14,10 @@
 </head>
 <body>
   <div class="container-fluid">
+
     <!-- Encabezado -->
     <div class="row row-personalizada py-2 px-3 align-items-center">
+
       <!-- Navbar -->
       <div class="col-6 col-md-5 order-0 order-md-1 d-flex align-items-center">
         <nav class="navbar navbar-expand-lg w-100">
@@ -58,21 +60,78 @@
           <button class="btn btn-outline-light ms-2" type="submit">Buscar</button>
         </form>
       </div>
+
     </div>
 
-<div class="row my-4">
-  <div class="col-12 col-md-4 offset-md-1">
-    <div class="row">
-         <img src="../Recursos/imagenes/A30132-1775926097.webp" class="img-fluid rounded img-manga-ajustada" alt="Imagen de manga">
+    <!-- Contenido principal -->
+    <div class="row my-4 gx-0 align-items-start">
+
+      <!-- Imagen -->
+      <div class="col-12 col-md-4 d-flex justify-content-center align-items-start">
+        <img src="../Recursos/imagenes/A30132-1775926097.webp" class="img-fluid rounded img-manga-ajustada" alt="Imagen de manga" />
+      </div>
+
+      <!-- Información del manga -->
+      <div class="col-12 col-md-5 col-manga-info">
+        <div class="row">
+
+          <!-- Título -->
+          <h5 class="tituloMangaDescripcion mt-2">
+            Kiraware Majo To Karada Ga Irekawatta Keredo, Watashi Wa Kyou Mo Genki Ni Kurashiteimasu!
+          </h5>
+
+          <!-- Sinopsis -->
+          <p class="sinopsis">
+            ¡Una vida feliz y tranquila comienza con un cambio! Marietta, princesa del país nevado de Sneu, está atrapada en una torre mágica porque no puede usar magia.
+            8 años después, el día de su boda con el príncipe del país Silver, pensó que había logrado invocar una bestia sagrada, pero entonces... ¿Lo que apareció fue...?
+          </p>
+
+          <!-- Lista de capítulos -->
+          <div class="row">
+            <h5 class="tituloListaCaps">Lista de capítulos</h5>
+            <div class="lista-scroll">
+              <ul class="list-group list-group-flush listaCap">
+                <li class="list-group-item p-0 rectangulo-item">
+                  <a href="capitulo1.html" class="enlace-cap d-block py-2 px-3">Capítulo 1</a>
+                </li>
+                <li class="list-group-item p-0 rectangulo-item">
+                  <a href="capitulo2.html" class="enlace-cap d-block py-2 px-3">Capítulo 2</a>
+                </li>
+                <li class="list-group-item p-0 rectangulo-item">
+                  <a href="capitulo3.html" class="enlace-cap d-block py-2 px-3">Capítulo 3</a>
+                </li>
+                <!-- Más capítulos repetidos para test -->
+                <li class="list-group-item p-0 rectangulo-item">
+                  <a href="#" class="enlace-cap d-block py-2 px-3">Capítulo 4</a>
+                </li>
+                <li class="list-group-item p-0 rectangulo-item">
+                  <a href="#" class="enlace-cap d-block py-2 px-3">Capítulo 5</a>
+                </li>
+                <li class="list-group-item p-0 rectangulo-item">
+                  <a href="#" class="enlace-cap d-block py-2 px-3">Capítulo 6</a>
+                </li>
+                <li class="list-group-item p-0 rectangulo-item">
+                  <a href="#" class="enlace-cap d-block py-2 px-3">Capítulo 7</a>
+                </li>
+                <li class="list-group-item p-0 rectangulo-item">
+                  <a href="#" class="enlace-cap d-block py-2 px-3">Capítulo 8</a>
+                </li>
+                <li class="list-group-item p-0 rectangulo-item">
+                  <a href="#" class="enlace-cap d-block py-2 px-3">Capítulo 9</a>
+                </li>
+                <li class="list-group-item p-0 rectangulo-item">
+                  <a href="#" class="enlace-cap d-block py-2 px-3">Capítulo 10</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
     </div>
-  </div>
-  <div class="col-12 col-md-6 offset-md-1">
-    <h5 class="tituloMangaDescripcion">kIRAWARA</h5>
-  </div>
-</div>
 
-
-    <!-- Footer (ahora dentro del container-fluid) -->
+    <!-- Footer -->
     <footer class="footer-redes py-4 mt-4">
       <div class="container text-center">
         <h5 class="mb-3 text-light">Síguenos en nuestras redes</h5>
@@ -86,6 +145,7 @@
         </div>
       </div>
     </footer>
+
   </div>
 
   <!-- Scripts -->

@@ -13,7 +13,6 @@ body {
   overflow-x: hidden;
 }
 
-/* Encabezado */
 .row-personalizada {
   background-color: #054283;
   color: white;
@@ -21,7 +20,6 @@ body {
   position: relative;
 }
 
-/* Logo */
 .logo-img {
   max-width: 80px;
   height: auto;
@@ -43,7 +41,6 @@ body {
   }
 }
 
-/* Navbar */
 .navbar-toggler {
   margin-left: auto;
 }
@@ -63,7 +60,6 @@ body {
   }
 }
 
-/* Carrusel */
 #carouselWrapper {
   width: 100%;
   max-height: 800px;
@@ -96,7 +92,6 @@ body {
   color: white;
 }
 
-/* Título */
 .maspopulares {
   color: #fff;
   padding: 8px 20px;
@@ -108,7 +103,6 @@ body {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
-/* Cards container centrado */
 .contenedor-cards {
   display: flex;
   flex-wrap: wrap;
@@ -117,7 +111,6 @@ body {
   padding: 0 1rem;
 }
 
-/* Cards individuales */
 .contenedor-cards > div {
   flex: 0 0 calc(16.66% - 1rem);
   max-width: calc(16.66% - 1rem);
@@ -170,39 +163,103 @@ body {
   font-size: 0.75rem;
 }
 
-/* Footer Redes Sociales */
 .footer-redes {
   background-color: #111;
   color: white;
   margin-top: 40px;
   border-top: 2px solid #007bff;
+  border: none !important;
+  box-shadow: none !important;
+  background-color: transparent !important;
 }
 
 .footer-redes .red-social:hover {
   color: #007bff;
   transition: color 0.3s ease;
 }
-/* Botón celeste para dropdowns */
+
 .btn-celeste {
-  background-color:#054283;     /* Celeste brillante */
+  background-color: #054283;
   color: white;
   border: none;
 }
 
 .btn-celeste:hover,
 .btn-celeste:focus {
-  background-color: #054283;     /* Celeste más oscuro al pasar el mouse */
+  background-color: #054283;
   color: white;
 }
-.footer-redes {
-  border: none !important;
-  box-shadow: none !important;
-  background-color: transparent !important;
-}
+
 .img-manga-ajustada {
-  max-width: 60%;
+  max-width: 70%;
   height: auto;
+  object-fit: contain;
 }
-.tituloMangaDescripcion{
-  color: #fff;;
+
+.tituloMangaDescripcion {
+  color: #fff;
+  margin-bottom: 1rem;
+  font-size: 30px;
+}
+
+.sinopsis {
+  max-height: 400px;
+  overflow-y: auto;
+  color: #ccc;
+  padding-right: 10px;
+}
+
+.listaCap {
+  background-color: #1e1e1e;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.listaCap .list-group-item {
+  background-color: #054283;
+  color: #ffffff;
+  padding: 0.4rem 0.75rem;
+  border: none;
+}
+
+.tituloListaCaps {
+  color: #fff;
+}
+
+.enlace-cap {
+  color: #fff;
+  text-decoration: none;
+  width: 100%;
+  height: 100%;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.enlace-cap:hover {
+  background-color: #413f3f;
+  color: #1e90ff;
+  text-decoration: none;
+}
+
+.rectangulo-item {
+  background-color: #054283;
+  border-radius: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 3px solid #fffbfb;
+  padding: 2px;
+  overflow: hidden;
+}
+
+.lista-scroll {
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 0.5rem;
+  border: 1px solid #444;
+  border-radius: 0.5rem;
+  background-color: #1e1e1e;
+}
+
+.col-manga-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
