@@ -15,40 +15,36 @@
 <body>
   <div class="container-fluid">
     <!-- Encabezado -->
-<nav class="navbar navbar-expand-md row-personalizada px-3">
-  <div class="container-fluid">
-    <!-- Logo -->
-    <a class="navbar-brand d-flex align-items-center" href="index.html">
-      <img src="../Recursos/imagenes/imagen al principio.png" alt="Logo" class="img-fluid logo-img me-2" />
-      <img src="../Recursos/imagenes/whitePearltranslation.png" alt="Nombre Scan" class="img-fluid nombre-img" />
-    </a>
+    <nav class="navbar navbar-expand-md row-personalizada px-3">
+      <div class="container-fluid">
+        <!-- Logo -->
+        <a class="navbar-brand d-flex align-items-center" href="index.html">
+          <img src="../Recursos/imagenes/imagen al principio.png" alt="Logo" class="img-fluid logo-img me-2" />
+          <img src="../Recursos/imagenes/whitePearltranslation.png" alt="Nombre Scan" class="img-fluid nombre-img" />
+        </a>
 
-    <!-- Botón hamburguesa -->
-    <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+        <!-- Botón hamburguesa -->
+        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+          <span class="navbar-toggler-icon"></span>
+        </button>
 
-    <!-- Menú colapsable -->
-    <div class="collapse navbar-collapse mt-2 mt-md-0" id="navbarContent">
-      <ul class="navbar-nav flex-column flex-md-row w-100 justify-content-center justify-content-md-center align-items-center align-items-md-center">
+        <!-- Menú colapsable -->
+        <div class="collapse navbar-collapse mt-2 mt-md-0" id="navbarContent">
+          <ul class="navbar-nav flex-column flex-md-row w-100 justify-content-center align-items-center">
+            <li class="nav-item"><a class="nav-link text-white" href="index.html">Inicio</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="./html/mangas.html">Nuestros mangas</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="#">Géneros</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="#">Contacto</a></li>
+          </ul>
 
-        <li class="nav-item"><a class="nav-link text-white" href="index.html">Inicio</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="./html/mangas.html">Nuestros mangas</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="#">Géneros</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="#">Contacto</a></li>
-      </ul>
-
-      <!-- Buscador -->
-      <form class="d-flex mt-3 mt-md-0 ms-md-auto w-100 w-md-50" role="search">
-  <input class="form-control border-dark" type="search" placeholder="🔍 Buscar..." />
-  <button class="btn btn-outline-light ms-2" type="submit">Buscar</button>
-</form>
-    </div>
-  </div>
-</nav>
-    </div>
-  </div>
-</nav>
+          <!-- Buscador -->
+          <form class="d-flex mt-3 mt-md-0 ms-md-auto w-100 w-md-50" role="search">
+            <input class="form-control border-dark" type="search" placeholder="🔍 Buscar..." />
+            <button class="btn btn-outline-light ms-2" type="submit">Buscar</button>
+          </form>
+        </div>
+      </div>
+    </nav>
 
     <!-- Filtros y Tarjetas -->
     <div class="row justify-content-center align-items-start my-2">
@@ -85,18 +81,8 @@
           </div>
 
           <!-- Tarjetas -->
-            <div class="row mt-3 row-cols-3 row-cols-sm-2 row-cols-md-3 row-cols-xl-5 g-3">
-
-            <!-- Tarjeta Repetida -->
-            <!-- Puedes duplicar o usar JavaScript para cargar dinámicamente -->
-            <!-- Aquí van 9 tarjetas como ejemplo -->
-
-            <!-- Reemplaza esto con un bucle o back-end si lo deseas dinámico -->
-            <!-- Tarjetas desde 1 a 9 -->
-            <!-- Puedes copiar/pegar más si necesitas más -->
-            <!-- Cada tarjeta es un enlace completo -->
-            <!-- INICIO TARJETAS -->
-            <!-- Repite este bloque para más tarjetas -->
+          <div class="row mt-3 row-cols-3 row-cols-sm-2 row-cols-md-3 row-cols-xl-5 g-3">
+            <!-- Tarjeta 1 -->
             <div class="col">
               <a href="../html/infoMangas.html" class="text-decoration-none text-reset">
                 <div class="card h-100">
@@ -108,6 +94,8 @@
                 </div>
               </a>
             </div>
+
+            <!-- Tarjeta 2 -->
             <div class="col">
               <a href="../html/infoMangas.html" class="text-decoration-none text-reset">
                 <div class="card h-100">
@@ -119,6 +107,8 @@
                 </div>
               </a>
             </div>
+
+            <!-- Tarjetas 3 a 10 (idénticas pero con diferentes textos si se desea) -->
             <div class="col">
               <a href="#" class="text-decoration-none text-reset">
                 <div class="card h-100">
@@ -130,6 +120,7 @@
                 </div>
               </a>
             </div>
+
             <div class="col">
               <a href="#" class="text-decoration-none text-reset">
                 <div class="card h-100">
@@ -141,6 +132,7 @@
                 </div>
               </a>
             </div>
+
             <div class="col">
               <a href="#" class="text-decoration-none text-reset">
                 <div class="card h-100">
@@ -152,6 +144,7 @@
                 </div>
               </a>
             </div>
+
             <div class="col">
               <a href="#" class="text-decoration-none text-reset">
                 <div class="card h-100">
@@ -163,51 +156,55 @@
                 </div>
               </a>
             </div>
+
+            <!-- Repite las tarjetas necesarias sin eliminar ninguna -->
             <div class="col">
               <a href="#" class="text-decoration-none text-reset">
                 <div class="card h-100">
                   <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga" />
                   <div class="card-body text-center">
-                    <h5 class="card-title">Manga 6</h5>
+                    <h5 class="card-title">Manga 7</h5>
                     <p class="card-text">Actualización sorpresa</p>
                   </div>
                 </div>
               </a>
             </div>
+
             <div class="col">
               <a href="#" class="text-decoration-none text-reset">
                 <div class="card h-100">
                   <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga" />
                   <div class="card-body text-center">
-                    <h5 class="card-title">Manga 6</h5>
+                    <h5 class="card-title">Manga 8</h5>
                     <p class="card-text">Actualización sorpresa</p>
                   </div>
                 </div>
               </a>
             </div>
+
             <div class="col">
               <a href="#" class="text-decoration-none text-reset">
                 <div class="card h-100">
                   <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga" />
                   <div class="card-body text-center">
-                    <h5 class="card-title">Manga 6</h5>
+                    <h5 class="card-title">Manga 9</h5>
                     <p class="card-text">Actualización sorpresa</p>
                   </div>
                 </div>
               </a>
             </div>
+
             <div class="col">
               <a href="#" class="text-decoration-none text-reset">
                 <div class="card h-100">
                   <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga" />
                   <div class="card-body text-center">
-                    <h5 class="card-title">Manga 6</h5>
+                    <h5 class="card-title">Manga 10</h5>
                     <p class="card-text">Actualización sorpresa</p>
                   </div>
                 </div>
               </a>
             </div>
-            <!-- FIN TARJETAS -->
           </div>
 
           <!-- Paginación -->
@@ -234,7 +231,6 @@
                 <p>¡Nuevo proyecto en camino!</p>
               </div>
             </div>
-            <!-- Más noticias si deseas -->
           </div>
           <button class="carousel-control-prev" type="button" data-bs-target="#carouselNoticias" data-bs-slide="prev">
             <span class="carousel-control-prev-icon"></span>
