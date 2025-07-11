@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>White Pearl Translation</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <!-- CSS personalizado -->
+  <link rel="stylesheet" href="../styles/estilos.css" />
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Encabezado -->
+      <nav class="navbar navbar-expand-md row-personalizada px-3">
+        <div class="container-fluid">
+          <!-- Logo -->
+          <a class="navbar-brand d-flex align-items-center" href="../index.html">
+            <img src="../Recursos/imagenes/imagen al principio.png" alt="Logo" class="img-fluid logo-img me-2" />
+            <img src="../Recursos/imagenes/whitePearltranslation.png" alt="Nombre Scan" class="img-fluid nombre-img" />
+          </a>
+
+          <!-- Botón hamburguesa -->
+          <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <!-- Menú colapsable -->
+          <div class="collapse navbar-collapse mt-2 mt-md-0" id="navbarContent">
+            <ul class="navbar-nav flex-column flex-md-row w-100 justify-content-center align-items-center">
+              <li class="nav-item"><a class="nav-link text-white" href="../index.html">Inicio</a></li>
+              <li class="nav-item"><a class="nav-link text-white" href="../html/mangas.html">Nuestros mangas</a></li>
+              <li class="nav-item"><a class="nav-link text-white" href="#">Géneros</a></li>
+              <li class="nav-item"><a class="nav-link text-white" href="#">Contacto</a></li>
+            </ul>
+
+            <!-- Buscador -->
+            <form class="d-flex mt-3 mt-md-0 ms-md-auto w-100 w-md-50" role="search">
+              <input class="form-control border-dark" type="search" placeholder="🔍 Buscar..." />
+              <button class="btn btn-outline-light ms-2" type="submit">Buscar</button>
+            </form>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+   <!-- Nombre del manga y capítulo -->
+<div class="row justify-content-center my-4">
+  <div class="col-11 col-md-10 col-lg-8 text-center">
+    <h1 class="maspopulares" style="word-break: break-word;">
+      Kiraware Majo To Karada Ga Irekawatta Keredo, Watashi Wa Kyou Mo Genki Ni Kurashiteimasu! Capítulo 1
+    </h1>
+  </div>
+</div>
+
+<!-- Dropdown debajo del título, alineado a la izquierda dentro del ancho del título -->
+<div class="row justify-content-center" style="margin-top: -23px;">
+  <div class="col-11 col-md-10 col-lg-8 d-flex justify-content-start gap-2">
+    <!-- Primer dropdown -->
+    <div class="btn-group">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="triggerId1" data-bs-toggle="dropdown" aria-expanded="false">
+        capitulo
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="triggerId1">
+        <li><a class="dropdown-item" href="#">Action</a></li>
+      </ul>
+    </div>
+
+    <!-- Segundo dropdown -->
+    <div class="btn-group">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="triggerId2" data-bs-toggle="dropdown" aria-expanded="false">
+        Tipo de lectura
+      </button>
+      <ul class="dropdown-menu" aria-labelledby="triggerId2">
+        <li><a class="dropdown-item" href="#">Action</a></li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+ 
+
+
+    <!-- Comentarios -->
+    <div class="row justify-content-center">
+  <div class="col-12 col-md-11 col-lg-9 comment-section-custom">
+        <div class="comment-header-custom">
+          <div class="comment-count-custom">0 Comentarios</div>
+          <button class="btn access-button-custom">
+            <span class="badge text-bg-light rounded-pill me-1">1</span>Acceder <i class="fas fa-caret-down ms-1"></i>
+          </button>
+        </div>
+
+        <div class="comment-input-area-custom">
+          <div class="user-avatar-custom">CHUU PROJECT</div>
+          <textarea class="form-control comment-textarea-custom" placeholder="Sé el primero en comentar..." rows="3"></textarea>
+        </div>
+
+        <div class="d-flex flex-wrap align-items-center mb-3">
+          <div class="me-3">INICIAR SESIÓN CON</div>
+          <div class="social-login-icons-custom d-flex flex-wrap">
+            <button class="btn btn-facebook-bi"><i class="bi bi-facebook"></i></button>
+            <button class="btn btn-disqus-bi"><i class="bi bi-chat-dots-fill"></i></button>
+          </div>
+
+          <div class="or-register-custom ms-auto">
+            O REGISTRARSE CON DISQUS <i class="fas fa-question-circle"></i>
+            <input type="text" class="form-control" placeholder="Nombre" style="width: 150px;" />
+          </div>
+        </div>
+
+        <div class="comment-footer-custom">
+          <div class="comment-actions-custom">
+            <button class="btn btn-link"><i class="far fa-heart me-1"></i> 1</button>
+            <span class="text-white mx-1">•</span>
+            <button class="btn btn-link"><i class="fas fa-share-alt me-1"></i> Compartir</button>
+          </div>
+          <div class="comment-sort-custom">
+            <ul class="nav nav-pills">
+              <li class="nav-item"><a class="nav-link active" href="#">El mejor</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">El más nuevo</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">Antiguos</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-redes py-4 mt-4">
+      <div class="container text-center">
+        <h5 class="mb-3 text-light">Síguenos en nuestras redes</h5>
+        <div class="d-flex justify-content-center gap-4">
+          <a href="https://web.facebook.com/profile.php?id=61556342730848" target="_blank" class="text-decoration-none text-light fs-3">
+            <i class="bi bi-facebook"></i>
+          </a>
+          <a href="https://discord.com/invite/sJJZkrkXz6" target="_blank" class="text-decoration-none text-light fs-3">
+            <i class="bi bi-discord"></i>
+          </a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- JS -->
+  <script src="../java/scripts.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -14,6 +14,7 @@
 </head>
 <body>
   <div class="container-fluid">
+
     <!-- Encabezado -->
     <nav class="navbar navbar-expand-md row-personalizada px-3">
       <div class="container-fluid">
@@ -48,11 +49,12 @@
 
     <!-- Contenido principal -->
     <div class="row my-4 gx-0 align-items-start">
-      <!-- Imagen -->
+
+      <!-- Imagen y detalles -->
       <div class="col-12 col-md-4 d-flex flex-column align-items-center">
         <img src="../Recursos/imagenes/A30132-1775926097.webp" class="img-fluid rounded img-manga-ajustada mb-3" alt="Imagen de manga" />
-
-        <!-- Tabla de detalles debajo de la imagen -->
+        
+        <!-- Tabla de detalles -->
         <div class="w-73 px-3 py-2 rounded mx-auto" style="background-color: #2a2a2a;">
           <div class="row mb-2">
             <div class="col-4 text-light fw-bold">Autor:</div>
@@ -69,7 +71,7 @@
         </div>
       </div>
 
-      <!-- Información del manga -->
+      <!-- Descripción y capítulos -->
       <div class="col-12 col-md-7 col-manga-info">
         <div class="row">
           <!-- Título -->
@@ -88,16 +90,16 @@
             <h5 class="tituloListaCaps">Lista de capítulos</h5>
             <div class="lista-scroll">
               <ul class="list-group list-group-flush listaCap">
-                <li class="list-group-item p-0 rectangulo-item"><a href="capitulo1.html" class="enlace-cap d-block py-2 px-3">Capítulo 1</a></li>
+                <li class="list-group-item p-0 rectangulo-item"><a href="../html/vermangas.html" class="enlace-cap d-block py-2 px-3">Capítulo 1</a></li>
                 <li class="list-group-item p-0 rectangulo-item"><a href="capitulo2.html" class="enlace-cap d-block py-2 px-3">Capítulo 2</a></li>
                 <li class="list-group-item p-0 rectangulo-item"><a href="capitulo3.html" class="enlace-cap d-block py-2 px-3">Capítulo 3</a></li>
                 <li class="list-group-item p-0 rectangulo-item"><a href="#" class="enlace-cap d-block py-2 px-3">Capítulo 4</a></li>
                 <li class="list-group-item p-0 rectangulo-item"><a href="#" class="enlace-cap d-block py-2 px-3">Capítulo 5</a></li>
                 <li class="list-group-item p-0 rectangulo-item"><a href="#" class="enlace-cap d-block py-2 px-3">Capítulo 6</a></li>
                 <li class="list-group-item p-0 rectangulo-item"><a href="#" class="enlace-cap d-block py-2 px-3">Capítulo 7</a></li>
-                <li class="list-group-item p-0 rectangulo-item"><a href="#" class="enlace-cap d-block py-2 px-3">Capítulo 8</a></li>
-                <li class="list-group-item p-0 rectangulo-item"><a href="#" class="enlace-cap d-block py-2 px-3">Capítulo 9</a></li>
-                <li class="list-group-item p-0 rectangulo-item"><a href="#" class="enlace-cap d-block py-2 px-3">Capítulo 10</a></li>
+                <li class="list-group-item p-0 rectangulo-item"><a href="../html/vermangas.html" class="enlace-cap d-block py-2 px-3">Capítulo 8</a></li>
+                <li class="list-group-item p-0 rectangulo-item"><a href="../html/vermangas.html" class="enlace-cap d-block py-2 px-3">Capítulo 9</a></li>
+                <li class="list-group-item p-0 rectangulo-item"><a href="../html/vermangas.html" class="enlace-cap d-block py-2 px-3">Capítulo 10</a></li>
               </ul>
             </div>
           </div>
@@ -106,44 +108,46 @@
     </div>
 
     <!-- Comentarios -->
-    <div class="container-fluid comment-section-custom">
-      <div class="comment-header-custom">
-        <div class="comment-count-custom">0 Comentarios</div>
-        <button class="btn access-button-custom">
-          <span class="badge text-bg-light rounded-pill me-1">1</span>Acceder <i class="fas fa-caret-down ms-1"></i>
-        </button>
-      </div>
-
-      <div class="comment-input-area-custom">
-        <div class="user-avatar-custom">CHUU PROJECT</div>
-        <textarea class="form-control comment-textarea-custom" placeholder="Sé el primero en comentar..." rows="3"></textarea>
-      </div>
-
-      <div class="d-flex flex-wrap align-items-center mb-3">
-        <div class="me-3">INICIAR SESIÓN CON</div>
-        <div class="social-login-icons-custom d-flex flex-wrap">
-          <button class="btn btn-facebook-bi"><i class="bi bi-facebook"></i></button>
-          <button class="btn btn-disqus-bi"><i class="bi bi-chat-dots-fill"></i></button>
+    <div class="row justify-content-center">
+  <div class="col-12 col-md-11 col-lg-10 comment-section-custom">
+        <div class="comment-header-custom">
+          <div class="comment-count-custom">0 Comentarios</div>
+          <button class="btn access-button-custom">
+            <span class="badge text-bg-light rounded-pill me-1">1</span>Acceder <i class="fas fa-caret-down ms-1"></i>
+          </button>
         </div>
 
-        <div class="or-register-custom ms-auto">
-          O REGISTRARSE CON DISQUS <i class="fas fa-question-circle"></i>
-          <input type="text" class="form-control" placeholder="Nombre" style="width: 150px;" />
+        <div class="comment-input-area-custom">
+          <div class="user-avatar-custom">CHUU PROJECT</div>
+          <textarea class="form-control comment-textarea-custom" placeholder="Sé el primero en comentar..." rows="3"></textarea>
         </div>
-      </div>
 
-      <div class="comment-footer-custom">
-        <div class="comment-actions-custom">
-          <button class="btn btn-link"><i class="far fa-heart me-1"></i> 1</button>
-          <span class="text-white mx-1">•</span>
-          <button class="btn btn-link"><i class="fas fa-share-alt me-1"></i> Compartir</button>
+        <div class="d-flex flex-wrap align-items-center mb-3">
+          <div class="me-3">INICIAR SESIÓN CON</div>
+          <div class="social-login-icons-custom d-flex flex-wrap">
+            <button class="btn btn-facebook-bi"><i class="bi bi-facebook"></i></button>
+            <button class="btn btn-disqus-bi"><i class="bi bi-chat-dots-fill"></i></button>
+          </div>
+
+          <div class="or-register-custom ms-auto">
+            O REGISTRARSE CON DISQUS <i class="fas fa-question-circle"></i>
+            <input type="text" class="form-control" placeholder="Nombre" style="width: 150px;" />
+          </div>
         </div>
-        <div class="comment-sort-custom">
-          <ul class="nav nav-pills">
-            <li class="nav-item"><a class="nav-link active" href="#">El mejor</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">El más nuevo</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Antiguos</a></li>
-          </ul>
+
+        <div class="comment-footer-custom">
+          <div class="comment-actions-custom">
+            <button class="btn btn-link"><i class="far fa-heart me-1"></i> 1</button>
+            <span class="text-white mx-1">•</span>
+            <button class="btn btn-link"><i class="fas fa-share-alt me-1"></i> Compartir</button>
+          </div>
+          <div class="comment-sort-custom">
+            <ul class="nav nav-pills">
+              <li class="nav-item"><a class="nav-link active" href="#">El mejor</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">El más nuevo</a></li>
+              <li class="nav-item"><a class="nav-link" href="#">Antiguos</a></li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -162,6 +166,7 @@
         </div>
       </div>
     </footer>
+
   </div>
 
   <!-- Scripts -->

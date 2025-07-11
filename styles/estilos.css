@@ -418,3 +418,17 @@ body {
 .comment-sort-custom .nav-item:not(:last-child) .nav-link {
     border-right: 1px solid #444;
 }
+/* Para hacer más delgado el botón del dropdown */
+.btn-group > .btn {
+  min-width: 60px; /* Puedes ajustar este valor para hacerlo más delgado */
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  font-size: 0.8rem; /* Opcional: reduce un poco el tamaño de la letra */
+}
+
+/* Para que el menú dropdown también sea más estrecho */
+.dropdown-menu {
+  min-width: 50px !important; /* Igual que el botón, para que no sea más ancho */
+  padding: 0.25rem 0; /* Opcional, menos padding vertical */
+  font-size: 0.8rem; /* Opcional */
+}
