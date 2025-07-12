@@ -17,45 +17,76 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 const db = getDatabase(app);
 
-document.addEventListener("DOMContentLoaded", async () => {
-  const estado = document.getElementById("estadoCarga");
-  const lista = document.getElementById("lista-mangas");
+const contenedor = document.getElementById("contenedor-mangas");
+const paginacion = document.getElementById("paginacion");
+const mangasPorPagina = 6;
+let paginaActual = 1;
+let listaMangas = [];
 
-  try {
-    const snapshot = await get(ref(db, "mangas"));
-    const data = snapshot.val();
-
-    if (!data) {
-      estado.textContent = "No hay mangas.";
-      return;
-    }
-
-    Object.values(data).forEach(manga => {
-      const li = document.createElement("li");
-      li.textContent = manga.nombre || "Sin nombre";
-      lista.appendChild(li);
-    });
-
-    estado.textContent = "Mangas cargados correctamente.";
-  } catch (error) {
-    console.error("Error al leer Firebase:", error);
-    estado.textContent = "Error al cargar datos.";
+async function cargarMangas() {
+  const snapshot = await get(ref(db, 'mangas'));
+  if (snapshot.exists()) {
+    listaMangas = Object.entries(snapshot.val()); // Array [ [nombre, data], ... ]
+    renderizarPagina(paginaActual);
+    renderizarPaginacion();
+  } else {
+    contenedor.innerHTML = "<p class='text-light'>No hay mangas disponibles.</p>";
   }
-});
-document.addEventListener("DOMContentLoaded", () => {
-  // Cambiar texto del botón de Capítulo
-  document.querySelectorAll("#dropdownCapitulo + .dropdown-menu .dropdown-item").forEach(item => {
-    item.addEventListener("click", function () {
-      const boton = document.getElementById("dropdownCapitulo");
-      boton.innerText = this.textContent;
-    });
-  });
+}
 
-  // Cambiar texto del botón de Tipo de Lectura
-  document.querySelectorAll("#dropdownTipoLectura + .dropdown-menu .dropdown-item").forEach(item => {
-    item.addEventListener("click", function () {
-      const boton = document.getElementById("dropdownTipoLectura");
-      boton.innerText = this.textContent;
-    });
+function renderizarPagina(pagina) {
+  paginaActual = pagina;
+  contenedor.innerHTML = "";
+
+  const inicio = (pagina - 1) * mangasPorPagina;
+  const fin = inicio + mangasPorPagina;
+  const mangasAMostrar = listaMangas.slice(inicio, fin);
+
+  mangasAMostrar.forEach(([nombre, data]) => {
+    const tarjeta = document.createElement("div");
+    tarjeta.className = "col";
+
+    tarjeta.innerHTML = `
+      <a href="../html/infoMangas.html?manga=${encodeURIComponent(nombre)}" class="text-decoration-none text-reset">
+        <div class="card h-100">
+          <img src="${data.portada}" class="card-img-top" alt="${nombre}" />
+          <div class="card-body text-center">
+            <h5 class="card-title">${nombre}</h5>
+            <p class="card-text">Haz clic para ver más</p>
+          </div>
+        </div>
+      </a>
+    `;
+
+    contenedor.appendChild(tarjeta);
   });
-});
+}
+
+function renderizarPaginacion() {
+  paginacion.innerHTML = "";
+  const totalPaginas = Math.ceil(listaMangas.length / mangasPorPagina);
+
+  function crearBoton(texto, pagina, disabled = false, active = false) {
+    const li = document.createElement("li");
+    li.className = "page-item";
+    if (disabled) li.classList.add("disabled");
+    if (active) li.classList.add("active");
+    li.innerHTML = `<a class="page-link" href="#">${texto}</a>`;
+    li.addEventListener("click", e => {
+      e.preventDefault();
+      if (!disabled && pagina !== paginaActual) {
+        renderizarPagina(pagina);
+        renderizarPaginacion();
+      }
+    });
+    return li;
+  }
+
+  paginacion.appendChild(crearBoton("Anterior", paginaActual - 1, paginaActual === 1));
+  for (let i = 1; i <= totalPaginas; i++) {
+    paginacion.appendChild(crearBoton(i, i, false, i === paginaActual));
+  }
+  paginacion.appendChild(crearBoton("Siguiente", paginaActual + 1, paginaActual === totalPaginas));
+}
+
+document.addEventListener("DOMContentLoaded", cargarMangas);

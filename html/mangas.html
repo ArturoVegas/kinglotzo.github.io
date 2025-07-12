@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>White Pearl Translation</title>
 
   <!-- Bootstrap CSS -->
@@ -13,42 +13,43 @@
   <link rel="stylesheet" href="../styles/estilos.css" />
 </head>
 <body>
-  <div class="container-fluid">
-    <!-- Encabezado -->
-    <nav class="navbar navbar-expand-md row-personalizada px-3">
-      <div class="container-fluid">
-        <!-- Logo -->
-        <a class="navbar-brand d-flex align-items-center" href="../index.html">
-          <img src="../Recursos/imagenes/imagen al principio.png" alt="Logo" class="img-fluid logo-img me-2" />
-          <img src="../Recursos/imagenes/whitePearltranslation.png" alt="Nombre Scan" class="img-fluid nombre-img" />
-        </a>
+  <!-- Navbar sin centrar -->
+  <nav class="navbar navbar-expand-md row-personalizada px-3">
+    <div class="container-fluid">
+      <!-- Logo -->
+      <a class="navbar-brand d-flex align-items-center" href="../index.html">
+        <img src="../Recursos/imagenes/imagen al principio.png" alt="Logo" class="img-fluid logo-img me-2" />
+        <img src="../Recursos/imagenes/whitePearltranslation.png" alt="Nombre Scan" class="img-fluid nombre-img" />
+      </a>
 
-        <!-- Botón hamburguesa -->
-        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+      <!-- Botón hamburguesa -->
+      <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-        <!-- Menú colapsable -->
-        <div class="collapse navbar-collapse mt-2 mt-md-0" id="navbarContent">
-          <ul class="navbar-nav flex-column flex-md-row w-100 justify-content-center align-items-center">
-            <li class="nav-item"><a class="nav-link text-white" href="../index.html">Inicio</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="../html/mangas.html">Nuestros mangas</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="#">Géneros</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="#">Contacto</a></li>
-          </ul
+      <!-- Menú colapsable -->
+      <div class="collapse navbar-collapse mt-2 mt-md-0" id="navbarContent">
+        <ul class="navbar-nav flex-column flex-md-row w-100 justify-content-center align-items-center">
+          <li class="nav-item"><a class="nav-link text-white" href="../index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="../html/mangas.html">Nuestros mangas</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="#">Géneros</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="#">Contacto</a></li>
+        </ul>
 
-          <!-- Buscador -->
-          <form class="d-flex mt-3 mt-md-0 ms-md-auto w-100 w-md-50" role="search">
-            <input class="form-control border-dark" type="search" placeholder="🔍 Buscar..." />
-            <button class="btn btn-outline-light ms-2" type="submit">Buscar</button>
-          </form>
-        </div>
+        <!-- Buscador -->
+        <form class="d-flex mt-3 mt-md-0 ms-md-auto w-100 w-md-50" role="search">
+          <input class="form-control border-dark" type="search" placeholder="🔍 Buscar..." />
+          <button class="btn btn-outline-light ms-2" type="submit">Buscar</button>
+        </form>
       </div>
-    </nav>
+    </div>
+  </nav>
 
-    <!-- Filtros y Tarjetas -->
-    <div class="row justify-content-center align-items-start my-2">
-      <div class="col-12 col-md-6">
+  <!-- Contenedor principal centrado -->
+  <div class="contenido-centrado container-fluid d-flex flex-column align-items-center">
+    <div class="row justify-content-center align-items-start my-4 px-3 w-100" style="max-width: 1100px;">
+      <!-- Listas de Manga y Paginación -->
+      <div class="col-12 col-md-8">
         <div class="p-3 rounded">
           <h5 class="text-light mb-3">Listas de Manga</h5>
 
@@ -81,147 +82,23 @@
           </div>
 
           <!-- Tarjetas -->
-          <div class="row mt-3 row-cols-3 row-cols-sm-2 row-cols-md-3 row-cols-xl-5 g-3">
-            <!-- Tarjeta 1 -->
-            <div class="col">
-              <a href="../html/infoMangas.html" class="text-decoration-none text-reset">
-                <div class="card h-100">
-                  <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga" />
-                  <div class="card-body text-center">
-                    <h5 class="card-title">Manga 1</h5>
-                    <p class="card-text">Nueva entrega semanal</p>
-                  </div>
-                </div>
-              </a>
-            </div>
-
-            <!-- Tarjeta 2 -->
-            <div class="col">
-              <a href="../html/infoMangas.html" class="text-decoration-none text-reset">
-                <div class="card h-100">
-                  <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga" />
-                  <div class="card-body text-center">
-                    <h5 class="card-title">Manga 2</h5>
-                    <p class="card-text">Actualizado hace 2 días</p>
-                  </div>
-                </div>
-              </a>
-            </div>
-
-            <!-- Tarjetas 3 a 10 (idénticas pero con diferentes textos si se desea) -->
-            <div class="col">
-              <a href="#" class="text-decoration-none text-reset">
-                <div class="card h-100">
-                  <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga" />
-                  <div class="card-body text-center">
-                    <h5 class="card-title">Manga 3</h5>
-                    <p class="card-text">Capítulo extra disponible</p>
-                  </div>
-                </div>
-              </a>
-            </div>
-
-            <div class="col">
-              <a href="#" class="text-decoration-none text-reset">
-                <div class="card h-100">
-                  <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga" />
-                  <div class="card-body text-center">
-                    <h5 class="card-title">Manga 4</h5>
-                    <p class="card-text">¡Recién salido del horno!</p>
-                  </div>
-                </div>
-              </a>
-            </div>
-
-            <div class="col">
-              <a href="#" class="text-decoration-none text-reset">
-                <div class="card h-100">
-                  <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga" />
-                  <div class="card-body text-center">
-                    <h5 class="card-title">Manga 5</h5>
-                    <p class="card-text">Disponible ahora</p>
-                  </div>
-                </div>
-              </a>
-            </div>
-
-            <div class="col">
-              <a href="#" class="text-decoration-none text-reset">
-                <div class="card h-100">
-                  <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga" />
-                  <div class="card-body text-center">
-                    <h5 class="card-title">Manga 6</h5>
-                    <p class="card-text">Actualización sorpresa</p>
-                  </div>
-                </div>
-              </a>
-            </div>
-
-            <!-- Repite las tarjetas necesarias sin eliminar ninguna -->
-            <div class="col">
-              <a href="#" class="text-decoration-none text-reset">
-                <div class="card h-100">
-                  <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga" />
-                  <div class="card-body text-center">
-                    <h5 class="card-title">Manga 7</h5>
-                    <p class="card-text">Actualización sorpresa</p>
-                  </div>
-                </div>
-              </a>
-            </div>
-
-            <div class="col">
-              <a href="#" class="text-decoration-none text-reset">
-                <div class="card h-100">
-                  <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga" />
-                  <div class="card-body text-center">
-                    <h5 class="card-title">Manga 8</h5>
-                    <p class="card-text">Actualización sorpresa</p>
-                  </div>
-                </div>
-              </a>
-            </div>
-
-            <div class="col">
-              <a href="#" class="text-decoration-none text-reset">
-                <div class="card h-100">
-                  <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga" />
-                  <div class="card-body text-center">
-                    <h5 class="card-title">Manga 9</h5>
-                    <p class="card-text">Actualización sorpresa</p>
-                  </div>
-                </div>
-              </a>
-            </div>
-
-            <div class="col">
-              <a href="#" class="text-decoration-none text-reset">
-                <div class="card h-100">
-                  <img src="../Recursos/imagenes/A30132-1775926097.webp" class="card-img-top" alt="Manga" />
-                  <div class="card-body text-center">
-                    <h5 class="card-title">Manga 10</h5>
-                    <p class="card-text">Actualización sorpresa</p>
-                  </div>
-                </div>
-              </a>
-            </div>
+          <div id="contenedor-mangas" class="row mt-3 row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <!-- Las tarjetas se cargan dinámicamente aquí -->
           </div>
 
           <!-- Paginación -->
           <nav class="mt-4" aria-label="Paginación">
             <ul class="pagination justify-content-center">
-              <li class="page-item disabled"><a class="page-link" href="#">Anterior</a></li>
-              <li class="page-item active"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item"><a class="page-link" href="#">Siguiente</a></li>
+              <li class="page-item disabled"><a class="page-link" href="#" id="btnAnterior">Anterior</a></li>
+              <li class="page-item active"><a class="page-link" href="#" id="paginaActual">1</a></li>
+              <li class="page-item"><a class="page-link" href="#" id="btnSiguiente">Siguiente</a></li>
             </ul>
           </nav>
         </div>
       </div>
 
       <!-- Noticias -->
-      <div class="col-12 col-md-3 mt-md-0">
+      <div class="col-12 col-md-4 mt-4 mt-md-0">
         <h1 class="maspopulares text-center mb-3">Noticias</h1>
         <div id="carouselNoticias" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-inner rounded">
@@ -231,6 +108,7 @@
                 <p>¡Nuevo proyecto en camino!</p>
               </div>
             </div>
+            <!-- Agrega más items aquí si quieres -->
           </div>
           <button class="carousel-control-prev" type="button" data-bs-target="#carouselNoticias" data-bs-slide="prev">
             <span class="carousel-control-prev-icon"></span>
@@ -243,25 +121,25 @@
         </div>
       </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="footer-redes py-4 mt-4 w-100" style="max-width: 1100px;">
+      <div class="container text-center">
+        <h5 class="mb-3 text-light">Síguenos en nuestras redes</h5>
+        <div class="d-flex justify-content-center gap-4">
+          <a href="https://web.facebook.com/profile.php?id=61556342730848" target="_blank" class="text-decoration-none text-light fs-3">
+            <i class="bi bi-facebook"></i>
+          </a>
+          <a href="https://discord.com/invite/sJJZkrkXz6" target="_blank" class="text-decoration-none text-light fs-3">
+            <i class="bi bi-discord"></i>
+          </a>
+        </div>
+      </div>
+    </footer>
   </div>
 
-  <!-- Footer -->
-  <footer class="footer-redes py-4 mt-4">
-    <div class="container text-center">
-      <h5 class="mb-3 text-light">Síguenos en nuestras redes</h5>
-      <div class="d-flex justify-content-center gap-4">
-        <a href="https://web.facebook.com/profile.php?id=61556342730848" target="_blank" class="text-decoration-none text-light fs-3">
-          <i class="bi bi-facebook"></i>
-        </a>
-        <a href="https://discord.com/invite/sJJZkrkXz6" target="_blank" class="text-decoration-none text-light fs-3">
-          <i class="bi bi-discord"></i>
-        </a>
-      </div>
-    </div>
-  </footer>
-
   <!-- Scripts -->
-  <script src="../java/scripts.js"></script>
+  <script type="module" src="../java/scripts.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
