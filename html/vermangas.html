@@ -49,38 +49,45 @@
     </div>
 
    <!-- Nombre del manga y capítulo -->
-<div class="row justify-content-center my-4">
-  <div class="col-11 col-md-10 col-lg-8 text-center">
-    <h1 class="maspopulares" style="word-break: break-word;">
-      Kiraware Majo To Karada Ga Irekawatta Keredo, Watashi Wa Kyou Mo Genki Ni Kurashiteimasu! Capítulo 1
-    </h1>
+<!-- Contenedor fila para dropdowns y botones -->
+<div class="row justify-content-center my-3">
+  <div class="col-11 col-md-10 col-lg-8 d-flex justify-content-between align-items-center">
+    
+    <!-- Dropdowns izquierda -->
+    <div class="d-flex gap-2">
+      <!-- Dropdown capítulo -->
+      <div class="btn-group">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownCapitulo" data-bs-toggle="dropdown" aria-expanded="false">
+          Capítulo
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownCapitulo">
+          <li><a class="dropdown-item" href="#">Capítulo 1</a></li>
+          <li><a class="dropdown-item" href="#">Capítulo 2</a></li>
+          <li><a class="dropdown-item" href="#">Capítulo 3</a></li>
+        </ul>
+      </div>
+
+      <!-- Dropdown tipo de lectura -->
+      <div class="btn-group">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownTipoLectura" data-bs-toggle="dropdown" aria-expanded="false">
+          Tipo de lectura
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="dropdownTipoLectura">
+          <li><a class="dropdown-item" href="#">Paginada</a></li>
+          <li><a class="dropdown-item" href="#">Cascada</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Botones derecha pegados -->
+    <div class="d-flex gap-2">
+      <button id="btnAnterior" class="btn btn-outline-secondary">Anterior</button>
+      <button id="btnSiguiente" class="btn btn-outline-secondary">Siguiente</button>
+    </div>
+
   </div>
 </div>
 
-<!-- Dropdown debajo del título, alineado a la izquierda dentro del ancho del título -->
-<div class="row justify-content-center" style="margin-top: -23px;">
-  <div class="col-11 col-md-10 col-lg-8 d-flex justify-content-start gap-2">
-    <!-- Primer dropdown -->
-    <div class="btn-group">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="triggerId1" data-bs-toggle="dropdown" aria-expanded="false">
-        capitulo
-      </button>
-      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="triggerId1">
-        <li><a class="dropdown-item" href="#">Action</a></li>
-      </ul>
-    </div>
-
-    <!-- Segundo dropdown -->
-    <div class="btn-group">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="triggerId2" data-bs-toggle="dropdown" aria-expanded="false">
-        Tipo de lectura
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="triggerId2">
-        <li><a class="dropdown-item" href="#">Action</a></li>
-      </ul>
-    </div>
-  </div>
-</div>
 
  
 
@@ -147,7 +154,8 @@
   </div>
 
   <!-- JS -->
-  <script src="../java/scripts.js"></script>
+  <script type="module" src="../java/scripts.js"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

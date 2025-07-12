@@ -42,3 +42,20 @@ document.addEventListener("DOMContentLoaded", async () => {
     estado.textContent = "Error al cargar datos.";
   }
 });
+document.addEventListener("DOMContentLoaded", () => {
+  // Cambiar texto del botón de Capítulo
+  document.querySelectorAll("#dropdownCapitulo + .dropdown-menu .dropdown-item").forEach(item => {
+    item.addEventListener("click", function () {
+      const boton = document.getElementById("dropdownCapitulo");
+      boton.innerText = this.textContent;
+    });
+  });
+
+  // Cambiar texto del botón de Tipo de Lectura
+  document.querySelectorAll("#dropdownTipoLectura + .dropdown-menu .dropdown-item").forEach(item => {
+    item.addEventListener("click", function () {
+      const boton = document.getElementById("dropdownTipoLectura");
+      boton.innerText = this.textContent;
+    });
+  });
+});

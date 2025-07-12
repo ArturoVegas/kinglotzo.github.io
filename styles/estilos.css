@@ -420,15 +420,56 @@ body {
 }
 /* Para hacer más delgado el botón del dropdown */
 .btn-group > .btn {
-  min-width: 60px; /* Puedes ajustar este valor para hacerlo más delgado */
+  min-width: 50px; /* Puedes ajustar este valor para hacerlo más delgado */
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-  font-size: 0.8rem; /* Opcional: reduce un poco el tamaño de la letra */
+  font-size: 0.7rem; /* Opcional: reduce un poco el tamaño de la letra */
 }
 
 /* Para que el menú dropdown también sea más estrecho */
 .dropdown-menu {
   min-width: 50px !important; /* Igual que el botón, para que no sea más ancho */
   padding: 0.25rem 0; /* Opcional, menos padding vertical */
-  font-size: 0.8rem; /* Opcional */
+  font-size: 0.7rem; /* Opcional */
+}
+#btnAnterior, #btnSiguiente {
+  min-width: 50px;       /* Igual que dropdown */
+  padding-left: 0.5rem;  /* Igual que dropdown */
+  padding-right: 0.5rem; /* Igual que dropdown */
+  font-size: 0.7rem;     /* Igual que dropdown */
+  height: 38px;          /* Altura estándar botón Bootstrap */
+  white-space: nowrap;   /* No romper texto */
+}
+/* Color para los dropdown */
+.btn-group > .btn {
+  background-color: #1E90FF;  /* Fondo azul celeste */
+  color: white;               /* Texto blanco */
+  border: 1px solid #1E90FF; /* Borde azul */
+}
+
+.btn-group > .btn:hover,
+.btn-group > .btn:focus {
+  background-color: #187bcd;  /* Azul un poco más oscuro al hover/focus */
+  border-color: #187bcd;
+  color: white;
+}
+
+/* Color para los botones Anterior y Siguiente */
+#btnAnterior, #btnSiguiente {
+  background-color: #1E90FF;  /* Fondo azul celeste */
+  color: white;               /* Texto blanco */
+  border: 1px solid #1E90FF; /* Borde azul */
+  min-width: 50px;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  font-size: 0.7rem;
+  height: 38px;
+  white-space: nowrap;
+}
+
+#btnAnterior:hover, #btnSiguiente:hover,
+#btnAnterior:focus, #btnSiguiente:focus {
+  background-color: #187bcd;  /* Azul más oscuro al hover/focus */
+  border-color: #187bcd;
+  color: white;
 }
