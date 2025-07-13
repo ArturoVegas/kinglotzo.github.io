@@ -1,97 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>White Pearl Translation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Leer Capítulo - White Pearl Translation</title>
 
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
-
-  <!-- CSS personalizado -->
   <link rel="stylesheet" href="../styles/estilos.css" />
 </head>
-<body>
-  <div class="container-fluid">
-    <div class="row">
-      <!-- Encabezado -->
-       <nav class="navbar navbar-expand-md row-personalizada px-3">
-  <div class="container-fluid">
-    <!-- Logo -->
-    <a class="navbar-brand d-flex align-items-center" href="index.html">
-      <img src="../Recursos/imagenes/imagen al principio.png" alt="Logo" class="img-fluid logo-img me-2" />
-      <img src="../Recursos/imagenes/whitePearltranslation.png" alt="Nombre Scan" class="img-fluid nombre-img" />
-    </a>
+<body class="bg-dark text-white">
+  <div class="container py-4">
 
-    <!-- Botón hamburguesa -->
-    <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <!-- Menú colapsable -->
-    <div class="collapse navbar-collapse mt-2 mt-md-0" id="navbarContent">
-      <ul class="navbar-nav flex-column flex-md-row w-100 justify-content-center justify-content-md-center align-items-center align-items-md-center">
-
-        <li class="nav-item"><a class="nav-link text-white" href="../index.html">Inicio</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="../html/mangas.html">Nuestros mangas</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="#">Géneros</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="#">Contacto</a></li>
-      </ul>
-
-      <!-- Buscador + botón inicio sesión -->
-<form class="d-flex mt-3 mt-md-0 ms-md-auto w-100 w-md-50 align-items-center" role="search">
-  <input class="form-control border-dark" type="search" placeholder="🔍 Buscar..." />
-  <button class="btn btn-outline-light ms-2" type="submit">Buscar</button>
- <a href="../html/inicioSesion.html" class="btn btn-outline-light ms-2 d-flex align-items-center justify-content-center" style="padding: 0.375rem 0.75rem; height: 38px; font-size: 0.8rem;">Iniciar sesión</a>
-
-</form>
-
-    </div>
-  </div>
-</nav>
-
-    </div>
-
-    <!-- Nombre del manga y capítulo -->
-    <div class="row justify-content-center my-3">
-      <div class="col-11 col-md-10 col-lg-8 d-flex justify-content-between align-items-center">
-
-        <!-- Dropdowns izquierda -->
-        <div class="d-flex gap-2">
-          <!-- Dropdown capítulo -->
-          <div class="btn-group">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownCapitulo" data-bs-toggle="dropdown" aria-expanded="false">
-              Capítulo
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownCapitulo">
-              <li><a class="dropdown-item" href="#">Capítulo 1</a></li>
-              <li><a class="dropdown-item" href="#">Capítulo 2</a></li>
-              <li><a class="dropdown-item" href="#">Capítulo 3</a></li>
-            </ul>
-          </div>
-
-          <!-- Dropdown tipo de lectura -->
-          <div class="btn-group">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownTipoLectura" data-bs-toggle="dropdown" aria-expanded="false">
-              Tipo de lectura
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownTipoLectura">
-              <li><a class="dropdown-item" href="#">Paginada</a></li>
-              <li><a class="dropdown-item" href="#">Cascada</a></li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Botones derecha pegados -->
-        <div class="d-flex gap-2">
-          <button id="btnAnterior" class="btn btn-outline-secondary">Anterior</button>
-          <button id="btnSiguiente" class="btn btn-outline-secondary">Siguiente</button>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-md row-personalizada px-3 mb-4">
+      <div class="container-fluid">
+        <a class="navbar-brand d-flex align-items-center" href="../index.html">
+          <img src="../Recursos/imagenes/imagen al principio.png" alt="Logo" class="img-fluid logo-img me-2" />
+          <img src="../Recursos/imagenes/whitePearltranslation.png" alt="Nombre Scan" class="img-fluid nombre-img" />
+        </a>
+        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse mt-2 mt-md-0" id="navbarContent">
+          <ul class="navbar-nav flex-column flex-md-row w-100 justify-content-center align-items-center">
+            <li class="nav-item"><a class="nav-link text-white" href="../index.html">Inicio</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="../html/mangas.html">Nuestros mangas</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="#">Géneros</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="#">Contacto</a></li>
+          </ul>
+          <form class="d-flex mt-3 mt-md-0 ms-md-auto w-100 w-md-50 align-items-center" role="search">
+            <input class="form-control border-dark" type="search" placeholder="🔍 Buscar..." />
+            <button class="btn btn-outline-light ms-2" type="submit">Buscar</button>
+            <a href="../html/inicioSesion.html" class="btn btn-outline-light ms-2 d-flex align-items-center justify-content-center" style="padding: 0.375rem 0.75rem; height: 38px; font-size: 0.8rem;">Iniciar sesión</a>
+          </form>
         </div>
       </div>
-    </div>
+    </nav>
 
-    <!-- Comentarios -->
+    <h2 id="titulo-capitulo" class="text-center mb-4">Cargando capítulo...</h2>
+    <div id="imagenes-capitulo" class="d-flex flex-column align-items-center gap-4"></div>
+
+  </div>
+  <!-- Comentarios (sin modificar) -->
     <div class="row justify-content-center">
       <div class="col-12 col-md-11 col-lg-9 comment-section-custom">
         <div class="comment-header-custom">
@@ -136,23 +88,7 @@
       </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer-redes py-4 mt-4">
-      <div class="container text-center">
-        <h5 class="mb-3 text-light">Síguenos en nuestras redes</h5>
-        <div class="d-flex justify-content-center gap-4">
-          <a href="https://web.facebook.com/profile.php?id=61556342730848" target="_blank" class="text-decoration-none text-light fs-3">
-            <i class="bi bi-facebook"></i>
-          </a>
-          <a href="https://discord.com/invite/sJJZkrkXz6" target="_blank" class="text-decoration-none text-light fs-3">
-            <i class="bi bi-discord"></i>
-          </a>
-        </div>
-      </div>
-    </footer>
-  </div>
-
-  <!-- JS -->
+  <!-- Scripts -->
   <script type="module" src="../java/scripts.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 </body>

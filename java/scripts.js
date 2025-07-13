@@ -192,3 +192,47 @@ document.addEventListener("DOMContentLoaded", () => {
   cargarMangas();
   cargarInfoManga();
 });
+const params = new URLSearchParams(window.location.search);
+const manga = params.get("manga");
+const capParam = params.get("cap");
+const capIndex = capParam ? parseInt(capParam, 10) - 1 : 0;
+
+const tituloCap = document.getElementById("titulo-capitulo");
+const imagenesContainer = document.getElementById("imagenes-capitulo");
+
+if (!manga || isNaN(capIndex) || capIndex < 0) {
+  tituloCap.textContent = "Parámetros inválidos";
+  imagenesContainer.innerHTML = "<p>No se pudo cargar el capítulo porque faltan parámetros válidos en la URL.</p>";
+  throw new Error("Parámetros inválidos en URL");
+} else {
+  tituloCap.textContent = `${manga} - Capítulo ${capIndex + 1}`;
+}
+
+async function cargarCapitulo() {
+  try {
+    const capRef = ref(db, `mangas/${manga}/capitulos/${capIndex}`);
+    const snapshot = await get(capRef);
+
+    if (!snapshot.exists()) {
+      imagenesContainer.innerHTML = `<p>No se encontraron imágenes para este capítulo.</p>`;
+      return;
+    }
+
+    const imagenes = snapshot.val();
+
+    imagenesContainer.innerHTML = "";
+
+    imagenes.forEach(url => {
+      const img = document.createElement("img");
+      img.src = url;
+      img.alt = `Página del capítulo ${capIndex + 1} de ${manga}`;
+      img.className = "img-fluid rounded shadow";
+      imagenesContainer.appendChild(img);
+    });
+  } catch (error) {
+    console.error("Error cargando capítulo:", error);
+    imagenesContainer.innerHTML = "<p>Error al cargar las imágenes del capítulo.</p>";
+  }
+}
+
+cargarCapitulo();
