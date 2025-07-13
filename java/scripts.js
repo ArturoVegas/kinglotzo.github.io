@@ -1,4 +1,5 @@
-// scripts.js (unificado para mangas.html e infoMangas.html)
+// scripts.js (unificado para mangas.html, infoMangas.html y vermangas.html)
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
 import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
 
@@ -25,11 +26,11 @@ let listaMangas = [];
 let paginaActual = 1;
 
 function getMangasPorPagina() {
-  return window.innerWidth < 768 ? 6 : 12; // 6 en móvil, 12 en desktop
+  return window.innerWidth < 768 ? 6 : 12;
 }
 
 function renderizarPagina(pagina) {
-  if (!contenedor) return; // Si no existe el contenedor (no estamos en mangas.html), salimos
+  if (!contenedor) return;
 
   contenedor.innerHTML = "";
 
@@ -40,7 +41,7 @@ function renderizarPagina(pagina) {
 
   mangasAMostrar.forEach(([nombre, data]) => {
     const tarjeta = document.createElement("div");
-    tarjeta.className = window.innerWidth < 768 ? "col-6" : "col-2"; // 2 por fila móvil, 6 por fila desktop
+    tarjeta.className = window.innerWidth < 768 ? "col-6" : "col-2";
 
     tarjeta.innerHTML = `
       <a href="../html/infoMangas.html?manga=${encodeURIComponent(nombre)}" class="text-decoration-none text-reset">
@@ -59,7 +60,7 @@ function renderizarPagina(pagina) {
 }
 
 function renderizarPaginacion() {
-  if (!paginacion) return; // Si no existe la paginación (no estamos en mangas.html), salimos
+  if (!paginacion) return;
 
   paginacion.innerHTML = "";
 
@@ -91,16 +92,13 @@ function renderizarPaginacion() {
 }
 
 async function cargarMangas() {
-  if (!contenedor) return; // No estamos en mangas.html, no cargamos
+  if (!contenedor) return;
 
   try {
     const snapshot = await get(ref(db, 'mangas'));
     if (snapshot.exists()) {
       listaMangas = Object.entries(snapshot.val());
-
-      // Ordenar alfabéticamente
       listaMangas.sort((a, b) => a[0].localeCompare(b[0]));
-
       paginaActual = 1;
       renderizarPagina(paginaActual);
       renderizarPaginacion();
@@ -113,7 +111,6 @@ async function cargarMangas() {
   }
 }
 
-// Al cambiar tamaño ventana, actualizamos vista paginada si estamos en mangas.html
 window.addEventListener('resize', () => {
   if (!contenedor) return;
   const mangasPorPagina = getMangasPorPagina();
@@ -131,7 +128,6 @@ function obtenerNombreMangaDesdeURL() {
 }
 
 async function cargarInfoManga() {
-  // Solo cargar si estamos en infoMangas.html (detectamos por la existencia de id "manga-portada")
   const portadaEl = document.getElementById("manga-portada");
   if (!portadaEl) return;
 
@@ -162,14 +158,15 @@ async function cargarInfoManga() {
       const lista = document.getElementById("lista-capitulos");
       if (lista) {
         lista.innerHTML = "";
-        if (Array.isArray(data.capitulos)) {
-          data.capitulos.forEach((capitulo, index) => {
+        if (typeof data.capitulos === "object" && data.capitulos !== null) {
+          const clavesOrdenadas = Object.keys(data.capitulos).sort();
+          clavesOrdenadas.forEach(clave => {
             const li = document.createElement("li");
             li.className = "list-group-item p-0 rectangulo-item";
             li.innerHTML = `
-              <a href="../html/vermangas.html?manga=${encodeURIComponent(nombreManga)}&cap=${index + 1}" 
+              <a href="../html/vermangas.html?manga=${encodeURIComponent(nombreManga)}&cap=${encodeURIComponent(clave)}"
                  class="enlace-cap d-block py-2 px-3">
-                Capítulo ${index + 1}
+                Capítulo ${clave}
               </a>`;
             lista.appendChild(li);
           });
@@ -177,7 +174,6 @@ async function cargarInfoManga() {
           lista.innerHTML = `<li class="list-group-item text-light">No hay capítulos disponibles.</li>`;
         }
       }
-
     } else {
       alert("Manga no encontrado.");
     }
@@ -186,53 +182,56 @@ async function cargarInfoManga() {
   }
 }
 
-// --------------- Evento DOMContentLoaded ---------------
+// --------------- Código para vermangas.html ---------------
+
+const params = new URLSearchParams(window.location.search);
+const manga = params.get("manga");
+const capKey = params.get("cap");
+
+const tituloCap = document.getElementById("titulo-capitulo");
+const imagenesContainer = document.getElementById("imagenes-capitulo");
+
+if (tituloCap && imagenesContainer) {
+  if (!manga || !capKey) {
+    tituloCap.textContent = "Parámetros inválidos";
+    imagenesContainer.innerHTML = "<p>No se pudo cargar el capítulo porque faltan parámetros válidos en la URL.</p>";
+    throw new Error("Parámetros inválidos en URL");
+  } else {
+    tituloCap.textContent = `${manga} - Capítulo ${capKey}`;
+  }
+
+  async function cargarCapitulo() {
+    try {
+      const capRef = ref(db, `mangas/${manga}/capitulos/${capKey}`);
+      const snapshot = await get(capRef);
+
+      if (!snapshot.exists()) {
+        imagenesContainer.innerHTML = `<p>No se encontraron imágenes para este capítulo.</p>`;
+        return;
+      }
+
+      const imagenes = snapshot.val();
+      imagenesContainer.innerHTML = "";
+
+      imagenes.forEach(url => {
+        const img = document.createElement("img");
+        img.src = url;
+        img.alt = `Página del capítulo ${capKey} de ${manga}`;
+        img.className = "img-fluid rounded shadow";
+        imagenesContainer.appendChild(img);
+      });
+    } catch (error) {
+      console.error("Error cargando capítulo:", error);
+      imagenesContainer.innerHTML = "<p>Error al cargar las imágenes del capítulo.</p>";
+    }
+  }
+
+  cargarCapitulo();
+}
+
+// --------------- Evento de carga general ---------------
 
 document.addEventListener("DOMContentLoaded", () => {
   cargarMangas();
   cargarInfoManga();
 });
-const params = new URLSearchParams(window.location.search);
-const manga = params.get("manga");
-const capParam = params.get("cap");
-const capIndex = capParam ? parseInt(capParam, 10) - 1 : 0;
-
-const tituloCap = document.getElementById("titulo-capitulo");
-const imagenesContainer = document.getElementById("imagenes-capitulo");
-
-if (!manga || isNaN(capIndex) || capIndex < 0) {
-  tituloCap.textContent = "Parámetros inválidos";
-  imagenesContainer.innerHTML = "<p>No se pudo cargar el capítulo porque faltan parámetros válidos en la URL.</p>";
-  throw new Error("Parámetros inválidos en URL");
-} else {
-  tituloCap.textContent = `${manga} - Capítulo ${capIndex + 1}`;
-}
-
-async function cargarCapitulo() {
-  try {
-    const capRef = ref(db, `mangas/${manga}/capitulos/${capIndex}`);
-    const snapshot = await get(capRef);
-
-    if (!snapshot.exists()) {
-      imagenesContainer.innerHTML = `<p>No se encontraron imágenes para este capítulo.</p>`;
-      return;
-    }
-
-    const imagenes = snapshot.val();
-
-    imagenesContainer.innerHTML = "";
-
-    imagenes.forEach(url => {
-      const img = document.createElement("img");
-      img.src = url;
-      img.alt = `Página del capítulo ${capIndex + 1} de ${manga}`;
-      img.className = "img-fluid rounded shadow";
-      imagenesContainer.appendChild(img);
-    });
-  } catch (error) {
-    console.error("Error cargando capítulo:", error);
-    imagenesContainer.innerHTML = "<p>Error al cargar las imágenes del capítulo.</p>";
-  }
-}
-
-cargarCapitulo();

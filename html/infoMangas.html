@@ -13,31 +13,25 @@
 <body>
   <div class="container-fluid">
 
-    <!-- Encabezado -->
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-md row-personalizada px-3">
       <div class="container-fluid">
-        <!-- Logo -->
         <a class="navbar-brand d-flex align-items-center" href="../index.html">
           <img src="../Recursos/imagenes/imagen al principio.png" alt="Logo" class="img-fluid logo-img me-2" />
           <img src="../Recursos/imagenes/whitePearltranslation.png" alt="Nombre Scan" class="img-fluid nombre-img" />
         </a>
-
-        <!-- Botón hamburguesa -->
         <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
           <span class="navbar-toggler-icon"></span>
         </button>
 
-        <!-- Menú colapsable -->
         <div class="collapse navbar-collapse mt-2 mt-md-0" id="navbarContent">
           <ul class="navbar-nav flex-column flex-md-row w-100 justify-content-center align-items-center">
-
             <li class="nav-item"><a class="nav-link text-white" href="../index.html">Inicio</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="../html/mangas.html">Nuestros mangas</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="#">Géneros</a></li>
             <li class="nav-item"><a class="nav-link text-white" href="#">Contacto</a></li>
           </ul>
 
-          <!-- Buscador + botón inicio sesión -->
           <form class="d-flex mt-3 mt-md-0 ms-md-auto w-100 w-md-50 align-items-center" role="search">
             <input class="form-control border-dark" type="search" placeholder="🔍 Buscar..." />
             <button class="btn btn-outline-light ms-2" type="submit">Buscar</button>
@@ -49,49 +43,25 @@
 
     <!-- Contenido principal -->
     <div class="row my-4 gx-0 align-items-start">
-      <!-- Imagen y detalles -->
+      <!-- Portada y detalles -->
       <div class="col-12 col-md-4 d-flex flex-column align-items-center">
         <img id="manga-portada" class="img-fluid rounded img-manga-ajustada mb-3" alt="Imagen del manga" />
-
         <div class="w-73 px-3 py-2 rounded mx-auto" style="background-color: #2a2a2a;">
-          <div class="row mb-2">
-            <div class="col-4 text-light fw-bold">Autor:</div>
-            <div class="col-8 text-light" id="manga-autor">-</div>
-          </div>
-          <div class="row mb-2">
-            <div class="col-4 text-light fw-bold">Géneros:</div>
-            <div class="col-8 text-light" id="manga-genero">-</div>
-          </div>
-          <div class="row mb-2">
-            <div class="col-4 text-light fw-bold">Estado:</div>
-            <div class="col-8 text-light" id="manga-estado">-</div>
-          </div>
-          <div class="row mb-2">
-            <div class="col-4 text-light fw-bold">Fecha lanzamiento:</div>
-            <div class="col-8 text-light" id="manga-fecha">-</div>
-          </div>
-          <div class="row mb-2">
-            <div class="col-4 text-light fw-bold">Frecuencia:</div>
-            <div class="col-8 text-light" id="manga-frecuencia">-</div>
-          </div>
-          <div class="row mb-2">
-            <div class="col-4 text-light fw-bold">Editorial:</div>
-            <div class="col-8 text-light" id="manga-editorial">-</div>
-          </div>
-          <div class="row">
-            <div class="col-4 text-light fw-bold">Volúmenes:</div>
-            <div class="col-8 text-light" id="manga-volumenes">-</div>
-          </div>
+          <div class="row mb-2"><div class="col-4 text-light fw-bold">Autor:</div><div class="col-8 text-light" id="manga-autor">-</div></div>
+          <div class="row mb-2"><div class="col-4 text-light fw-bold">Géneros:</div><div class="col-8 text-light" id="manga-genero">-</div></div>
+          <div class="row mb-2"><div class="col-4 text-light fw-bold">Estado:</div><div class="col-8 text-light" id="manga-estado">-</div></div>
+          <div class="row mb-2"><div class="col-4 text-light fw-bold">Fecha lanzamiento:</div><div class="col-8 text-light" id="manga-fecha">-</div></div>
+          <div class="row mb-2"><div class="col-4 text-light fw-bold">Frecuencia:</div><div class="col-8 text-light" id="manga-frecuencia">-</div></div>
+          <div class="row mb-2"><div class="col-4 text-light fw-bold">Editorial:</div><div class="col-8 text-light" id="manga-editorial">-</div></div>
+          <div class="row"><div class="col-4 text-light fw-bold">Volúmenes:</div><div class="col-8 text-light" id="manga-volumenes">-</div></div>
         </div>
       </div>
 
-      <!-- Descripción y capítulos -->
+      <!-- Sinopsis y capítulos -->
       <div class="col-12 col-md-7 col-manga-info">
         <div class="row">
           <h5 id="manga-titulo" class="tituloMangaDescripcion mt-2">Cargando título...</h5>
-
           <p id="manga-sinopsis" class="sinopsis">Cargando sinopsis...</p>
-
           <div class="row">
             <h5 class="tituloListaCaps">Lista de capítulos</h5>
             <div class="lista-scroll">
@@ -104,34 +74,31 @@
       </div>
     </div>
 
-    <!-- Comentarios (sin modificar) -->
+    <!-- Comentarios -->
     <div class="row justify-content-center">
       <div class="col-12 col-md-11 col-lg-9 comment-section-custom">
+        <!-- Comentarios simulados -->
         <div class="comment-header-custom">
           <div class="comment-count-custom">0 Comentarios</div>
           <button class="btn access-button-custom">
             <span class="badge text-bg-light rounded-pill me-1">1</span>Acceder <i class="fas fa-caret-down ms-1"></i>
           </button>
         </div>
-
         <div class="comment-input-area-custom">
           <div class="user-avatar-custom">CHUU PROJECT</div>
           <textarea class="form-control comment-textarea-custom" placeholder="Sé el primero en comentar..." rows="3"></textarea>
         </div>
-
         <div class="d-flex flex-wrap align-items-center mb-3">
           <div class="me-3">INICIAR SESIÓN CON</div>
           <div class="social-login-icons-custom d-flex flex-wrap">
             <button class="btn btn-facebook-bi"><i class="bi bi-facebook"></i></button>
             <button class="btn btn-disqus-bi"><i class="bi bi-chat-dots-fill"></i></button>
           </div>
-
           <div class="or-register-custom ms-auto">
             O REGISTRARSE CON DISQUS <i class="fas fa-question-circle"></i>
             <input type="text" class="form-control" placeholder="Nombre" style="width: 150px;" />
           </div>
         </div>
-
         <div class="comment-footer-custom">
           <div class="comment-actions-custom">
             <button class="btn btn-link"><i class="far fa-heart me-1"></i> 1</button>
@@ -154,12 +121,8 @@
       <div class="container text-center">
         <h5 class="mb-3 text-light">Síguenos en nuestras redes</h5>
         <div class="d-flex justify-content-center gap-4">
-          <a href="https://web.facebook.com/profile.php?id=61556342730848" target="_blank" class="text-decoration-none text-light fs-3">
-            <i class="bi bi-facebook"></i>
-          </a>
-          <a href="https://discord.com/invite/sJJZkrkXz6" target="_blank" class="text-decoration-none text-light fs-3">
-            <i class="bi bi-discord"></i>
-          </a>
+          <a href="https://web.facebook.com/profile.php?id=61556342730848" target="_blank" class="text-decoration-none text-light fs-3"><i class="bi bi-facebook"></i></a>
+          <a href="https://discord.com/invite/sJJZkrkXz6" target="_blank" class="text-decoration-none text-light fs-3"><i class="bi bi-discord"></i></a>
         </div>
       </div>
     </footer>
