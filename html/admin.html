@@ -89,26 +89,37 @@
   </form>
 </div>
 
-    <!-- Sección: Subir Capítulo -->
-    <div id="subirCapituloSection" class="d-none">
-      <h3>Subir Capítulo</h3>
-      <form id="formSubirCapitulo">
-        <div class="mb-3">
-          <label for="mangaSeleccionado" class="form-label">Nombre del manga</label>
-          <input type="text" class="form-control" id="mangaSeleccionado" required />
-        </div>
-        <div class="mb-3">
-          <label for="numeroCapitulo" class="form-label">Número de capítulo</label>
-          <input type="number" class="form-control" id="numeroCapitulo" required />
-        </div>
-        <div class="mb-3">
-          <label for="imagenesCapitulo" class="form-label">Imágenes del capítulo (URLs separadas por coma)</label>
-          <textarea class="form-control" id="imagenesCapitulo" rows="3" required></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Subir Capítulo</button>
-      </form>
+ <!-- Sección: Subir Capítulo -->
+<div id="subirCapituloSection" class="d-none">
+  <h3>Subir Capítulo</h3>
+  <form id="formSubirCapitulo">
+    <!-- Input con datalist -->
+    <div class="mb-3">
+      <label for="mangaSeleccionado" class="form-label">Nombre del manga</label>
+      <input list="listaMangas" class="form-control" id="mangaSeleccionado" required />
+      <datalist id="listaMangas"></datalist>
     </div>
-  </div>
+
+    <div id="capitulosExistentes" class="mb-3 text-info"></div>
+
+    <div class="mb-3">
+      <label for="numeroCapitulo" class="form-label">Número de capítulo</label>
+      <input type="number" class="form-control" id="numeroCapitulo" required />
+    </div>
+
+    <div class="mb-3">
+      <label for="imagenesCapitulo" class="form-label">Imágenes del capítulo</label>
+      <input type="file" class="form-control" id="imagenesCapitulo" multiple required accept="image/*" />
+    </div>
+
+    <div class="mb-3">
+      <label for="rutaCloudinary" class="form-label">Ruta en Cloudinary (opcional)</label>
+      <input type="text" class="form-control" id="rutaCloudinary" placeholder="Ej: mangas/nombreManga/cap1" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Subir Capítulo</button>
+  </form>
+</div>
 
   <!-- JavaScript -->
   <script type="module" src="../java/autententicado.js"></script>
