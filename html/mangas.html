@@ -13,21 +13,16 @@
   <link rel="stylesheet" href="../styles/estilos.css" />
 </head>
 <body>
-  <!-- Navbar sin centrar -->
+  <!-- Navbar -->
   <nav class="navbar navbar-expand-md row-personalizada px-3">
     <div class="container-fluid">
-      <!-- Logo -->
       <a class="navbar-brand d-flex align-items-center" href="../index.html">
         <img src="../Recursos/imagenes/imagen al principio.png" alt="Logo" class="img-fluid logo-img me-2" />
         <img src="../Recursos/imagenes/whitePearltranslation.png" alt="Nombre Scan" class="img-fluid nombre-img" />
       </a>
-
-      <!-- Botón hamburguesa -->
       <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
         <span class="navbar-toggler-icon"></span>
       </button>
-
-      <!-- Menú colapsable -->
       <div class="collapse navbar-collapse mt-2 mt-md-0" id="navbarContent">
         <ul class="navbar-nav flex-column flex-md-row w-100 justify-content-center align-items-center">
           <li class="nav-item"><a class="nav-link text-white" href="../index.html">Inicio</a></li>
@@ -35,21 +30,22 @@
           <li class="nav-item"><a class="nav-link text-white" href="#">Géneros</a></li>
           <li class="nav-item"><a class="nav-link text-white" href="#">Contacto</a></li>
         </ul>
+        <form class="d-flex mt-3 mt-md-0 ms-md-auto w-100 w-md-50 align-items-center" role="search">
+  <input class="form-control border-dark" type="search" placeholder="🔍 Buscar..." />
+  <button class="btn btn-outline-light ms-2" type="submit">Buscar</button>
+ <a href="../html/inicioSesion.html" class="btn btn-outline-light ms-2 d-flex align-items-center justify-content-center" style="padding: 0.375rem 0.75rem; height: 38px; font-size: 0.8rem;">Iniciar sesión</a>
 
-        <!-- Buscador -->
-        <form class="d-flex mt-3 mt-md-0 ms-md-auto w-100 w-md-50" role="search">
-          <input class="form-control border-dark" type="search" placeholder="🔍 Buscar..." />
-          <button class="btn btn-outline-light ms-2" type="submit">Buscar</button>
         </form>
       </div>
     </div>
   </nav>
 
-  <!-- Contenedor principal centrado -->
-  <div class="contenido-centrado container-fluid d-flex flex-column align-items-center">
-    <div class="row justify-content-center align-items-start my-4 px-3 w-100" style="max-width: 1100px;">
-      <!-- Listas de Manga y Paginación -->
-      <div class="col-12 col-md-8">
+  <!-- Contenido principal -->
+  <div class="container-fluid d-flex flex-column align-items-center">
+    <div class="row justify-content-center align-items-start my-4 w-100" style="max-width: 1140px;">
+
+      <!-- Manga Listas -->
+      <div class="col-12 col-lg-8">
         <div class="p-3 rounded">
           <h5 class="text-light mb-3">Listas de Manga</h5>
 
@@ -82,8 +78,8 @@
           </div>
 
           <!-- Tarjetas -->
-          <div id="contenedor-mangas" class="row mt-3 row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            <!-- Las tarjetas se cargan dinámicamente aquí -->
+          <div id="contenedor-mangas" class="row mt-4 g-2 row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6">
+            <!-- Tarjetas dinámicas aquí -->
           </div>
 
           <!-- Paginación -->
@@ -98,7 +94,7 @@
       </div>
 
       <!-- Noticias -->
-      <div class="col-12 col-md-4 mt-4 mt-md-0">
+      <div class="col-12 col-lg-4 mb-4 mb-lg-0">
         <h1 class="maspopulares text-center mb-3">Noticias</h1>
         <div id="carouselNoticias" class="carousel slide" data-bs-ride="carousel">
           <div class="carousel-inner rounded">
@@ -108,7 +104,7 @@
                 <p>¡Nuevo proyecto en camino!</p>
               </div>
             </div>
-            <!-- Agrega más items aquí si quieres -->
+            <!-- Más items si quieres -->
           </div>
           <button class="carousel-control-prev" type="button" data-bs-target="#carouselNoticias" data-bs-slide="prev">
             <span class="carousel-control-prev-icon"></span>
@@ -123,7 +119,7 @@
     </div>
 
     <!-- Footer -->
-    <footer class="footer-redes py-4 mt-4 w-100" style="max-width: 1100px;">
+    <footer class="footer-redes py-4 mt-4 w-100" style="max-width: 1140px;">
       <div class="container text-center">
         <h5 class="mb-3 text-light">Síguenos en nuestras redes</h5>
         <div class="d-flex justify-content-center gap-4">

@@ -1,7 +1,9 @@
+/* Aplica box-sizing a todos los elementos para que padding y border se incluyan en el tamaño total */
 * {
   box-sizing: border-box;
 }
 
+/* Estilos generales del body: fondo oscuro, sin margen/padding, sin scroll horizontal */
 body {
   background-color: rgb(30, 26, 26);
   background-size: cover;
@@ -13,6 +15,7 @@ body {
   overflow-x: hidden;
 }
 
+/* Navbar personalizada con fondo azul oscuro */
 .row-personalizada {
   background-color: #054283;
   color: white;
@@ -20,39 +23,47 @@ body {
   position: relative;
 }
 
+/* Logo principal - tamaño máximo 80px */
 .logo-img {
   max-width: 80px;
   height: auto;
 }
 
+/* Imagen nombre scan - tamaño máximo 100px, manteniendo proporción */
 .nombre-img {
   max-width: 100px;
   height: auto;
   object-fit: contain;
 }
 
+/* Ajustes para móviles (pantallas ≤ 576px) */
 @media (max-width: 576px) {
   .logo-img {
-    max-width: 60px;
+    max-width: 60px; /* Logo más pequeño */
   }
 
   .nombre-img {
-    max-width: 140px;
+    max-width: 140px; /* Nombre más ancho para mejor visibilidad */
   }
 }
 
+/* Botón toggle del navbar con margen automático a la izquierda */
 .navbar-toggler {
   margin-left: auto;
 }
+
+/* Links del navbar en color blanco */
 .navbar-nav .nav-link {
   color: white !important;
 }
 
+/* Links del navbar al pasar el cursor o activos */
 .navbar-nav .nav-link:hover,
 .navbar-nav .nav-link.active {
   color: #ffffff !important;
 }
 
+/* En pantallas pequeñas, el navbar cambia el justificado a flex-start */
 @media (max-width: 767.98px) {
   #navbarContent ul.navbar-nav {
     justify-content: flex-start !important;
@@ -60,38 +71,44 @@ body {
   }
 }
 
+/* Wrapper para un carrusel con ancho completo y máximo alto */
 #carouselWrapper {
   width: 100%;
   max-height: 800px;
   overflow: hidden;
 }
 
+/* Carrusel principal con altura fija aumentada a 400px */
 #carouselExampleCaptions {
   width: 100%;
-  height: 300px;
+  height: 400px; /* cambiado de 300px a 400px */
   overflow: hidden;
 }
 
+/* Imagen dentro del carrusel con altura fija y ajuste para que cubra */
 #carouselExampleCaptions .carousel-item img {
   width: 100%;
-  height: 300px;
+  height: 400px; /* cambiado de 300px a 400px */
   object-fit: cover;
 }
 
+/* En móviles, la altura del carrusel se aumenta a 200px */
 @media (max-width: 576px) {
   #carouselExampleCaptions,
   #carouselExampleCaptions .carousel-item img {
-    height: 150px;
+    height: 200px; /* cambiado de 150px a 200px */
   }
 }
 
+/* Estilo para los textos que van sobre las imágenes del carrusel */
 .carousel-caption {
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente negro */
   padding: 0.5rem 1rem;
   border-radius: 10px;
   color: white;
 }
 
+/* Título "más populares" con fondo azul, sombra y texto blanco */
 .maspopulares {
   color: #fff;
   padding: 8px 20px;
@@ -103,6 +120,7 @@ body {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
+/* Contenedor flexible para las cards con espacio entre ellas */
 .contenedor-cards {
   display: flex;
   flex-wrap: wrap;
@@ -111,11 +129,13 @@ body {
   padding: 0 1rem;
 }
 
+/* Cada card ocupa ~1/6 del ancho menos espacio */
 .contenedor-cards > div {
   flex: 0 0 calc(16.66% - 1rem);
   max-width: calc(16.66% - 1rem);
 }
 
+/* En pantallas medianas (≤992px), las cards ocupan 1/3 */
 @media (max-width: 992px) {
   .contenedor-cards > div {
     flex: 0 0 calc(33.33% - 1rem);
@@ -123,6 +143,7 @@ body {
   }
 }
 
+/* En móviles (≤576px), cards también ocupan 1/3 */
 @media (max-width: 576px) {
   .contenedor-cards > div {
     flex: 0 0 calc(33.33% - 1rem);
@@ -130,6 +151,7 @@ body {
   }
 }
 
+/* Estilos para las cards: fondo transparente, sin borde, sombra azul y animación escala */
 .card {
   background-color: transparent !important;
   color: white;
@@ -139,15 +161,18 @@ body {
   transition: transform 0.2s ease;
 }
 
+/* Al pasar el cursor, la card escala al 100% */
 .card:hover {
   transform: scale(1);
 }
 
+/* Imagen dentro de card con altura máxima y ajuste */
 .card img {
   max-height: 150px;
   object-fit: cover;
 }
 
+/* Botón primario dentro de card */
 .card .btn-primary {
   background-color: #007bff;
   border-color: #007bff;
@@ -155,14 +180,17 @@ body {
   padding: 5px 10px;
 }
 
+/* Título de la card con fuente pequeña */
 .card .card-title {
   font-size: 0.9rem;
 }
 
+/* Texto de la card con fuente más pequeña */
 .card .card-text {
   font-size: 0.75rem;
 }
 
+/* Footer redes con fondo transparente y borde azul arriba */
 .footer-redes {
   background-color: #111;
   color: white;
@@ -173,11 +201,13 @@ body {
   background-color: transparent !important;
 }
 
+/* Color hover para los iconos sociales en footer */
 .footer-redes .red-social:hover {
   color: #007bff;
   transition: color 0.3s ease;
 }
 
+/* Botones celeste personalizados */
 .btn-celeste {
   background-color: #054283;
   color: white;
@@ -190,18 +220,21 @@ body {
   color: white;
 }
 
+/* Imagen manga ajustada a max 60% ancho */
 .img-manga-ajustada {
   max-width: 60%;
   height: auto;
   object-fit: contain;
 }
 
+/* Título en página de descripción del manga */
 .tituloMangaDescripcion {
   color: #fff;
   margin-bottom: 1rem;
   font-size: 30px;
 }
 
+/* Sinopsis con máximo alto, scroll vertical y texto claro */
 .sinopsis {
   max-height: 400px;
   overflow-y: auto;
@@ -209,12 +242,14 @@ body {
   padding-right: 10px;
 }
 
+/* Lista de capítulos fondo oscuro y bordes redondeados */
 .listaCap {
   background-color: #1e1e1e;
   padding: 0.5rem;
   border-radius: 0.5rem;
 }
 
+/* Ítems de la lista con fondo azul y texto blanco, sin bordes */
 .listaCap .list-group-item {
   background-color: #054283;
   color: #ffffff;
@@ -222,10 +257,12 @@ body {
   border: none;
 }
 
+/* Título para la lista de capítulos */
 .tituloListaCaps {
   color: #fff;
 }
 
+/* Enlaces para capítulos con efectos al hover */
 .enlace-cap {
   color: #fff;
   text-decoration: none;
@@ -240,6 +277,7 @@ body {
   text-decoration: none;
 }
 
+/* Rectángulos con fondo azul y borde blanco para ítems */
 .rectangulo-item {
   background-color: #054283;
   border-radius: 0.5rem;
@@ -249,6 +287,7 @@ body {
   overflow: hidden;
 }
 
+/* Lista con scroll vertical, borde y fondo oscuro */
 .lista-scroll {
   max-height: 400px;
   overflow-y: auto;
@@ -258,167 +297,186 @@ body {
   background-color: #1e1e1e;
 }
 
+/* Columna para info manga con flex vertical */
 .col-manga-info {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
-/* comments_section.css */
 
-/* Fondo oscuro general para el contexto, ajusta si ya tienes un tema oscuro */
+/* Comentarios - fondo oscuro general y texto claro */
 body {
-    background-color: #1a1a1a;
-    color: #f8f9fa;
+  background-color: #1a1a1a;
+  color: #f8f9fa;
 }
 
+/* Contenedor de comentarios con fondo oscuro y bordes redondeados */
 .comment-section-custom {
-    background-color: #242424; /* Fondo del contenedor de comentarios */
-    padding: 20px;
-    border-radius: 8px;
-    color: #f8f9fa; /* Color de texto general para la sección */
+  background-color: #242424; /* Fondo del contenedor de comentarios */
+  padding: 20px;
+  border-radius: 8px;
+  color: #f8f9fa; /* Color de texto general para la sección */
 }
 
+/* Encabezado de comentarios con borde inferior y espacio */
 .comment-header-custom {
-    border-bottom: 1px solid #444;
-    padding-bottom: 15px;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  border-bottom: 1px solid #444;
+  padding-bottom: 15px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
+/* Conteo de comentarios con tamaño y peso de fuente */
 .comment-count-custom {
-    font-size: 1.25rem;
-    font-weight: bold;
+  font-size: 1.25rem;
+  font-weight: bold;
 }
 
+/* Botón de acceso personalizado con color rojo y borde redondeado */
 .access-button-custom {
-    background-color: #dc3545; /* Rojo de ejemplo */
-    color: white;
-    border-radius: 20px;
-    padding: 5px 15px;
-    font-size: 0.9rem;
-    display: flex;
-    align-items: center;
+  background-color: #dc3545; /* Rojo de ejemplo */
+  color: white;
+  border-radius: 20px;
+  padding: 5px 15px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
 }
 
+/* Badge dentro del botón con colores inversos */
 .access-button-custom .badge {
-    background-color: #f8f9fa; /* Color del número en el badge */
-    color: #dc3545; /* Color del texto del número */
-    margin-right: 5px;
+  background-color: #f8f9fa; /* Color del número en el badge */
+  color: #dc3545; /* Color del texto del número */
+  margin-right: 5px;
 }
 
+/* Avatar de usuario personalizado con círculo y texto centrado */
 .user-avatar-custom {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background-color: #0d6efd; /* Color de fondo del logo "CHUU PROJECT" o similar */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 0.7rem;
-    font-weight: bold;
-    text-align: center;
-    line-height: 1;
-    padding: 5px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #0d6efd; /* Color de fondo del logo "CHUU PROJECT" o similar */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-align: center;
+  line-height: 1;
+  padding: 5px;
 }
 
+/* Área para escribir comentarios con separación */
 .comment-input-area-custom {
-    display: flex;
-    align-items: flex-start;
-    gap: 15px;
-    margin-bottom: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 20px;
 }
 
+/* Textarea para comentarios con fondo oscuro y bordes */
 .comment-textarea-custom {
-    flex-grow: 1;
-    background-color: #343a40; /* Fondo del textarea */
-    border: 1px solid #444;
-    color: #f8f9fa;
-    padding: 10px;
-    border-radius: 5px;
-    resize: none; /* Evitar que el usuario redimensione */
-    min-height: 80px; /* Altura inicial */
+  flex-grow: 1;
+  background-color: #343a40; /* Fondo del textarea */
+  border: 1px solid #444;
+  color: #f8f9fa;
+  padding: 10px;
+  border-radius: 5px;
+  resize: none; /* Evitar que el usuario redimensione */
+  min-height: 80px; /* Altura inicial */
 }
 
+/* Botones de login social con fondo oscuro y forma circular */
 .social-login-icons-custom .btn {
-    background-color: #343a40; /* Fondo de los botones de redes sociales */
-    border: 1px solid #444;
-    color: white;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem; /* El tamaño de los iconos de Bootstrap a veces necesita ajustarse */
-    margin-right: 8px;
-    transition: background-color 0.2s ease;
+  background-color: #343a40; /* Fondo de los botones de redes sociales */
+  border: 1px solid #444;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem; /* El tamaño de los iconos de Bootstrap a veces necesita ajustarse */
+  margin-right: 8px;
+  transition: background-color 0.2s ease;
 }
 
+/* Cambio de fondo al pasar el cursor en botones sociales */
 .social-login-icons-custom .btn:hover {
-    background-color: #495057;
+  background-color: #495057;
 }
 
-/* Colores específicos para los íconos de redes sociales - AHORA CON CLASES DE BOOTSTRAP ICONS */
+/* Colores específicos para botones sociales basados en Bootstrap Icons */
 .social-login-icons-custom .btn-facebook-bi { background-color: #3b5998; border-color: #3b5998; }
 .social-login-icons-custom .btn-disqus-bi { background-color: #2e97cc; border-color: #2e97cc; } /* Color para un icono que representa a Disqus */
 
-
+/* Contenedor para registro con separación entre elementos */
 .or-register-custom {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-left: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 20px;
 }
 
+/* Inputs con fondo oscuro y bordes */
 .or-register-custom .form-control {
-    background-color: #343a40;
-    border: 1px solid #444;
-    color: #f8f9fa;
+  background-color: #343a40;
+  border: 1px solid #444;
+  color: #f8f9fa;
 }
 
+/* Pie de sección de comentarios con borde superior y separación */
 .comment-footer-custom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-    padding-top: 15px;
-    border-top: 1px solid #444;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #444;
 }
 
+/* Botones estilo link en acciones de comentarios */
 .comment-actions-custom .btn-link {
-    color: #f8f9fa;
-    text-decoration: none;
-    font-size: 0.9rem;
+  color: #f8f9fa;
+  text-decoration: none;
+  font-size: 0.9rem;
 }
 
+/* Hover para botones link */
 .comment-actions-custom .btn-link:hover {
-    color: #adb5bd;
+  color: #adb5bd;
 }
 
+/* Navegación para ordenar comentarios */
 .comment-sort-custom .nav-link {
-    color: #f8f9fa;
-    padding: 0 10px;
-    border-radius: 0;
-    font-size: 0.9rem;
+  color: #f8f9fa;
+  padding: 0 10px;
+  border-radius: 0;
+  font-size: 0.9rem;
 }
 
+/* Opción activa en el orden de comentarios */
 .comment-sort-custom .nav-link.active {
-    color: #0d6efd; /* Color azul para la opción activa */
-    border-bottom: 2px solid #0d6efd;
-    background-color: transparent;
+  color: #0d6efd; /* Color azul para la opción activa */
+  border-bottom: 2px solid #0d6efd;
+  background-color: transparent;
 }
 
+/* Hover para opciones de orden */
 .comment-sort-custom .nav-link:hover {
-    color: #adb5bd;
+  color: #adb5bd;
 }
 
+/* Bordes entre opciones excepto la última */
 .comment-sort-custom .nav-item:not(:last-child) .nav-link {
-    border-right: 1px solid #444;
+  border-right: 1px solid #444;
 }
-/* Para hacer más delgado el botón del dropdown */
+
+/* Botones dropdown más delgados */
 .btn-group > .btn {
   min-width: 50px; /* Puedes ajustar este valor para hacerlo más delgado */
   padding-left: 0.5rem;
@@ -426,12 +484,14 @@ body {
   font-size: 0.7rem; /* Opcional: reduce un poco el tamaño de la letra */
 }
 
-/* Para que el menú dropdown también sea más estrecho */
+/* Menú dropdown más estrecho para igualar botón */
 .dropdown-menu {
   min-width: 50px !important; /* Igual que el botón, para que no sea más ancho */
   padding: 0.25rem 0; /* Opcional, menos padding vertical */
   font-size: 0.7rem; /* Opcional */
 }
+
+/* Botones "Anterior" y "Siguiente" de paginación con estilo igual que dropdown */
 #btnAnterior, #btnSiguiente {
   min-width: 50px;       /* Igual que dropdown */
   padding-left: 0.5rem;  /* Igual que dropdown */
@@ -440,13 +500,15 @@ body {
   height: 38px;          /* Altura estándar botón Bootstrap */
   white-space: nowrap;   /* No romper texto */
 }
-/* Color para los dropdown */
+
+/* Color de fondo y borde para botones dropdown */
 .btn-group > .btn {
   background-color: #1E90FF;  /* Fondo azul celeste */
   color: white;               /* Texto blanco */
   border: 1px solid #1E90FF; /* Borde azul */
 }
 
+/* Hover y focus para botones dropdown */
 .btn-group > .btn:hover,
 .btn-group > .btn:focus {
   background-color: #187bcd;  /* Azul un poco más oscuro al hover/focus */
@@ -454,7 +516,7 @@ body {
   color: white;
 }
 
-/* Color para los botones Anterior y Siguiente */
+/* Color para botones Anterior y Siguiente */
 #btnAnterior, #btnSiguiente {
   background-color: #1E90FF;  /* Fondo azul celeste */
   color: white;               /* Texto blanco */
@@ -467,6 +529,7 @@ body {
   white-space: nowrap;
 }
 
+/* Hover y focus para botones Anterior y Siguiente */
 #btnAnterior:hover, #btnSiguiente:hover,
 #btnAnterior:focus, #btnSiguiente:focus {
   background-color: #187bcd;  /* Azul más oscuro al hover/focus */
