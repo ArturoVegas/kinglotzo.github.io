@@ -306,4 +306,4 @@ if (path.includes("admin.html")) {
 
     cargarMangasEnDatalist();
   });
-}
+}// prueba
