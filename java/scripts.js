@@ -1,5 +1,5 @@
+// scripts.js (unificado para mangas.html e infoMangas.html)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-analytics.js";
 import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
 
 const firebaseConfig = {
@@ -14,8 +14,9 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
 const db = getDatabase(app);
+
+// --------------- Código para mangas.html ---------------
 
 const contenedor = document.getElementById("contenedor-mangas");
 const paginacion = document.getElementById("paginacion");
@@ -28,6 +29,8 @@ function getMangasPorPagina() {
 }
 
 function renderizarPagina(pagina) {
+  if (!contenedor) return; // Si no existe el contenedor (no estamos en mangas.html), salimos
+
   contenedor.innerHTML = "";
 
   const mangasPorPagina = getMangasPorPagina();
@@ -37,14 +40,14 @@ function renderizarPagina(pagina) {
 
   mangasAMostrar.forEach(([nombre, data]) => {
     const tarjeta = document.createElement("div");
-    tarjeta.className = "col-4 col-md-2"; // 3 por fila en móvil, 6 por fila en desktop
+    tarjeta.className = window.innerWidth < 768 ? "col-6" : "col-2"; // 2 por fila móvil, 6 por fila desktop
 
     tarjeta.innerHTML = `
       <a href="../html/infoMangas.html?manga=${encodeURIComponent(nombre)}" class="text-decoration-none text-reset">
         <div class="card h-100">
           <img src="${data.portada}" class="card-img-top" alt="${nombre}" />
           <div class="card-body text-center">
-            <h5 class="card-title">${nombre}</h5>
+            <h5 class="card-title">${nombre.replaceAll("_", " ")}</h5>
             <p class="card-text">Haz clic para ver más</p>
           </div>
         </div>
@@ -56,6 +59,8 @@ function renderizarPagina(pagina) {
 }
 
 function renderizarPaginacion() {
+  if (!paginacion) return; // Si no existe la paginación (no estamos en mangas.html), salimos
+
   paginacion.innerHTML = "";
 
   const mangasPorPagina = getMangasPorPagina();
@@ -86,12 +91,14 @@ function renderizarPaginacion() {
 }
 
 async function cargarMangas() {
+  if (!contenedor) return; // No estamos en mangas.html, no cargamos
+
   try {
     const snapshot = await get(ref(db, 'mangas'));
     if (snapshot.exists()) {
       listaMangas = Object.entries(snapshot.val());
 
-      // Opcional: ordenar alfabéticamente por nombre de manga
+      // Ordenar alfabéticamente
       listaMangas.sort((a, b) => a[0].localeCompare(b[0]));
 
       paginaActual = 1;
@@ -106,14 +113,82 @@ async function cargarMangas() {
   }
 }
 
-// Para actualizar paginación y página al cambiar tamaño ventana (opcional)
+// Al cambiar tamaño ventana, actualizamos vista paginada si estamos en mangas.html
 window.addEventListener('resize', () => {
+  if (!contenedor) return;
   const mangasPorPagina = getMangasPorPagina();
   const totalPaginas = Math.ceil(listaMangas.length / mangasPorPagina);
-  // Ajustar paginaActual si queda fuera del rango después del resize
   if (paginaActual > totalPaginas) paginaActual = totalPaginas > 0 ? totalPaginas : 1;
   renderizarPagina(paginaActual);
   renderizarPaginacion();
 });
 
-document.addEventListener("DOMContentLoaded", cargarMangas);
+// --------------- Código para infoMangas.html ---------------
+
+function obtenerNombreMangaDesdeURL() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("manga");
+}
+
+async function cargarInfoManga() {
+  // Solo cargar si estamos en infoMangas.html (detectamos por la existencia de id "manga-portada")
+  const portadaEl = document.getElementById("manga-portada");
+  if (!portadaEl) return;
+
+  const nombreManga = obtenerNombreMangaDesdeURL();
+  if (!nombreManga) return;
+
+  try {
+    const snapshot = await get(ref(db, `mangas/${nombreManga}`));
+    if (snapshot.exists()) {
+      const data = snapshot.val();
+
+      const setText = (id, texto) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = texto ?? "-";
+      };
+
+      portadaEl.src = data.portada || "";
+      portadaEl.alt = decodeURIComponent(nombreManga).replaceAll("_", " ");
+
+      setText("manga-titulo", decodeURIComponent(nombreManga).replaceAll("_", " "));
+      setText("manga-sinopsis", data.sinopsis || "Sin sinopsis.");
+      setText("manga-autor", data.autor || "Desconocido");
+      setText("manga-genero", Array.isArray(data.generos) ? data.generos.join(", ") : (data.generos || "Sin géneros"));
+      setText("manga-estado", data.estado || "Desconocido");
+      setText("manga-fecha", data.fechaLanzamiento || data.fecha_lanzamiento || "Desconocida");
+      setText("manga-frecuencia", data.frecuencia || "Desconocida");
+
+      const lista = document.getElementById("lista-capitulos");
+      if (lista) {
+        lista.innerHTML = "";
+        if (Array.isArray(data.capitulos)) {
+          data.capitulos.forEach((capitulo, index) => {
+            const li = document.createElement("li");
+            li.className = "list-group-item p-0 rectangulo-item";
+            li.innerHTML = `
+              <a href="../html/vermangas.html?manga=${encodeURIComponent(nombreManga)}&cap=${index + 1}" 
+                 class="enlace-cap d-block py-2 px-3">
+                Capítulo ${index + 1}
+              </a>`;
+            lista.appendChild(li);
+          });
+        } else {
+          lista.innerHTML = `<li class="list-group-item text-light">No hay capítulos disponibles.</li>`;
+        }
+      }
+
+    } else {
+      alert("Manga no encontrado.");
+    }
+  } catch (error) {
+    console.error("Error cargando manga:", error);
+  }
+}
+
+// --------------- Evento DOMContentLoaded ---------------
+
+document.addEventListener("DOMContentLoaded", () => {
+  cargarMangas();
+  cargarInfoManga();
+});

@@ -144,7 +144,7 @@ if (path.includes("admin.html")) {
             estado,
             frecuencia,
             fechaLanzamiento,
-            capitulos: []
+            capitulos: {}
           };
 
           const claveManga = nombreManga.replace(/\s+/g, "_").toLowerCase();
