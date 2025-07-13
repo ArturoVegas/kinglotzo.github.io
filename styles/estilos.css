@@ -545,3 +545,25 @@ body {
   border-color: #187bcd;
   color: white;
 }
+
+
+/* ------------------- */
+/* NUEVO: Mejoras para tarjetas de "Últimas actualizaciones" */
+/* ------------------- */
+/* Contenedor: usar flexbox con wrap */
+#ultimas-actualizaciones .card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+#ultimas-actualizaciones .card-img-top {
+  height: 200px;         /* ya tienes este valor, puedes subir a 180px si quieres */
+  object-fit: cover;
+  object-position: top;  /* <--- esta línea hace que la imagen se "suba" y enfoque arriba */
+}
+
+#ultimas-actualizaciones .card-body {
+  flex-grow: 1;
+  padding: 0.5rem 1rem;
+  margin-top: -5px;      /* <--- pequeño margen negativo para subir texto hacia la imagen */
+}

@@ -148,9 +148,9 @@ if (path.includes("admin.html")) {
           capitulos: {}
         };
 
-       const claveManga = nombreManga
-      .replace(/[^A-Za-z0-9\sáéíóúÁÉÍÓÚñÑüÜ.,;:¡!¿?'"()\-]/g, "")
-      .trim();
+        const claveManga = nombreManga
+          .replace(/[^A-Za-z0-9\sáéíóúÁÉÍÓÚñÑüÜ.,;:¡!¿?'"()\-]/g, "")
+          .trim();
 
         await set(ref(db, `mangas/${claveManga}`), mangaData);
 
@@ -202,7 +202,16 @@ if (path.includes("admin.html")) {
       }
     });
 
-    formSubirCapitulo?.addEventListener("submit", async (e) => {
+    // --------- Elimina cualquier otro listener submit duplicado sobre formSubirCapitulo ---------
+    // Aquí solo usamos UN listener con barra de progreso y fecha
+
+    // Crear un div para mostrar el progreso de la subida
+    const progresoContainer = document.createElement("div");
+    progresoContainer.id = "progresoContainer";
+    progresoContainer.style.marginTop = "10px";
+    formSubirCapitulo.appendChild(progresoContainer);
+
+    formSubirCapitulo.addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const nombreManga = inputManga.value.trim();
@@ -218,34 +227,76 @@ if (path.includes("admin.html")) {
       const imagenes = imagenesInput.files;
       const urlsSubidas = [];
 
-      for (const img of imagenes) {
-        const formData = new FormData();
-        formData.append("file", img);
-        formData.append("upload_preset", "para subir mangas");
-        formData.append("folder", carpetaCloud);
+      progresoContainer.innerHTML = ""; // limpiar progreso
 
-        try {
-          const res = await fetch("https://api.cloudinary.com/v1_1/djxnb3qrn/image/upload", {
-            method: "POST",
-            body: formData
+      for (let i = 0; i < imagenes.length; i++) {
+        const img = imagenes[i];
+
+        // Crear barra de progreso para cada imagen
+        const barraWrapper = document.createElement("div");
+        barraWrapper.style.marginBottom = "5px";
+
+        const label = document.createElement("div");
+        label.textContent = `Subiendo imagen ${i + 1} de ${imagenes.length}: ${img.name}`;
+        label.style.fontSize = "0.9rem";
+        label.style.marginBottom = "2px";
+
+        const barraProgreso = document.createElement("progress");
+        barraProgreso.max = 100;
+        barraProgreso.value = 0;
+        barraProgreso.style.width = "100%";
+
+        barraWrapper.appendChild(label);
+        barraWrapper.appendChild(barraProgreso);
+        progresoContainer.appendChild(barraWrapper);
+
+        // Subida con XMLHttpRequest para obtener progreso
+        const urlSubida = await new Promise((resolve, reject) => {
+          const formData = new FormData();
+          formData.append("file", img);
+          formData.append("upload_preset", "para subir mangas");
+          formData.append("folder", carpetaCloud);
+
+          const xhr = new XMLHttpRequest();
+          xhr.open("POST", "https://api.cloudinary.com/v1_1/djxnb3qrn/image/upload");
+
+          xhr.upload.addEventListener("progress", (event) => {
+            if (event.lengthComputable) {
+              const porcentaje = (event.loaded / event.total) * 100;
+              barraProgreso.value = porcentaje;
+            }
           });
-          const data = await res.json();
-          if (!res.ok) throw new Error(data.error?.message || "Error en subida");
 
-          urlsSubidas.push(data.secure_url);
-        } catch (err) {
-          console.error("Error subiendo imagen:", err);
-          alert("Error subiendo imagen: " + err.message);
-          return;
-        }
+          xhr.onload = () => {
+            if (xhr.status === 200) {
+              const response = JSON.parse(xhr.responseText);
+              resolve(response.secure_url);
+            } else {
+              reject(new Error(`Error al subir imagen ${img.name}: ${xhr.statusText}`));
+            }
+          };
+
+          xhr.onerror = () => reject(new Error(`Error de red al subir imagen ${img.name}`));
+
+          xhr.send(formData);
+        }).catch((err) => {
+          alert(err.message);
+          throw err; // para cortar el for
+        });
+
+        urlsSubidas.push(urlSubida);
       }
 
       try {
         const capRef = ref(db, `mangas/${nombreManga}/capitulos/${numeroCapitulo}`);
-        await set(capRef, urlsSubidas);
+        await set(capRef, {
+          imagenes: urlsSubidas,
+          fecha: Date.now()
+        });
 
         alert("Capítulo subido correctamente.");
         formSubirCapitulo.reset();
+        progresoContainer.innerHTML = "";
         capitulosExistentes.innerHTML = "";
       } catch (err) {
         console.error("Error al guardar en Firebase:", err);
@@ -255,101 +306,4 @@ if (path.includes("admin.html")) {
 
     cargarMangasEnDatalist();
   });
-  const formSubirCapitulo = document.getElementById("formSubirCapitulo");
-
-// Crear un div para mostrar el progreso de la subida
-const progresoContainer = document.createElement("div");
-progresoContainer.id = "progresoContainer";
-progresoContainer.style.marginTop = "10px";
-formSubirCapitulo.appendChild(progresoContainer);
-
-formSubirCapitulo.addEventListener("submit", async (e) => {
-  e.preventDefault();
-
-  const nombreManga = document.getElementById("mangaSeleccionado").value.trim();
-  const numeroCapitulo = document.getElementById("numeroCapitulo").value.trim();
-  const imagenesInput = document.getElementById("imagenesCapitulo");
-  const carpetaCloud = document.getElementById("rutaCloudinary").value.trim() || `mangas/${nombreManga}/cap${numeroCapitulo}`;
-
-  if (!nombreManga || !numeroCapitulo || imagenesInput.files.length === 0) {
-    alert("Completa todos los campos.");
-    return;
-  }
-
-  const imagenes = imagenesInput.files;
-  const urlsSubidas = [];
-
-  progresoContainer.innerHTML = ""; // limpiar progreso
-
-  for (let i = 0; i < imagenes.length; i++) {
-    const img = imagenes[i];
-
-    // Crear barra de progreso para cada imagen
-    const barraWrapper = document.createElement("div");
-    barraWrapper.style.marginBottom = "5px";
-
-    const label = document.createElement("div");
-    label.textContent = `Subiendo imagen ${i + 1} de ${imagenes.length}: ${img.name}`;
-    label.style.fontSize = "0.9rem";
-    label.style.marginBottom = "2px";
-
-    const barraProgreso = document.createElement("progress");
-    barraProgreso.max = 100;
-    barraProgreso.value = 0;
-    barraProgreso.style.width = "100%";
-
-    barraWrapper.appendChild(label);
-    barraWrapper.appendChild(barraProgreso);
-    progresoContainer.appendChild(barraWrapper);
-
-    // Subida con XMLHttpRequest para obtener progreso
-    const urlSubida = await new Promise((resolve, reject) => {
-      const formData = new FormData();
-      formData.append("file", img);
-      formData.append("upload_preset", "para subir mangas");
-      formData.append("folder", carpetaCloud);
-
-      const xhr = new XMLHttpRequest();
-      xhr.open("POST", "https://api.cloudinary.com/v1_1/djxnb3qrn/image/upload");
-
-      xhr.upload.addEventListener("progress", (event) => {
-        if (event.lengthComputable) {
-          const porcentaje = (event.loaded / event.total) * 100;
-          barraProgreso.value = porcentaje;
-        }
-      });
-
-      xhr.onload = () => {
-        if (xhr.status === 200) {
-          const response = JSON.parse(xhr.responseText);
-          resolve(response.secure_url);
-        } else {
-          reject(new Error(`Error al subir imagen ${img.name}: ${xhr.statusText}`));
-        }
-      };
-
-      xhr.onerror = () => reject(new Error(`Error de red al subir imagen ${img.name}`));
-
-      xhr.send(formData);
-    }).catch((err) => {
-      alert(err.message);
-      throw err; // para cortar el for
-    });
-
-    urlsSubidas.push(urlSubida);
-  }
-
-  try {
-    const capRef = ref(db, `mangas/${nombreManga}/capitulos/${numeroCapitulo}`);
-    await set(capRef, urlsSubidas);
-
-    alert("Capítulo subido correctamente.");
-    formSubirCapitulo.reset();
-    progresoContainer.innerHTML = "";
-    document.getElementById("capitulosExistentes").innerHTML = "";
-  } catch (err) {
-    console.error("Error al guardar en Firebase:", err);
-    alert("Error al guardar capítulo en Firebase");
-  }
-});
 }
