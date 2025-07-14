@@ -55,14 +55,15 @@ if (path.includes("inicioSesion.html")) {
       const password = document.getElementById("password").value;
 
       try {
+        // Intentar login con email y contraseña
         const credenciales = await signInWithEmailAndPassword(auth, email, password);
         const user = credenciales.user;
 
-        // Redireccionar según si es admin o usuario normal
+        // Redireccionar según sea admin o usuario normal
         if (user.uid === adminUID) {
           window.location.href = "admin.html"; // Panel de administración
         } else {
-          window.location.href = "../index.html"; // Página normal usuarios
+          window.location.href = "../index.html"; // Página principal para usuarios
         }
 
       } catch (error) {
@@ -84,7 +85,7 @@ if (path.includes("admin.html")) {
       return;
     }
 
-    // Referencias a elementos DOM para la administración
+    // Referencias a elementos DOM usados en admin.html
     const nuevoMangaSection = document.getElementById("nuevoMangaSection");
     const subirCapituloSection = document.getElementById("subirCapituloSection");
     const btnNuevoManga = document.getElementById("btnNuevoManga");
@@ -113,7 +114,7 @@ if (path.includes("admin.html")) {
       nuevoMangaSection.classList.add("d-none");
     });
 
-    // Botón para cerrar sesión
+    // Botón para cerrar sesión y redirigir a login
     btnLogout?.addEventListener("click", () => {
       signOut(auth).then(() => {
         window.location.href = "inicioSesion.html";
@@ -126,7 +127,7 @@ if (path.includes("admin.html")) {
     formNuevoManga?.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      // Obtener datos del formulario
+      // Obtener datos del formulario nuevo manga
       const nombreMangaInput = document.getElementById("nombreManga");
       const nombreManga = nombreMangaInput.value.trim();
 
@@ -308,6 +309,7 @@ if (path.includes("admin.html")) {
       const imagenesInput = document.getElementById("imagenesCapitulo");
       const carpetaCloud = document.getElementById("rutaCloudinary").value.trim() || `mangas/${nombreManga}/cap${numeroCapitulo}`;
 
+      // Validaciones básicas
       if (!nombreManga || !numeroCapitulo || imagenesInput.files.length === 0) {
         alert("Completa todos los campos.");
         return;
@@ -335,6 +337,7 @@ if (path.includes("admin.html")) {
       for (let i = 0; i < imagenes.length; i++) {
         const img = imagenes[i];
 
+        // Crear elementos de barra de progreso para cada imagen
         const barraWrapper = document.createElement("div");
         barraWrapper.style.marginBottom = "5px";
 
@@ -362,6 +365,7 @@ if (path.includes("admin.html")) {
           const xhr = new XMLHttpRequest();
           xhr.open("POST", "https://api.cloudinary.com/v1_1/djxnb3qrn/image/upload");
 
+          // Actualizar barra de progreso
           xhr.upload.addEventListener("progress", (event) => {
             if (event.lengthComputable) {
               const porcentaje = (event.loaded / event.total) * 100;
@@ -397,7 +401,7 @@ if (path.includes("admin.html")) {
           fecha: Date.now()
         });
 
-        // Crear nodo de comentarios para capítulo (evitar errores al leer comentarios)
+        // Crear nodo de comentarios para capítulo para evitar errores al leerlos después
         await set(ref(db, `comentarios/${nombreManga}/${numeroCapitulo}`), { creadoEn: Date.now() });
 
         alert("Capítulo subido correctamente.");

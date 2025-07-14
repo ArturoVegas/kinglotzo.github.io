@@ -1,0 +1,109 @@
+import { ref, get } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
+import { db } from "./firebaseInit.js";
+
+let listaMangas = [];
+let paginaActual = 1;
+
+const contenedor = document.getElementById("contenedor-mangas");
+const paginacion = document.getElementById("paginacion");
+
+function getMangasPorPagina() {
+  return window.innerWidth < 768 ? 6 : 12;
+}
+
+function renderizarPagina(pagina) {
+  if (!contenedor) return;
+
+  contenedor.innerHTML = "";
+
+  const mangasPorPagina = getMangasPorPagina();
+  const inicio = (pagina - 1) * mangasPorPagina;
+  const fin = inicio + mangasPorPagina;
+  const mangasAMostrar = listaMangas.slice(inicio, fin);
+
+  mangasAMostrar.forEach(([nombre, data]) => {
+    const tarjeta = document.createElement("div");
+    tarjeta.className = window.innerWidth < 768 ? "col-6" : "col-2";
+
+    tarjeta.innerHTML = `
+      <a href="../html/infoMangas.html?manga=${encodeURIComponent(nombre)}" class="text-decoration-none text-reset">
+        <div class="card h-100">
+          <img src="${data.portada}" class="card-img-top" alt="${nombre}" />
+          <div class="card-body text-center">
+            <h5 class="card-title">${nombre.replaceAll("_", " ")}</h5>
+            <p class="card-text">Haz clic para ver más</p>
+          </div>
+        </div>
+      </a>
+    `;
+
+    contenedor.appendChild(tarjeta);
+  });
+}
+
+function renderizarPaginacion() {
+  if (!paginacion) return;
+
+  paginacion.innerHTML = "";
+
+  const mangasPorPagina = getMangasPorPagina();
+  const totalPaginas = Math.ceil(listaMangas.length / mangasPorPagina);
+
+  function crearBoton(texto, pagina, disabled = false, active = false) {
+    const li = document.createElement("li");
+    li.className = "page-item";
+    if (disabled) li.classList.add("disabled");
+    if (active) li.classList.add("active");
+
+    li.innerHTML = `<a class="page-link" href="#">${texto}</a>`;
+    li.addEventListener("click", e => {
+      e.preventDefault();
+      if (!disabled && pagina !== paginaActual) {
+        paginaActual = pagina;
+        renderizarPagina(paginaActual);
+        renderizarPaginacion();
+      }
+    });
+
+    return li;
+  }
+
+  paginacion.appendChild(crearBoton("Anterior", paginaActual - 1, paginaActual === 1));
+  for (let i = 1; i <= totalPaginas; i++) {
+    paginacion.appendChild(crearBoton(i, i, false, i === paginaActual));
+  }
+  paginacion.appendChild(crearBoton("Siguiente", paginaActual + 1, paginaActual === totalPaginas));
+}
+
+async function cargarMangas() {
+  if (!contenedor) return;
+
+  try {
+    const snapshot = await get(ref(db, 'mangas'));
+    if (snapshot.exists()) {
+      listaMangas = Object.entries(snapshot.val());
+      listaMangas.sort((a, b) => a[0].localeCompare(b[0]));
+      paginaActual = 1;
+      renderizarPagina(paginaActual);
+      renderizarPaginacion();
+    } else {
+      contenedor.innerHTML = "<p class='text-light'>No hay mangas disponibles.</p>";
+    }
+  } catch (error) {
+    console.error("Error al leer Firebase:", error);
+    contenedor.innerHTML = "<p class='text-danger'>Error al cargar los mangas.</p>";
+  }
+}
+
+function setupResizeListener() {
+  window.addEventListener('resize', () => {
+    if (!contenedor) return;
+    const mangasPorPagina = getMangasPorPagina();
+    const totalPaginas = Math.ceil(listaMangas.length / mangasPorPagina);
+    if (paginaActual > totalPaginas) paginaActual = totalPaginas > 0 ? totalPaginas : 1;
+    renderizarPagina(paginaActual);
+    renderizarPaginacion();
+  });
+}
+
+export { cargarMangas, setupResizeListener };
