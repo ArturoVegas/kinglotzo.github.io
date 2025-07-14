@@ -628,21 +628,70 @@ body {
    Carrusel Populares
    ================================================ */
 
-#carrusel-populares > div {
-  flex: 0 0 calc(16.66% - 1rem);
-  max-width: calc(16.66% - 1rem);
+#carrusel-populares {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch; /* para scroll suave en iOS */
+  padding: 0.5rem 1rem;
+  gap: 1rem;
+  /* Opcional: para ocultar barra de scroll en algunos navegadores */
+  scrollbar-width: thin;
+  scrollbar-color: #054283 transparent;
+}
+
+/* Opcional: estilos para barra scroll en Chrome, Edge y Safari */
+#carrusel-populares::-webkit-scrollbar {
+  height: 8px;
+}
+
+#carrusel-populares::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+#carrusel-populares::-webkit-scrollbar-thumb {
+  background-color: #054283;
+  border-radius: 4px;
+}
+.popular-card-wrapper {
+  flex: 0 0 16.66%;  /* aproximadamente 6 tarjetas visibles */
+  max-width: 16.66%;
   display: flex;
   flex-direction: column;
 }
 
-/* Imagen de card en carrusel populares */
+/* Ajustes para tablets y móviles, para que las tarjetas sean más anchas y fáciles de ver */
+@media (max-width: 992px) {
+  .popular-card-wrapper {
+    flex: 0 0 33.33%;  /* 3 tarjetas visibles */
+    max-width: 33.33%;
+  }
+}
+
+@media (max-width: 576px) {
+  .popular-card-wrapper {
+    flex: 0 0 50%;  /* 2 tarjetas visibles */
+    max-width: 50%;
+  }
+}
+#carrusel-populares .card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
 #carrusel-populares .card-img-top {
-  height: 200px;
+  height: 200px; /* igual altura que las actualizadas */
   object-fit: cover;
   object-position: top;
-}#form-buscar {
-  position: relative; /* base para position absolute */
 }
+
+#carrusel-populares .card-body {
+  flex-grow: 1;
+  padding: 0.5rem 1rem;
+  margin-top: -5px;
+}
+
 
 .autocomplete-list {
   position: absolute;      /* para posicionarlo respecto a #form-buscar */

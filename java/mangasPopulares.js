@@ -17,6 +17,7 @@ export async function cargarMangasPopulares() {
 
     const mangas = snapshot.val();
 
+    // Ordenar mangas por vistas descendentes y tomar los 10 primeros
     const mangasOrdenados = Object.entries(mangas)
       .map(([nombre, data]) => ({
         nombre,
@@ -24,17 +25,17 @@ export async function cargarMangasPopulares() {
         vistas: data.vistas || 0
       }))
       .sort((a, b) => b.vistas - a.vistas)
-      .slice(0, 10); // Solo los 10 más vistos
+      .slice(0, 10);
 
+    // Limpiar contenedor antes de insertar
     contenedor.innerHTML = "";
 
     mangasOrdenados.forEach(({ nombre, portada }) => {
+      // Crear contenedor de cada tarjeta con clase para estilos responsive
       const envoltorio = document.createElement("div");
-      envoltorio.style.flex = "0 0 calc(16.66% - 1rem)";
-      envoltorio.style.maxWidth = "calc(16.66% - 1rem)";
-      envoltorio.style.display = "flex";
-      envoltorio.style.flexDirection = "column";
+      envoltorio.classList.add("popular-card-wrapper");
 
+      // Crear la tarjeta con clases Bootstrap
       const tarjeta = document.createElement("div");
       tarjeta.className = "card h-100";
 
