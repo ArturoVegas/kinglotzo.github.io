@@ -1,9 +1,13 @@
-/* Aplica box-sizing a todos los elementos para que padding y border se incluyan en el tamaño total */
+/* ================================================
+   Reset y Estilos Generales
+   ================================================ */
+
+/* Aplica box-sizing para incluir padding y border en tamaño total */
 * {
   box-sizing: border-box;
 }
 
-/* Estilos generales del body: fondo oscuro, sin margen/padding, sin scroll horizontal */
+/* Estilos generales del body: fondo oscuro, sin margen ni scroll horizontal */
 body {
   background-color: rgb(30, 26, 26);
   background-size: cover;
@@ -13,9 +17,14 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  color: #f8f9fa; /* Color claro para texto general */
 }
 
-/* Navbar personalizada con fondo azul oscuro */
+/* ================================================
+   Navbar
+   ================================================ */
+
+/* Navbar con fondo azul oscuro y texto blanco */
 .row-personalizada {
   background-color: #054283;
   color: white;
@@ -23,13 +32,13 @@ body {
   position: relative;
 }
 
-/* Logo principal - tamaño máximo 80px */
+/* Logo principal */
 .logo-img {
   max-width: 80px;
   height: auto;
 }
 
-/* Imagen nombre scan - tamaño máximo 100px, manteniendo proporción */
+/* Imagen nombre scan */
 .nombre-img {
   max-width: 100px;
   height: auto;
@@ -43,11 +52,11 @@ body {
   }
 
   .nombre-img {
-    max-width: 140px; /* Nombre más ancho para mejor visibilidad */
+    max-width: 140px; /* Nombre más ancho */
   }
 }
 
-/* Botón toggle del navbar con margen automático a la izquierda */
+/* Botón toggle del navbar con margen a la izquierda para empujar al extremo derecho */
 .navbar-toggler {
   margin-left: auto;
 }
@@ -57,13 +66,13 @@ body {
   color: white !important;
 }
 
-/* Links del navbar al pasar el cursor o activos */
+/* Links activos y hover en blanco */
 .navbar-nav .nav-link:hover,
 .navbar-nav .nav-link.active {
   color: #ffffff !important;
 }
 
-/* En pantallas pequeñas, el navbar cambia el justificado a flex-start */
+/* En pantallas pequeñas, justifica links a la izquierda */
 @media (max-width: 767.98px) {
   #navbarContent ul.navbar-nav {
     justify-content: flex-start !important;
@@ -71,44 +80,51 @@ body {
   }
 }
 
-/* Wrapper para un carrusel con ancho completo y máximo alto */
+/* ================================================
+   Carrusel Principal
+   ================================================ */
+
+/* Wrapper para el carrusel */
 #carouselWrapper {
   width: 100%;
   max-height: 800px;
   overflow: hidden;
 }
 
-/* Carrusel principal con altura fija aumentada a 400px */
+/* Carrusel principal con altura fija aumentada */
 #carouselExampleCaptions {
   width: 100%;
-  height: 400px; /* cambiado de 300px a 400px */
+  height: 400px; /* antes 300px */
   overflow: hidden;
 }
 
-/* Imagen dentro del carrusel con altura fija y ajuste para que cubra */
+/* Imagen dentro del carrusel */
 #carouselExampleCaptions .carousel-item img {
   width: 100%;
-  height: 400px; /* cambiado de 300px a 400px */
+  height: 400px; /* antes 300px */
   object-fit: cover;
 }
 
-/* En móviles, la altura del carrusel se aumenta a 200px */
+/* En móviles, altura reducida a 200px */
 @media (max-width: 576px) {
   #carouselExampleCaptions,
   #carouselExampleCaptions .carousel-item img {
-    height: 200px; /* cambiado de 150px a 200px */
+    height: 200px; /* antes 150px */
   }
 }
 
-/* Estilo para los textos que van sobre las imágenes del carrusel */
+/* Texto sobre imágenes del carrusel */
 .carousel-caption {
-  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente negro */
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
   padding: 0.5rem 1rem;
   border-radius: 10px;
   color: white;
 }
 
-/* Título "más populares" con fondo azul, sombra y texto blanco */
+/* ================================================
+   Título "Más Populares"
+   ================================================ */
+
 .maspopulares {
   color: #fff;
   padding: 8px 20px;
@@ -122,6 +138,8 @@ body {
   word-wrap: break-word;
   max-width: 100%;
 }
+
+/* Ajustes para móviles */
 @media (max-width: 576px) {
   .maspopulares {
     font-size: 1.2rem;
@@ -129,7 +147,11 @@ body {
   }
 }
 
-/* Contenedor flexible para las cards con espacio entre ellas */
+/* ================================================
+   Contenedor y Cards
+   ================================================ */
+
+/* Contenedor flexible para las cards */
 .contenedor-cards {
   display: flex;
   flex-wrap: wrap;
@@ -138,13 +160,13 @@ body {
   padding: 0 1rem;
 }
 
-/* Cada card ocupa ~1/6 del ancho menos espacio */
+/* Cada card ocupa aproximadamente 1/6 de ancho menos espacio */
 .contenedor-cards > div {
   flex: 0 0 calc(16.66% - 1rem);
   max-width: calc(16.66% - 1rem);
 }
 
-/* En pantallas medianas (≤992px), las cards ocupan 1/3 */
+/* En pantallas medianas, las cards ocupan 1/3 */
 @media (max-width: 992px) {
   .contenedor-cards > div {
     flex: 0 0 calc(33.33% - 1rem);
@@ -152,7 +174,7 @@ body {
   }
 }
 
-/* En móviles (≤576px), cards también ocupan 1/3 */
+/* En móviles, cards también ocupan 1/3 */
 @media (max-width: 576px) {
   .contenedor-cards > div {
     flex: 0 0 calc(33.33% - 1rem);
@@ -160,7 +182,7 @@ body {
   }
 }
 
-/* Estilos para las cards: fondo transparente, sin borde, sombra azul y animación escala */
+/* Estilos para las cards */
 .card {
   background-color: transparent !important;
   color: white;
@@ -170,12 +192,12 @@ body {
   transition: transform 0.2s ease;
 }
 
-/* Al pasar el cursor, la card escala al 100% */
+/* Al hacer hover escala a 100% */
 .card:hover {
   transform: scale(1);
 }
 
-/* Imagen dentro de card con altura máxima y ajuste */
+/* Imagen dentro de card */
 .card img {
   max-height: 150px;
   object-fit: cover;
@@ -189,34 +211,40 @@ body {
   padding: 5px 10px;
 }
 
-/* Título de la card con fuente pequeña */
+/* Título de la card */
 .card .card-title {
   font-size: 0.9rem;
 }
 
-/* Texto de la card con fuente más pequeña */
+/* Texto de la card */
 .card .card-text {
   font-size: 0.75rem;
 }
 
+/* ================================================
+   Footer Redes Sociales
+   ================================================ */
+
 /* Footer redes con fondo transparente y borde azul arriba */
 .footer-redes {
-  background-color: #111;
+  background-color: transparent !important;
   color: white;
   margin-top: 40px;
   border-top: 2px solid #007bff;
   border: none !important;
   box-shadow: none !important;
-  background-color: transparent !important;
 }
 
-/* Color hover para los iconos sociales en footer */
+/* Color hover para iconos sociales */
 .footer-redes .red-social:hover {
   color: #007bff;
   transition: color 0.3s ease;
 }
 
-/* Botones celeste personalizados */
+/* ================================================
+   Botones Celestes Personalizados
+   ================================================ */
+
 .btn-celeste {
   background-color: #054283;
   color: white;
@@ -229,21 +257,29 @@ body {
   color: white;
 }
 
-/* Imagen manga ajustada a max 60% ancho */
+/* ================================================
+   Imágenes y Títulos Manga
+   ================================================ */
+
+/* Imagen manga ajustada a máximo 60% ancho */
 .img-manga-ajustada {
   max-width: 60%;
   height: auto;
   object-fit: contain;
 }
 
-/* Título en página de descripción del manga */
+/* Título en página descripción manga */
 .tituloMangaDescripcion {
   color: #fff;
   margin-bottom: 1rem;
   font-size: 30px;
 }
 
-/* Sinopsis con máximo alto, scroll vertical y texto claro */
+/* ================================================
+   Sinopsis y Lista de Capítulos
+   ================================================ */
+
+/* Sinopsis con máximo alto y scroll vertical */
 .sinopsis {
   max-height: 400px;
   overflow-y: auto;
@@ -251,14 +287,14 @@ body {
   padding-right: 10px;
 }
 
-/* Lista de capítulos fondo oscuro y bordes redondeados */
+/* Lista de capítulos con fondo oscuro y bordes redondeados */
 .listaCap {
   background-color: #1e1e1e;
   padding: 0.5rem;
   border-radius: 0.5rem;
 }
 
-/* Ítems de la lista con fondo azul y texto blanco, sin bordes */
+/* Ítems de la lista de capítulos con fondo azul y texto blanco */
 .listaCap .list-group-item {
   background-color: #054283;
   color: #ffffff;
@@ -271,7 +307,7 @@ body {
   color: #fff;
 }
 
-/* Enlaces para capítulos con efectos al hover */
+/* Enlaces para capítulos con efecto hover */
 .enlace-cap {
   color: #fff;
   text-decoration: none;
@@ -286,7 +322,7 @@ body {
   text-decoration: none;
 }
 
-/* Rectángulos con fondo azul y borde blanco para ítems */
+/* Rectángulos para ítems con fondo azul y borde blanco */
 .rectangulo-item {
   background-color: #054283;
   border-radius: 0.5rem;
@@ -306,28 +342,26 @@ body {
   background-color: #1e1e1e;
 }
 
-/* Columna para info manga con flex vertical */
+/* Columna info manga con flex vertical */
 .col-manga-info {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
 
-/* Comentarios - fondo oscuro general y texto claro */
-body {
-  background-color: #1a1a1a;
+/* ================================================
+   Comentarios: estilos generales y sección
+   ================================================ */
+
+/* Contenedor principal comentarios con fondo oscuro */
+.comment-section-custom {
+  background-color: #242424;
+  padding: 20px;
+  border-radius: 8px;
   color: #f8f9fa;
 }
 
-/* Contenedor de comentarios con fondo oscuro y bordes redondeados */
-.comment-section-custom {
-  background-color: #242424; /* Fondo del contenedor de comentarios */
-  padding: 20px;
-  border-radius: 8px;
-  color: #f8f9fa; /* Color de texto general para la sección */
-}
-
-/* Encabezado de comentarios con borde inferior y espacio */
+/* Header de comentarios con borde inferior */
 .comment-header-custom {
   border-bottom: 1px solid #444;
   padding-bottom: 15px;
@@ -337,15 +371,15 @@ body {
   align-items: center;
 }
 
-/* Conteo de comentarios con tamaño y peso de fuente */
+/* Conteo de comentarios */
 .comment-count-custom {
   font-size: 1.25rem;
   font-weight: bold;
 }
 
-/* Botón de acceso personalizado con color rojo y borde redondeado */
+/* Botón de acceso personalizado rojo */
 .access-button-custom {
-  background-color: #dc3545; /* Rojo de ejemplo */
+  background-color: #dc3545;
   color: white;
   border-radius: 20px;
   padding: 5px 15px;
@@ -354,19 +388,19 @@ body {
   align-items: center;
 }
 
-/* Badge dentro del botón con colores inversos */
+/* Badge dentro del botón con colores invertidos */
 .access-button-custom .badge {
-  background-color: #f8f9fa; /* Color del número en el badge */
-  color: #dc3545; /* Color del texto del número */
+  background-color: #f8f9fa;
+  color: #dc3545;
   margin-right: 5px;
 }
 
-/* Avatar de usuario personalizado con círculo y texto centrado */
+/* Avatar personalizado para usuario */
 .user-avatar-custom {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background-color: #0d6efd; /* Color de fondo del logo "CHUU PROJECT" o similar */
+  background-color: #0d6efd; /* Color azul */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -378,7 +412,7 @@ body {
   padding: 5px;
 }
 
-/* Área para escribir comentarios con separación */
+/* Área de texto para comentarios con separación */
 .comment-input-area-custom {
   display: flex;
   align-items: flex-start;
@@ -386,21 +420,21 @@ body {
   margin-bottom: 20px;
 }
 
-/* Textarea para comentarios con fondo oscuro y bordes */
+/* Textarea comentarios */
 .comment-textarea-custom {
   flex-grow: 1;
-  background-color: #343a40; /* Fondo del textarea */
+  background-color: #343a40;
   border: 1px solid #444;
   color: #f8f9fa;
   padding: 10px;
   border-radius: 5px;
-  resize: none; /* Evitar que el usuario redimensione */
-  min-height: 80px; /* Altura inicial */
+  resize: none;
+  min-height: 80px;
 }
 
-/* Botones de login social con fondo oscuro y forma circular */
+/* Botones login social circulares */
 .social-login-icons-custom .btn {
-  background-color: #343a40; /* Fondo de los botones de redes sociales */
+  background-color: #343a40;
   border: 1px solid #444;
   color: white;
   width: 40px;
@@ -409,21 +443,28 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.2rem; /* El tamaño de los iconos de Bootstrap a veces necesita ajustarse */
+  font-size: 1.2rem;
   margin-right: 8px;
   transition: background-color 0.2s ease;
 }
 
-/* Cambio de fondo al pasar el cursor en botones sociales */
+/* Hover botones sociales */
 .social-login-icons-custom .btn:hover {
   background-color: #495057;
 }
 
-/* Colores específicos para botones sociales basados en Bootstrap Icons */
-.social-login-icons-custom .btn-facebook-bi { background-color: #3b5998; border-color: #3b5998; }
-.social-login-icons-custom .btn-disqus-bi { background-color: #2e97cc; border-color: #2e97cc; } /* Color para un icono que representa a Disqus */
+/* Colores específicos botones sociales */
+.social-login-icons-custom .btn-facebook-bi {
+  background-color: #3b5998;
+  border-color: #3b5998;
+}
 
-/* Contenedor para registro con separación entre elementos */
+.social-login-icons-custom .btn-disqus-bi {
+  background-color: #2e97cc;
+  border-color: #2e97cc;
+}
+
+/* Contenedor para registro con separación */
 .or-register-custom {
   display: flex;
   align-items: center;
@@ -431,14 +472,14 @@ body {
   margin-left: 20px;
 }
 
-/* Inputs con fondo oscuro y bordes */
+/* Inputs registro con fondo oscuro y borde */
 .or-register-custom .form-control {
   background-color: #343a40;
   border: 1px solid #444;
   color: #f8f9fa;
 }
 
-/* Pie de sección de comentarios con borde superior y separación */
+/* Pie de sección comentarios con borde superior */
 .comment-footer-custom {
   display: flex;
   justify-content: space-between;
@@ -448,19 +489,19 @@ body {
   border-top: 1px solid #444;
 }
 
-/* Botones estilo link en acciones de comentarios */
+/* Botones link en acciones de comentarios */
 .comment-actions-custom .btn-link {
   color: #f8f9fa;
   text-decoration: none;
   font-size: 0.9rem;
 }
 
-/* Hover para botones link */
+/* Hover botones link */
 .comment-actions-custom .btn-link:hover {
   color: #adb5bd;
 }
 
-/* Navegación para ordenar comentarios */
+/* Navegación ordenar comentarios */
 .comment-sort-custom .nav-link {
   color: #f8f9fa;
   padding: 0 10px;
@@ -468,14 +509,14 @@ body {
   font-size: 0.9rem;
 }
 
-/* Opción activa en el orden de comentarios */
+/* Opción activa en orden comentarios */
 .comment-sort-custom .nav-link.active {
-  color: #0d6efd; /* Color azul para la opción activa */
+  color: #0d6efd;
   border-bottom: 2px solid #0d6efd;
   background-color: transparent;
 }
 
-/* Hover para opciones de orden */
+/* Hover opciones orden */
 .comment-sort-custom .nav-link:hover {
   color: #adb5bd;
 }
@@ -485,98 +526,118 @@ body {
   border-right: 1px solid #444;
 }
 
+/* ================================================
+   Botones dropdown y paginación
+   ================================================ */
+
 /* Botones dropdown más delgados */
 .btn-group > .btn {
-  min-width: 50px; /* Puedes ajustar este valor para hacerlo más delgado */
+  min-width: 50px;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
-  font-size: 0.7rem; /* Opcional: reduce un poco el tamaño de la letra */
+  font-size: 0.7rem;
+  background-color: #1E90FF;  /* Azul celeste */
+  color: white;
+  border: 1px solid #1E90FF;
+  transition: background-color 0.2s ease;
 }
 
-/* Menú dropdown más estrecho para igualar botón */
-.dropdown-menu {
-  min-width: 50px !important; /* Igual que el botón, para que no sea más ancho */
-  padding: 0.25rem 0; /* Opcional, menos padding vertical */
-  font-size: 0.7rem; /* Opcional */
-}
-
-/* Botones "Anterior" y "Siguiente" de paginación con estilo igual que dropdown */
-#btnAnterior, #btnSiguiente {
-  min-width: 50px;       /* Igual que dropdown */
-  padding-left: 0.5rem;  /* Igual que dropdown */
-  padding-right: 0.5rem; /* Igual que dropdown */
-  font-size: 0.7rem;     /* Igual que dropdown */
-  height: 38px;          /* Altura estándar botón Bootstrap */
-  white-space: nowrap;   /* No romper texto */
-}
-
-/* Color de fondo y borde para botones dropdown */
-.btn-group > .btn {
-  background-color: #1E90FF;  /* Fondo azul celeste */
-  color: white;               /* Texto blanco */
-  border: 1px solid #1E90FF; /* Borde azul */
-}
-
-/* Hover y focus para botones dropdown */
+/* Hover y focus en botones dropdown */
 .btn-group > .btn:hover,
 .btn-group > .btn:focus {
-  background-color: #187bcd;  /* Azul un poco más oscuro al hover/focus */
+  background-color: #187bcd; /* Azul más oscuro */
   border-color: #187bcd;
   color: white;
 }
 
-/* Color para botones Anterior y Siguiente */
+/* Menú dropdown más estrecho */
+.dropdown-menu {
+  min-width: 50px !important;
+  padding: 0.25rem 0;
+  font-size: 0.7rem;
+}
+
+/* Botones paginación "Anterior" y "Siguiente" */
 #btnAnterior, #btnSiguiente {
-  background-color: #1E90FF;  /* Fondo azul celeste */
-  color: white;               /* Texto blanco */
-  border: 1px solid #1E90FF; /* Borde azul */
   min-width: 50px;
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   font-size: 0.7rem;
   height: 38px;
   white-space: nowrap;
+  background-color: #1E90FF;
+  color: white;
+  border: 1px solid #1E90FF;
+  transition: background-color 0.2s ease;
 }
 
-/* Hover y focus para botones Anterior y Siguiente */
+/* Hover y focus en botones paginación */
 #btnAnterior:hover, #btnSiguiente:hover,
 #btnAnterior:focus, #btnSiguiente:focus {
-  background-color: #187bcd;  /* Azul más oscuro al hover/focus */
+  background-color: #187bcd;
   border-color: #187bcd;
   color: white;
 }
 
+/* ================================================
+   Mejoras para tarjetas en "Últimas actualizaciones"
+   ================================================ */
 
-/* ------------------- */
-/* NUEVO: Mejoras para tarjetas de "Últimas actualizaciones" */
-/* ------------------- */
-/* Contenedor: usar flexbox con wrap */
+/* Cards flexibles con altura completa y columna vertical */
 #ultimas-actualizaciones .card {
   height: 100%;
   display: flex;
   flex-direction: column;
 }
+
+/* Imagen de la card con altura fija, enfoque arriba */
 #ultimas-actualizaciones .card-img-top {
-  height: 200px;         /* ya tienes este valor, puedes subir a 180px si quieres */
+  height: 200px; /* puedes ajustar a 180px si quieres */
   object-fit: cover;
-  object-position: top;  /* <--- esta línea hace que la imagen se "suba" y enfoque arriba */
+  object-position: top; /* sube la imagen para enfocar arriba */
 }
 
+/* Body de la card con padding reducido y margen negativo para subir texto */
 #ultimas-actualizaciones .card-body {
   flex-grow: 1;
   padding: 0.5rem 1rem;
-  margin-top: -5px;      /* <--- pequeño margen negativo para subir texto hacia la imagen */
+  margin-top: -5px;
 }
+
+/* ================================================
+   Comentarios individuales (cajas)
+   ================================================ */
+
 .comentario-box {
-  background-color: rgba(0, 0, 1, 0.85); /* gris oscuro con opacidad */
+  background-color: rgba(0, 0, 1, 0.85); /* gris oscuro semi-transparente */
   color: #fff;
   border: 1px solid #666;
   padding: 1rem;
   border-radius: 0.5rem;
   margin-bottom: 1rem;
 }
+
+/* Fecha de comentario */
 .fecha-comentario {
-  color: #ffffff; /* puedes usar otro color más claro u oscuro */
+  color: #ffffff;
   font-size: 0.85rem;
   font-style: italic;
+}
+
+/* ================================================
+   Carrusel Populares
+   ================================================ */
+
+#carrusel-populares > div {
+  flex: 0 0 calc(16.66% - 1rem);
+  max-width: calc(16.66% - 1rem);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Imagen de card en carrusel populares */
+#carrusel-populares .card-img-top {
+  height: 200px;
+  object-fit: cover;
+  object-position: top;
 }
