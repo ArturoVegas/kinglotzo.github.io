@@ -185,7 +185,8 @@ if (path.includes("admin.html")) {
           estado,
           frecuencia,
           fechaLanzamiento,
-          capitulos: {}
+          capitulos: {},
+          visitas:0
         };
 
         // Guardar el manga en Firebase

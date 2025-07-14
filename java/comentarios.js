@@ -85,11 +85,13 @@ function cargarComentarios() {
 
     arrayComentarios.forEach(com => {
       const div = document.createElement("div");
-      div.className = "mb-3 p-2 rounded bg-secondary bg-opacity-25";
+      div.className = "comentario-box";
+
       div.innerHTML = `
         <strong>${com.usuario}</strong>
         <p class="mb-1">${com.texto}</p>
-        <small class="text-muted">${formatoFechaRelativa(com.fecha)}</small>
+        <small class="fecha-comentario">${formatoFechaRelativa(com.fecha)}</small>
+
       `;
       contenedor.appendChild(div);
     });
@@ -113,12 +115,15 @@ async function publicarComentario() {
     return;
   }
 
-  const comentario = {
-    usuario: user.displayName || user.email,
-    uid: user.uid,
-    texto,
-    fecha: new Date().toISOString()
-  };
+  const nick = user.displayName?.trim();
+
+const comentario = {
+  usuario: nick && nick !== "" ? nick : "Anónimo",
+  uid: user.uid,
+  texto,
+  fecha: new Date().toISOString()
+};
+
 
   const comentariosRef = ref(db, `comentarios/${manga}/${cap}`);
   await push(comentariosRef, comentario);

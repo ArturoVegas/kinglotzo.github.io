@@ -1,7 +1,7 @@
 // scripts_lectura.js
 
 
-import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
+import { getDatabase, ref, get, runTransaction } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyArUObX1yvBE1F7JOotiFVBVp_FuFGtLks",
@@ -232,6 +232,8 @@ async function cargarInfoManga() {
           lista.innerHTML = `<li class="list-group-item text-light">No hay capítulos disponibles.</li>`;
         }
       }
+      incrementarVisitas(nombreManga);
+
     } else {
       alert("Manga no encontrado.");
     }
@@ -239,6 +241,20 @@ async function cargarInfoManga() {
     console.error("Error cargando manga:", error);
   }
 }
+async function incrementarVisitas(nombreManga) {
+  if (!nombreManga) return;
+
+  const visitasRef = ref(db, `mangas/${nombreManga}/vistas`);
+
+  try {
+    await runTransaction(visitasRef, (valorActual) => {
+      return (valorActual || 0) + 1;
+    });
+  } catch (error) {
+    console.error("Error incrementando visitas:", error);
+  }
+}
+
 
 // ------------------- Código para vermangas.html -------------------
 

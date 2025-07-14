@@ -1,7 +1,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
 import {
   getAuth,
-  createUserWithEmailAndPassword
+  createUserWithEmailAndPassword,
+  updateProfile
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 
 // Configuración de Firebase
@@ -25,6 +26,8 @@ const mensaje = document.getElementById("mensaje");
 
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
+
+  const nick = document.getElementById("nick").value.trim();
   const email = document.getElementById("email").value.trim();
   const password = document.getElementById("password").value;
   const confirmPassword = document.getElementById("confirmPassword").value;
@@ -35,13 +38,19 @@ form.addEventListener("submit", async (e) => {
   }
 
   try {
-    await createUserWithEmailAndPassword(auth, email, password);
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    await updateProfile(userCredential.user, {
+      displayName: nick
+    });
+
     mensaje.classList.remove("text-danger");
     mensaje.classList.add("text-success");
-    mensaje.textContent = "Cuenta creada exitosamente. Ahora puedes iniciar sesión.";
-    window.location.href = "index.html";
-
+    mensaje.textContent = "Cuenta creada exitosamente. Redirigiendo...";
     form.reset();
+
+    setTimeout(() => {
+      window.location.href = "../index.html";
+    }, 2000);
   } catch (error) {
     mensaje.textContent = "Error: " + error.message;
     console.error("Error de registro:", error);
