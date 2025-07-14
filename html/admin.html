@@ -93,14 +93,16 @@
 <div id="subirCapituloSection" class="d-none">
   <h3>Subir Capítulo</h3>
   <form id="formSubirCapitulo">
-    <!-- Input con datalist -->
     <div class="mb-3">
       <label for="mangaSeleccionado" class="form-label">Nombre del manga</label>
       <input list="listaMangas" class="form-control" id="mangaSeleccionado" required />
       <datalist id="listaMangas"></datalist>
     </div>
 
-    <div id="capitulosExistentes" class="mb-3 text-info"></div>
+    <select id="capituloSeleccionado">
+      <option value="">-- Selecciona un capítulo --</option>
+    </select>
+    <div id="capitulosExistentes" class="mt-2 text-info"></div>
 
     <div class="mb-3">
       <label for="numeroCapitulo" class="form-label">Número de capítulo</label>
@@ -120,8 +122,8 @@
     <button type="submit" class="btn btn-primary">Subir Capítulo</button>
   </form>
   <div id="progresoContainer" style="margin-top: 15px;"></div>
-  </form>
 </div>
+
 
   <!-- JavaScript -->
   <script type="module" src="../java/autententicado.js"></script>

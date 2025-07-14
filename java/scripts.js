@@ -1,7 +1,6 @@
-// scripts.js (unificado para mangas.html, infoMangas.html, vermangas.html, index.html)
+// scripts_lectura.js
 
-// Importación y configuración Firebase
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+
 import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
 
 const firebaseConfig = {
@@ -15,20 +14,21 @@ const firebaseConfig = {
   measurementId: "G-W512T7N7GB"
 };
 
-const app = initializeApp(firebaseConfig);
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+
+let app;
+if (!getApps().length) {
+  app = initializeApp(firebaseConfig);
+} else {
+  app = getApp();
+}
+
 const db = getDatabase(app);
 
 // ------------------- Función para calcular tiempo relativo -------------------
 
-/**
- * Calcula una cadena con tiempo relativo desde un timestamp dado.
- * Ejemplo: "hace 1 día y 3 horas"
- * @param {string|number|Date} timestamp - Fecha en formato válido
- * @returns {string} - Tiempo relativo en español
- */
 function tiempoDesde(timestamp) {
   if (!timestamp) return "";
-
   let segundos = Math.floor((Date.now() - new Date(timestamp).getTime()) / 1000);
   if (segundos < 0) return "justo ahora";
 
@@ -47,8 +47,8 @@ function tiempoDesde(timestamp) {
     const cantidad = Math.floor(segundos / unidad.valor);
     if (cantidad > 0) {
       partes.push(`${cantidad} ${unidad.nombre}${cantidad > 1 ? "s" : ""}`);
-      segundos = segundos % unidad.valor; // resto
-      if (partes.length === 2) break; // máximo dos unidades
+      segundos %= unidad.valor;
+      if (partes.length === 2) break;
     }
   }
 
@@ -63,19 +63,10 @@ const paginacion = document.getElementById("paginacion");
 let listaMangas = [];
 let paginaActual = 1;
 
-/**
- * Determina la cantidad de mangas a mostrar por página
- * según el tamaño de ventana (responsive).
- * @returns {number}
- */
 function getMangasPorPagina() {
   return window.innerWidth < 768 ? 6 : 12;
 }
 
-/**
- * Renderiza las tarjetas de mangas en la página actual.
- * @param {number} pagina
- */
 function renderizarPagina(pagina) {
   if (!contenedor) return;
 
@@ -106,9 +97,6 @@ function renderizarPagina(pagina) {
   });
 }
 
-/**
- * Renderiza los controles de paginación.
- */
 function renderizarPaginacion() {
   if (!paginacion) return;
 
@@ -117,9 +105,6 @@ function renderizarPaginacion() {
   const mangasPorPagina = getMangasPorPagina();
   const totalPaginas = Math.ceil(listaMangas.length / mangasPorPagina);
 
-  /**
-   * Crea un botón para la paginación.
-   */
   function crearBoton(texto, pagina, disabled = false, active = false) {
     const li = document.createElement("li");
     li.className = "page-item";
@@ -146,9 +131,6 @@ function renderizarPaginacion() {
   paginacion.appendChild(crearBoton("Siguiente", paginaActual + 1, paginaActual === totalPaginas));
 }
 
-/**
- * Carga la lista de mangas desde Firebase.
- */
 async function cargarMangas() {
   if (!contenedor) return;
 
@@ -169,7 +151,6 @@ async function cargarMangas() {
   }
 }
 
-// Redibujar paginación y mangas al cambiar tamaño ventana (responsive)
 window.addEventListener('resize', () => {
   if (!contenedor) return;
   const mangasPorPagina = getMangasPorPagina();
@@ -181,18 +162,11 @@ window.addEventListener('resize', () => {
 
 // ------------------- Código para infoMangas.html -------------------
 
-/**
- * Obtiene el parámetro "manga" de la URL.
- * @returns {string|null}
- */
 function obtenerNombreMangaDesdeURL() {
   const params = new URLSearchParams(window.location.search);
   return params.get("manga");
 }
 
-/**
- * Carga y muestra la información del manga seleccionado.
- */
 async function cargarInfoManga() {
   const portadaEl = document.getElementById("manga-portada");
   if (!portadaEl) return;
@@ -205,7 +179,6 @@ async function cargarInfoManga() {
     if (snapshot.exists()) {
       const data = snapshot.val();
 
-      // Helper para asignar texto a elemento por id
       const setText = (id, texto) => {
         const el = document.getElementById(id);
         if (el) el.textContent = texto ?? "-";
@@ -226,7 +199,6 @@ async function cargarInfoManga() {
       if (lista) {
         lista.innerHTML = "";
         if (typeof data.capitulos === "object" && data.capitulos !== null) {
-          // Ordenar claves (capítulos) numérica o alfabéticamente
           const clavesOrdenadas = Object.keys(data.capitulos).sort((a, b) =>
             a.localeCompare(b, undefined, { numeric: true })
           );
@@ -235,7 +207,6 @@ async function cargarInfoManga() {
             const cap = data.capitulos[clave];
             let fecha = "";
 
-            // Si la info de capítulo tiene fecha, calcular tiempo relativo
             if (cap && typeof cap === "object" && !Array.isArray(cap) && cap.fecha) {
               fecha = tiempoDesde(cap.fecha);
             }
@@ -285,9 +256,6 @@ if (tituloCap && imagenesContainer) {
   } else {
     tituloCap.textContent = `${manga.replaceAll("_", " ")} - Capítulo ${capKey}`;
 
-    /**
-     * Carga las imágenes del capítulo y las muestra.
-     */
     async function cargarCapitulo() {
       try {
         const capRef = ref(db, `mangas/${manga}/capitulos/${capKey}`);
@@ -300,7 +268,6 @@ if (tituloCap && imagenesContainer) {
 
         const data = snapshot.val();
 
-        // Soportar estructura array o objeto con key 'imagenes'
         const imagenes = Array.isArray(data) ? data : data.imagenes || [];
 
         imagenesContainer.innerHTML = "";
@@ -326,9 +293,6 @@ if (tituloCap && imagenesContainer) {
 
 const ultimasActualizacionesCont = document.getElementById("ultimas-actualizaciones");
 
-/**
- * Carga y muestra los capítulos más recientes actualizados.
- */
 async function cargarUltimasActualizaciones() {
   if (!ultimasActualizacionesCont) return;
 
@@ -342,7 +306,6 @@ async function cargarUltimasActualizaciones() {
     const mangas = snapshot.val();
     const capitulosArray = [];
 
-    // Extraer capítulos con fecha para ordenar por fecha de subida
     Object.entries(mangas).forEach(([nombreManga, dataManga]) => {
       if (!dataManga.capitulos) return;
 
@@ -369,7 +332,6 @@ async function cargarUltimasActualizaciones() {
       });
     });
 
-    // Ordenar capítulos por fecha descendente (más recientes primero)
     capitulosArray.sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
 
     const recientes = capitulosArray.slice(0, 6);
@@ -381,11 +343,9 @@ async function cargarUltimasActualizaciones() {
       return;
     }
 
-    // Renderizar las tarjetas con 3 columnas por fila (Bootstrap col-md-4)
     recientes.forEach(({ manga, portada, capitulo, fecha }) => {
       const card = document.createElement("div");
-     card.className = "col"; // 6 columnas en md+, 3 en sm, 2 en xs
-
+      card.className = "col";
 
       card.innerHTML = `
         <a href="./html/vermangas.html?manga=${encodeURIComponent(manga)}&cap=${encodeURIComponent(capitulo)}" class="text-decoration-none text-reset">

@@ -1,4 +1,6 @@
-// Importa módulos Firebase
+// ==============================
+// IMPORTACIÓN DE MÓDULOS FIREBASE
+// ==============================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
 import {
   getAuth,
@@ -10,10 +12,12 @@ import {
   getDatabase,
   ref,
   set,
-  get
+  get,
+  update
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
-
-// Configuración Firebase
+// ==============================
+// CONFIGURACIÓN E INICIALIZACIÓN DE FIREBASE
+// ==============================
 const firebaseConfig = {
   apiKey: "AIzaSyArUObX1yvBE1F7JOotiFVBVp_FuFGtLks",
   authDomain: "prueba-base-de-datos-270a7.firebaseapp.com",
@@ -28,10 +32,13 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
-
+const adminUID = "Cqh5y2MlsObi4ox90jlbAiRGu4D2";
+// Detectar la ruta actual
 const path = location.pathname;
 
-// LOGIN PAGE
+// ==============================
+// PÁGINA DE INICIO DE SESIÓN
+// ==============================
 if (path.includes("inicioSesion.html")) {
   const loginForm = document.getElementById("loginForm");
   const errorMsg = document.getElementById("errorMsg");
@@ -44,8 +51,16 @@ if (path.includes("inicioSesion.html")) {
       const password = document.getElementById("password").value;
 
       try {
-        await signInWithEmailAndPassword(auth, email, password);
-        window.location.href = "admin.html";
+        const credenciales = await signInWithEmailAndPassword(auth, email, password);
+const user = credenciales.user;
+
+if (user.uid === adminUID) {
+  window.location.href = "admin.html"; // Redirige al panel si es admin
+} else {
+  // Redirige al sitio normal de lectores/comentarios
+  window.location.href = "infoMangas.html";
+}
+
       } catch (error) {
         console.error("Login error:", error.message);
         errorMsg.textContent = "Error: " + error.message;
@@ -54,14 +69,18 @@ if (path.includes("inicioSesion.html")) {
   }
 }
 
-// ADMIN PAGE
+// ==============================
+// PÁGINA DE ADMINISTRACIÓN
+// ==============================
 if (path.includes("admin.html")) {
   onAuthStateChanged(auth, (user) => {
+    // Si no está logueado, redirigir al login
     if (!user) {
       window.location.href = "inicioSesion.html";
       return;
     }
 
+    // Referencias a secciones y botones
     const nuevoMangaSection = document.getElementById("nuevoMangaSection");
     const subirCapituloSection = document.getElementById("subirCapituloSection");
     const btnNuevoManga = document.getElementById("btnNuevoManga");
@@ -71,13 +90,13 @@ if (path.includes("admin.html")) {
     const inputManga = document.getElementById("mangaSeleccionado");
     const datalist = document.getElementById("listaMangas");
     const capitulosExistentes = document.getElementById("capitulosExistentes");
+    const formNuevoManga = document.getElementById("formNuevoManga");
     const formSubirCapitulo = document.getElementById("formSubirCapitulo");
+    const selectCapitulos = document.getElementById("capituloSeleccionado");
 
-    // Alternar secciones
-    if (nuevoMangaSection && subirCapituloSection) {
-      nuevoMangaSection.classList.remove("d-none");
-      subirCapituloSection.classList.add("d-none");
-    }
+    // Alternar entre secciones
+    nuevoMangaSection?.classList.remove("d-none");
+    subirCapituloSection?.classList.add("d-none");
 
     btnNuevoManga?.addEventListener("click", () => {
       nuevoMangaSection.classList.remove("d-none");
@@ -95,12 +114,15 @@ if (path.includes("admin.html")) {
       });
     });
 
-    const formNuevoManga = document.getElementById("formNuevoManga");
-
+    // ==============================
+    // FORMULARIO: NUEVO MANGA
+    // ==============================
     formNuevoManga?.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const nombreManga = document.getElementById("nombreManga").value.trim();
+      const nombreMangaInput = document.getElementById("nombreManga");
+      const nombreManga = nombreMangaInput.value.trim();
+
       const sinopsis = document.getElementById("sinopsis").value.trim();
       const autor = document.getElementById("autor").value.trim();
       const generos = document.getElementById("generos").value.trim();
@@ -117,6 +139,24 @@ if (path.includes("admin.html")) {
 
       const portadaFile = portadaInput.files[0];
       const folderPath = cloudinaryFolderInput || `mangas/${nombreManga}`;
+
+      // Limpiar y formatear clave manga para base de datos
+      const claveManga = nombreManga
+        .replace(/[^A-Za-z0-9\sáéíóúÁÉÍÓÚñÑüÜ.,;:¡!¿?'"()\-]/g, "")
+        .trim();
+
+      // Verificar si manga ya existe
+      try {
+        const mangaSnapshot = await get(ref(db, `mangas/${claveManga}`));
+        if (mangaSnapshot.exists()) {
+          alert(`El manga "${claveManga}" ya existe en la base de datos.`);
+          return;
+        }
+      } catch (err) {
+        console.error("Error al verificar manga existente:", err);
+        alert("Error al verificar manga existente.");
+        return;
+      }
 
       const formData = new FormData();
       formData.append("file", portadaFile);
@@ -148,21 +188,26 @@ if (path.includes("admin.html")) {
           capitulos: {}
         };
 
-        const claveManga = nombreManga
-          .replace(/[^A-Za-z0-9\sáéíóúÁÉÍÓÚñÑüÜ.,;:¡!¿?'"()\-]/g, "")
-          .trim();
-
+        // Guardar el manga en Firebase
         await set(ref(db, `mangas/${claveManga}`), mangaData);
+
+        // Crear nodo de comentarios con campo creadoEn para que no esté vacío
+        await update(ref(db, "comentarios"), {
+          [claveManga]: { creadoEn: Date.now() }
+        });
 
         alert("Manga guardado correctamente con portada subida.");
         formNuevoManga.reset();
+        cargarMangasEnDatalist(); // recargar lista mangas
       } catch (error) {
         console.error("Error:", error);
         alert("Error al subir imagen o guardar manga: " + error.message);
       }
     });
 
-    // === SUBIR CAPITULO ===
+    // ==============================
+    // Cargar mangas en el datalist para autocompletar
+    // ==============================
     async function cargarMangasEnDatalist() {
       try {
         const snapshot = await get(ref(db, 'mangas'));
@@ -180,17 +225,50 @@ if (path.includes("admin.html")) {
       }
     }
 
+    cargarMangasEnDatalist();
+
+    // ==============================
+    // Mostrar capítulos existentes en select al cambiar manga seleccionado
+    // ==============================
     inputManga?.addEventListener("change", async () => {
       const nombre = inputManga.value.trim();
-      if (!nombre) return;
+
+      // Limpiar select de capítulos
+      if (selectCapitulos) {
+        selectCapitulos.innerHTML = '<option value="">-- Selecciona un capítulo --</option>';
+      }
+
+      if (!nombre) {
+        capitulosExistentes.innerHTML = "";
+        return;
+      }
 
       try {
         const snapshot = await get(ref(db, `mangas/${nombre}`));
         if (snapshot.exists()) {
           const data = snapshot.val();
           if (data.capitulos && typeof data.capitulos === "object") {
-            const total = Object.keys(data.capitulos).length;
-            capitulosExistentes.innerHTML = `Capítulos existentes: ${total}`;
+            const keysCaps = Object.keys(data.capitulos);
+
+            if (keysCaps.length === 0) {
+              if (selectCapitulos) {
+                const option = document.createElement("option");
+                option.value = "";
+                option.text = "No hay capítulos disponibles";
+                selectCapitulos.appendChild(option);
+              }
+              capitulosExistentes.innerHTML = "No hay capítulos subidos aún.";
+            } else {
+              keysCaps.forEach(capNum => {
+                if (selectCapitulos) {
+                  const option = document.createElement("option");
+                  option.value = capNum;
+                  option.text = `Capítulo ${capNum}`;
+                  selectCapitulos.appendChild(option);
+                }
+              });
+              capitulosExistentes.innerHTML = `Capítulos existentes: ${keysCaps.length}`;
+            }
           } else {
             capitulosExistentes.innerHTML = "No hay capítulos subidos aún.";
           }
@@ -202,16 +280,18 @@ if (path.includes("admin.html")) {
       }
     });
 
-    // --------- Elimina cualquier otro listener submit duplicado sobre formSubirCapitulo ---------
-    // Aquí solo usamos UN listener con barra de progreso y fecha
-
-    // Crear un div para mostrar el progreso de la subida
+    // ==============================
+    // Crear barra de progreso visual para subir imágenes de capítulo
+    // ==============================
     const progresoContainer = document.createElement("div");
     progresoContainer.id = "progresoContainer";
     progresoContainer.style.marginTop = "10px";
     formSubirCapitulo.appendChild(progresoContainer);
 
-    formSubirCapitulo.addEventListener("submit", async (e) => {
+    // ==============================
+    // FORMULARIO: SUBIR CAPÍTULO
+    // ==============================
+    formSubirCapitulo?.addEventListener("submit", async (e) => {
       e.preventDefault();
 
       const nombreManga = inputManga.value.trim();
@@ -224,15 +304,28 @@ if (path.includes("admin.html")) {
         return;
       }
 
+      // Verificar si capítulo ya existe
+      try {
+        const capSnapshot = await get(ref(db, `mangas/${nombreManga}/capitulos/${numeroCapitulo}`));
+        if (capSnapshot.exists()) {
+          alert(`El capítulo "${numeroCapitulo}" ya existe para el manga "${nombreManga}".`);
+          return;
+        }
+      } catch (err) {
+        console.error("Error al verificar capítulo existente:", err);
+        alert("Error al verificar capítulo existente.");
+        return;
+      }
+
       const imagenes = imagenesInput.files;
       const urlsSubidas = [];
 
-      progresoContainer.innerHTML = ""; // limpiar progreso
+      progresoContainer.innerHTML = ""; // Limpiar barra de progreso anterior
 
+      // Subir imágenes una por una con barra de progreso
       for (let i = 0; i < imagenes.length; i++) {
         const img = imagenes[i];
 
-        // Crear barra de progreso para cada imagen
         const barraWrapper = document.createElement("div");
         barraWrapper.style.marginBottom = "5px";
 
@@ -250,7 +343,7 @@ if (path.includes("admin.html")) {
         barraWrapper.appendChild(barraProgreso);
         progresoContainer.appendChild(barraWrapper);
 
-        // Subida con XMLHttpRequest para obtener progreso
+        // Subida con XMLHttpRequest para mostrar progreso
         const urlSubida = await new Promise((resolve, reject) => {
           const formData = new FormData();
           formData.append("file", img);
@@ -281,18 +374,22 @@ if (path.includes("admin.html")) {
           xhr.send(formData);
         }).catch((err) => {
           alert(err.message);
-          throw err; // para cortar el for
+          throw err; // Detener la subida si hay error
         });
 
         urlsSubidas.push(urlSubida);
       }
 
+      // Guardar capítulo en Firebase con timestamp
       try {
         const capRef = ref(db, `mangas/${nombreManga}/capitulos/${numeroCapitulo}`);
         await set(capRef, {
           imagenes: urlsSubidas,
           fecha: Date.now()
         });
+
+        // Crear nodo de comentarios para el capítulo, con campo creadoEn vacío para evitar errores
+        await set(ref(db, `comentarios/${nombreManga}/${numeroCapitulo}`), { creadoEn: Date.now() });
 
         alert("Capítulo subido correctamente.");
         formSubirCapitulo.reset();
@@ -303,7 +400,5 @@ if (path.includes("admin.html")) {
         alert("Error al guardar capítulo en Firebase");
       }
     });
-
-    cargarMangasEnDatalist();
   });
-}// prueba
+}

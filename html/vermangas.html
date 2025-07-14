@@ -12,41 +12,35 @@
 </head>
 <body class="bg-dark text-white">
 
-  <!-- Navbar de ancho completo -->
-    <nav class="navbar navbar-expand-md row-personalizada px-3">
-  <div class="container-fluid">
-    <!-- Logo -->
-    <a class="navbar-brand d-flex align-items-center" href="../index.html">
-      <img src="../Recursos/imagenes/imagen al principio.png" alt="Logo" class="img-fluid logo-img me-2" />
-      <img src="../Recursos/imagenes/whitePearltranslation.png" alt="Nombre Scan" class="img-fluid nombre-img" />
-    </a>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-md row-personalizada px-3">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="../index.html">
+        <img src="../Recursos/imagenes/imagen al principio.png" alt="Logo" class="img-fluid logo-img me-2" />
+        <img src="../Recursos/imagenes/whitePearltranslation.png" alt="Nombre Scan" class="img-fluid nombre-img" />
+      </a>
 
-    <!-- Botón hamburguesa -->
-    <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-      <span class="navbar-toggler-icon"></span>
-    </button>
+      <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-    <!-- Menú colapsable -->
-    <div class="collapse navbar-collapse mt-2 mt-md-0" id="navbarContent">
-      <ul class="navbar-nav flex-column flex-md-row w-100 justify-content-center justify-content-md-center align-items-center align-items-md-center">
+      <div class="collapse navbar-collapse mt-2 mt-md-0" id="navbarContent">
+        <ul class="navbar-nav flex-column flex-md-row w-100 justify-content-center justify-content-md-center align-items-center align-items-md-center">
+          <li class="nav-item"><a class="nav-link text-white" href="../index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="../html/mangas.html">Nuestros mangas</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="#">Géneros</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="#">Contacto</a></li>
+        </ul>
 
-        <li class="nav-item"><a class="nav-link text-white" href="../index.html">Inicio</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="../html/mangas.html">Nuestros mangas</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="#">Géneros</a></li>
-        <li class="nav-item"><a class="nav-link text-white" href="#">Contacto</a></li>
-      </ul>
-
-      <!-- Buscador + botón inicio sesión -->
-<form class="d-flex mt-3 mt-md-0 ms-md-auto w-100 w-md-50 align-items-center" role="search">
-  <input class="form-control border-dark" type="search" placeholder="🔍 Buscar..." />
-  <button class="btn btn-outline-light ms-2" type="submit">Buscar</button>
- <a href="../html/inicioSesion.html" class="btn btn-outline-light ms-2 d-flex align-items-center justify-content-center" style="padding: 0.375rem 0.75rem; height: 38px; font-size: 0.8rem;">Iniciar sesión</a>
-
-</form>
-
+        <form class="d-flex mt-3 mt-md-0 ms-md-auto w-100 w-md-50 align-items-center" role="search">
+          <input class="form-control border-dark" type="search" placeholder="🔍 Buscar..." />
+          <button class="btn btn-outline-light ms-2" type="submit">Buscar</button>
+          <a href="../html/inicioSesion.html" class="btn btn-outline-light ms-2 d-flex align-items-center justify-content-center" style="padding: 0.375rem 0.75rem; height: 38px; font-size: 0.8rem;">Iniciar sesión</a>
+        </form>
+      </div>
     </div>
-  </div>
-</nav>
+  </nav>
+
   <!-- Contenido principal -->
   <div class="container container-fluid mt-4">
     <h2 id="titulo-capitulo" class="text-center mb-4 maspopulares">Cargando capítulo...</h2>
@@ -54,52 +48,31 @@
   </div>
 
   <!-- Comentarios -->
-  <div class="row justify-content-center">
-    <div class="col-12 col-md-11 col-lg-9 comment-section-custom">
-      <div class="comment-header-custom">
-        <div class="comment-count-custom">0 Comentarios</div>
-        <button class="btn access-button-custom">
-          <span class="badge text-bg-light rounded-pill me-1">1</span>Acceder <i class="fas fa-caret-down ms-1"></i>
-        </button>
-      </div>
+  <!-- Comentarios -->
+<div class="row justify-content-center">
+  <div class="col-12 col-md-11 col-lg-9 comment-section-custom">
 
-      <div class="comment-input-area-custom">
-        <div class="user-avatar-custom">CHUU PROJECT</div>
-        <textarea class="form-control comment-textarea-custom" placeholder="Sé el primero en comentar..." rows="3"></textarea>
-      </div>
-
-      <div class="d-flex flex-wrap align-items-center mb-3">
-        <div class="me-3">INICIAR SESIÓN CON</div>
-        <div class="social-login-icons-custom d-flex flex-wrap">
-          <button class="btn btn-facebook-bi"><i class="bi bi-facebook"></i></button>
-          <button class="btn btn-disqus-bi"><i class="bi bi-chat-dots-fill"></i></button>
-        </div>
-
-        <div class="or-register-custom ms-auto">
-          O REGISTRARSE CON DISQUS <i class="fas fa-question-circle"></i>
-          <input type="text" class="form-control" placeholder="Nombre" style="width: 150px;" />
-        </div>
-      </div>
-
-      <div class="comment-footer-custom">
-        <div class="comment-actions-custom">
-          <button class="btn btn-link"><i class="far fa-heart me-1"></i> 1</button>
-          <span class="text-white mx-1">•</span>
-          <button class="btn btn-link"><i class="fas fa-share-alt me-1"></i> Compartir</button>
-        </div>
-        <div class="comment-sort-custom">
-          <ul class="nav nav-pills">
-            <li class="nav-item"><a class="nav-link active" href="#">El mejor</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">El más nuevo</a></li>
-            <li class="nav-item"><a class="nav-link" href="#">Antiguos</a></li>
-          </ul>
-        </div>
-      </div>
+    <div class="comment-header-custom d-flex justify-content-between align-items-center mb-2">
+      <div class="comment-count-custom">0 Comentarios</div>
+      <button id="btn-iniciar-sesion" class="btn btn-primary btn-sm">Iniciar sesión para comentar</button>
+      <button id="btn-logout" class="btn btn-danger btn-sm" style="display:none;">Cerrar sesión</button>
     </div>
+
+    <div id="comment-form" class="comment-input-area-custom mb-3 d-flex gap-3 align-items-start" style="display:none;">
+      <div class="user-avatar-custom" id="user-avatar">U</div>
+      <textarea id="input-comentario" class="form-control comment-textarea-custom" placeholder="Escribe tu comentario..." rows="3"></textarea>
+      <button id="btn-publicar-comentario" class="btn btn-success align-self-start">Publicar</button>
+    </div>
+
+    <div id="lista-comentarios" class="mt-3"></div>
+
   </div>
+</div>
+
 
   <!-- Scripts -->
   <script type="module" src="../java/scripts.js"></script>
+  <script type="module" src="../java/comentarios.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

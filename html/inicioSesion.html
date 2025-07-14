@@ -9,9 +9,6 @@
 <body class="d-flex justify-content-center align-items-center vh-100 bg-dark text-light">
 
   <!-- Aviso -->
-  <div class="text-center position-absolute top-0 mt-4 w-100">
-    <h5 class="text-uppercase text-warning">Solo para el personal del staff</h5>
-  </div>
 
   <!-- Formulario de login -->
   <div class="card p-4" style="width: 300px;">
@@ -27,8 +24,12 @@
       </div>
       <button type="submit" class="btn btn-primary w-100">Entrar</button>
     </form>
+    <p class="text-center mt-3">
+  ¿No tienes cuenta? <a href="registro.html">Regístrate aquí</a>
+</p>
     <div id="errorMsg" class="mt-3 text-danger"></div>
   </div>
+  
 
   <!-- Script de Firebase -->
   <script type="module" src="../java/autententicado.js"></script>
