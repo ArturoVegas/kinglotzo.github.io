@@ -24,7 +24,7 @@ if (!getApps().length) {
 }
 
 const db = getDatabase(app);
-
+let listaNombresMangas = [];
 // ------------------- Función para calcular tiempo relativo -------------------
 
 function tiempoDesde(timestamp) {
@@ -439,12 +439,127 @@ async function cargarMangasPopulares() {
     contenedor.innerHTML = "<p class='text-danger'>Error al cargar los mangas populares.</p>";
   }
 }
+async function cargarNombresMangas() {
+  try {
+    const db = getDatabase();
+    const snapshot = await get(ref(db, 'mangas'));
+    if (snapshot.exists()) {
+      listaNombresMangas = Object.keys(snapshot.val()); // Array con los nombres de mangas
+    } else {
+      listaNombresMangas = [];
+    }
+  } catch (error) {
+    console.error("Error cargando nombres de mangas para autocompletado:", error);
+    listaNombresMangas = [];
+  }
+}
 
+function inicializarBuscadorConAutocomplete() {
+  const formBuscar = document.getElementById('form-buscar');
+  const inputBuscar = document.getElementById('input-buscar');
+  if (!formBuscar || !inputBuscar) return;
+
+  // Crear contenedor para las sugerencias
+  const contenedorSugerencias = document.createElement('ul');
+  contenedorSugerencias.style.position = 'absolute';
+  contenedorSugerencias.style.zIndex = '9999';
+  contenedorSugerencias.style.backgroundColor = 'white';
+  contenedorSugerencias.style.listStyle = 'none';
+  contenedorSugerencias.style.margin = '0';
+  contenedorSugerencias.style.padding = '0';
+  contenedorSugerencias.style.width = inputBuscar.offsetWidth + 'px';
+  contenedorSugerencias.style.border = '1px solid #ccc';
+  contenedorSugerencias.style.maxHeight = '200px';
+  contenedorSugerencias.style.overflowY = 'auto';
+  contenedorSugerencias.style.cursor = 'pointer';
+
+  contenedorSugerencias.classList.add('autocomplete-list');
+
+  inputBuscar.parentNode.style.position = 'relative'; // Para que el absolute funcione bien
+  inputBuscar.parentNode.appendChild(contenedorSugerencias);
+
+  // Función para limpiar sugerencias
+  function limpiarSugerencias() {
+    contenedorSugerencias.innerHTML = '';
+    contenedorSugerencias.classList.remove('show'); // <-- aquí se quita la clase show
+  }
+
+  // Función para mostrar sugerencias
+  function mostrarSugerencias(filtrados) {
+    limpiarSugerencias();
+    if (filtrados.length === 0) return;
+
+    filtrados.forEach(nombre => {
+      const li = document.createElement('li');
+      li.textContent = nombre.replaceAll('_', ' ');
+      li.style.padding = '5px 10px';
+
+      li.addEventListener('mousedown', (e) => {
+        e.preventDefault(); // Evitar que el input pierda foco
+        inputBuscar.value = nombre.replaceAll('_', ' ');
+        limpiarSugerencias();
+        redirigir(nombre);
+      });
+
+      contenedorSugerencias.appendChild(li);
+    });
+    contenedorSugerencias.classList.add('show'); // <-- aquí se añade la clase show
+  }
+
+  // Función para redirigir a infoMangas.html con manga seleccionado
+  function redirigir(nombreManga) {
+    // Transformar espacios en guiones bajos para que coincida con Firebase
+    const clave = nombreManga.trim().replace(/\s+/g, '_');
+    window.location.href = `./html/infoMangas.html?manga=${encodeURIComponent(clave)}`;
+  }
+
+  // Evento al escribir en el input
+  inputBuscar.addEventListener('input', () => {
+    const valor = inputBuscar.value.trim().toLowerCase();
+    if (!valor) {
+      limpiarSugerencias();
+      return;
+    }
+
+    // Filtrar lista por coincidencias que contengan el texto
+    const coincidencias = listaNombresMangas.filter(nombre =>
+      nombre.toLowerCase().replaceAll('_', ' ').includes(valor)
+    ).slice(0, 10); // Limitar a 10 sugerencias
+
+    mostrarSugerencias(coincidencias);
+  });
+
+  // Manejar submit del formulario
+  formBuscar.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const valor = inputBuscar.value.trim();
+    if (!valor) return;
+
+    // Buscar si existe exacto en la lista (ignorando guiones bajos)
+    const claveEncontrada = listaNombresMangas.find(nombre =>
+      nombre.toLowerCase() === valor.toLowerCase().replace(/\s+/g, '_')
+    );
+
+    if (claveEncontrada) {
+      redirigir(claveEncontrada);
+    } else {
+      alert(`No se encontró el manga "${valor}".`);
+    }
+  });
+
+  // Cerrar sugerencias si haces click fuera
+  document.addEventListener('click', (e) => {
+    if (e.target !== inputBuscar) {
+      limpiarSugerencias();
+    }
+  });
+}
 
 
 // ------------------- Evento de carga general -------------------
-
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
+  await cargarNombresMangas();
+  inicializarBuscadorConAutocomplete();
   cargarMangas();
   cargarInfoManga();
   cargarUltimasActualizaciones();
