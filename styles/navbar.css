@@ -1,0 +1,29 @@
+.row-personalizada {
+  background-color: #054283;
+  color: white;
+  z-index: 10;
+  position: relative;
+}
+.logo-img {
+  max-width: 80px;
+  height: auto;
+}
+.nombre-img {
+  max-width: 100px;
+  height: auto;
+  object-fit: contain;
+}
+@media (max-width: 576px) {
+  .logo-img { max-width: 60px; }
+  .nombre-img { max-width: 140px; }
+}
+.navbar-toggler { margin-left: auto; }
+.navbar-nav .nav-link { color: white !important; }
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active { color: #ffffff !important; }
+@media (max-width: 767.98px) {
+  #navbarContent ul.navbar-nav {
+    justify-content: flex-start !important;
+    width: 100%;
+  }
+}

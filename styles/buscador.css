@@ -1,0 +1,23 @@
+.autocomplete-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: rgb(61, 11, 225) !important;
+  border: 1px solid #ccc !important;
+  z-index: 9999 !important;
+  max-height: 200px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: none;
+}
+.autocomplete-list.show {
+  display: block;
+}
+.autocomplete-list li:hover {
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+}

@@ -1,0 +1,20 @@
+.maspopulares {
+  color: #fff;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 2rem;
+  background-color: #054283;
+  margin: 20px auto;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  text-align: center;
+  word-wrap: break-word;
+  max-width: 100%;
+}
+
+@media (max-width: 576px) {
+  .maspopulares {
+    font-size: 1.2rem;
+    padding: 6px 15px;
+  }
+}
