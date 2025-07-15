@@ -48,9 +48,10 @@ form.addEventListener("submit", async (e) => {
     mensaje.textContent = "Cuenta creada exitosamente. Redirigiendo...";
     form.reset();
 
+    // Redirigir inmediatamente
     setTimeout(() => {
       window.location.href = "../index.html";
-    }, 2000);
+    }, 1000);
   } catch (error) {
     mensaje.textContent = "Error: " + error.message;
     console.error("Error de registro:", error);

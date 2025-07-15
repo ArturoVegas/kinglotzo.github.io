@@ -46,7 +46,8 @@ if (loginForm) {
       if (user.uid === adminUID) {
         window.location.href = "admin.html"; // Panel admin
       } else {
-        window.location.href = "../index.html"; // Usuario normal
+        // Usuario normal - redirigir inmediatamente
+        window.location.href = "../index.html";
       }
     } catch (error) {
       console.error("Login error:", error.message);
