@@ -49,7 +49,7 @@ form.addEventListener("submit", async (e) => {
     form.reset();
 
     setTimeout(() => {
-      window.location.href = "index.html";
+      window.location.href = "../index.html";
     }, 2000);
   } catch (error) {
     mensaje.textContent = "Error: " + error.message;
