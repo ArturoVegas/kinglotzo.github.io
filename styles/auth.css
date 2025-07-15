@@ -117,6 +117,73 @@ body {
   color: white;
 }
 
+/* Estilos para el checkbox recordarme */
+.form-check {
+  display: flex;
+  align-items: center;
+  padding-left: 0;
+}
+
+.form-check-input {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  background-color: rgba(255, 255, 255, 0.15);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+.form-check-input:checked {
+  background-color: #54a3ff;
+  border-color: #54a3ff;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3e%3cpath fill='none' stroke='%23fff' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M6 10l3 3l6-6'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 16px 16px;
+}
+
+.form-check-input:hover {
+  border-color: rgba(255, 255, 255, 0.7);
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.form-check-input:checked:hover {
+  background-color: #4a94e6;
+  border-color: #4a94e6;
+}
+
+.form-check-input:focus {
+  border-color: #54a3ff;
+  box-shadow: 0 0 0 0.2rem rgba(84, 163, 255, 0.25);
+  outline: none;
+}
+
+.form-check-label {
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: color 0.3s ease;
+}
+
+.form-check-label:hover {
+  color: rgba(255, 255, 255, 1);
+}
+
+.form-check-label.checked {
+  color: #4ade80;
+  transition: color 0.3s ease;
+}
+
+.form-check-label.checked i {
+  color: #4ade80;
+}
+
 .logo-container {
   text-align: center;
   margin-bottom: 2rem;

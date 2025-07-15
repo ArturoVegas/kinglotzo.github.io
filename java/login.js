@@ -4,6 +4,8 @@ import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebase
 import {
   getAuth,
   signInWithEmailAndPassword,
+  setPersistence,
+  browserSessionPersistence
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 
 const firebaseConfig = {
@@ -39,6 +41,9 @@ if (loginForm) {
     const password = document.getElementById("password").value;
 
     try {
+      // Configurar persistencia solo durante la sesión (sin checkbox)
+      await setPersistence(auth, browserSessionPersistence);
+      
       const credenciales = await signInWithEmailAndPassword(auth, email, password);
       const user = credenciales.user;
 

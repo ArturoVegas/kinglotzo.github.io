@@ -6,7 +6,10 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   updateProfile,
-  onAuthStateChanged
+  onAuthStateChanged,
+  setPersistence,
+  browserLocalPersistence,
+  browserSessionPersistence
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 
 const firebaseConfig = {
@@ -50,33 +53,6 @@ onAuthStateChanged(auth, (user) => {
 });
 
 // Funciones para cambiar entre pestañas
-function showLogin() {
-  // Actualizar tabs
-  loginTab.classList.add('active');
-  registerTab.classList.remove('active');
-
-  // Ocultar formulario de registro con animación
-  registerForm.classList.add('fade-out');
-  registerForm.classList.remove('fade-in');
-
-  // Después de la animación, ocultar y mostrar el login
-  setTimeout(() => {
-    registerForm.classList.add('d-none');
-    registerForm.classList.remove('fade-out');
-    
-    // Mostrar formulario de login
-    loginForm.classList.remove('d-none');
-    loginForm.classList.add('fade-in');
-    
-    // Cambiar altura del contenedor
-    setTimeout(() => {
-      const formHeight = loginForm.offsetHeight;
-      document.querySelector('.forms-container').style.height = formHeight + 'px';
-    }, 50);
-  }, 200);
-
-  clearMessages();
-}
 
 function showRegister() {
   // Actualizar tabs
@@ -122,9 +98,78 @@ function showSuccess(element, message) {
   element.classList.remove('d-none');
 }
 
+// Cargar email recordado al cargar la página
+function loadRememberedUser() {
+  const rememberUser = localStorage.getItem('rememberUser');
+  const userEmail = localStorage.getItem('userEmail');
+  
+  if (rememberUser === 'true' && userEmail) {
+    document.getElementById('loginEmail').value = userEmail;
+    document.getElementById('rememberMe').checked = true;
+    
+    // Aplicar color verde al label
+    const rememberMeLabel = document.querySelector('label[for="rememberMe"]');
+    if (rememberMeLabel) {
+      rememberMeLabel.classList.add('checked');
+    }
+  }
+}
+
+// Cargar usuario recordado cuando se muestra el formulario de login
+function showLogin() {
+  // Actualizar tabs
+  loginTab.classList.add('active');
+  registerTab.classList.remove('active');
+
+  // Ocultar formulario de registro con animación
+  registerForm.classList.add('fade-out');
+  registerForm.classList.remove('fade-in');
+
+  // Después de la animación, ocultar y mostrar el login
+  setTimeout(() => {
+    registerForm.classList.add('d-none');
+    registerForm.classList.remove('fade-out');
+    
+    // Mostrar formulario de login
+    loginForm.classList.remove('d-none');
+    loginForm.classList.add('fade-in');
+    
+    // Cargar usuario recordado
+    loadRememberedUser();
+    
+    // Cambiar altura del contenedor
+    setTimeout(() => {
+      const formHeight = loginForm.offsetHeight;
+      document.querySelector('.forms-container').style.height = formHeight + 'px';
+    }, 50);
+  }, 200);
+
+  clearMessages();
+}
+
 // Event listeners para las pestañas
 loginTab.addEventListener('click', showLogin);
 registerTab.addEventListener('click', showRegister);
+
+// Cargar usuario recordado al inicio
+loadRememberedUser();
+
+// Manejar cambio de color del label cuando se marca/desmarca el checkbox
+const rememberMeCheckbox = document.getElementById('rememberMe');
+const rememberMeLabel = document.querySelector('label[for="rememberMe"]');
+
+rememberMeCheckbox.addEventListener('change', function() {
+  if (this.checked) {
+    rememberMeLabel.classList.add('checked');
+  } else {
+    rememberMeLabel.classList.remove('checked');
+  }
+});
+
+// Aplicar color inicial si ya está marcado
+if (rememberMeCheckbox.checked) {
+  rememberMeLabel.classList.add('checked');
+}
 
 // Manejo del formulario de login
 loginFormElement.addEventListener('submit', async (e) => {
@@ -133,6 +178,7 @@ loginFormElement.addEventListener('submit', async (e) => {
   
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
+  const rememberMe = document.getElementById('rememberMe').checked;
   
   if (!email || !password) {
     showError(loginError, 'Por favor, completa todos los campos.');
@@ -140,8 +186,26 @@ loginFormElement.addEventListener('submit', async (e) => {
   }
   
   try {
+    // Configurar persistencia según el checkbox
+    if (rememberMe) {
+      // Mantener sesión activa incluso al cerrar el navegador
+      await setPersistence(auth, browserLocalPersistence);
+    } else {
+      // Sesión solo durante la sesión del navegador
+      await setPersistence(auth, browserSessionPersistence);
+    }
+    
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
+    
+    // Guardar preferencia de recordar usuario
+    if (rememberMe) {
+      localStorage.setItem('rememberUser', 'true');
+      localStorage.setItem('userEmail', email);
+    } else {
+      localStorage.removeItem('rememberUser');
+      localStorage.removeItem('userEmail');
+    }
     
     // Redirigir según el tipo de usuario
     if (user.uid === adminUID) {
