@@ -51,7 +51,32 @@ if (loginForm) {
       }
     } catch (error) {
       console.error("Login error:", error.message);
-      if (errorMsg) errorMsg.textContent = "Error: " + error.message;
+      let errorMessage;
+      
+      switch (error.code) {
+        case 'auth/user-not-found':
+          errorMessage = 'Error al iniciar sesión: la cuenta no existe';
+          break;
+        case 'auth/wrong-password':
+          errorMessage = 'Error al iniciar sesión: usuario o contraseña incorrectos';
+          break;
+        case 'auth/invalid-email':
+          errorMessage = 'Error al iniciar sesión: correo electrónico inválido';
+          break;
+        case 'auth/invalid-credential':
+          errorMessage = 'Error al iniciar sesión: usuario o contraseña incorrectos';
+          break;
+        case 'auth/user-disabled':
+          errorMessage = 'Error al iniciar sesión: esta cuenta ha sido deshabilitada';
+          break;
+        case 'auth/too-many-requests':
+          errorMessage = 'Error al iniciar sesión: demasiados intentos fallidos. Intenta más tarde';
+          break;
+        default:
+          errorMessage = 'Error al iniciar sesión: usuario o contraseña incorrectos';
+      }
+      
+      if (errorMsg) errorMsg.textContent = errorMessage;
     }
   });
 }

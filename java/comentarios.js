@@ -156,7 +156,7 @@ function actualizarUI(user) {
 }
 
 function redirigirLogin() {
-  window.location.href = "../html/inicioSesion.html";
+  window.location.href = "../html/auth.html";
 }
 
 async function logout() {

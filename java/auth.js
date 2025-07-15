@@ -55,12 +55,11 @@ function updateAuthUI(user) {
     // Determinar rutas correctas según la ubicación actual
     const currentPath = window.location.pathname;
     const isInSubfolder = currentPath.includes('/html/');
-    const loginPath = isInSubfolder ? '../html/inicioSesion.html' : './html/inicioSesion.html';
-    const registerPath = isInSubfolder ? '../html/registro.html' : './html/registro.html';
+    const authPath = isInSubfolder ? '../html/auth.html' : './html/auth.html';
     
     dropdownMenu.innerHTML = `
-      <li><a class="dropdown-item" href="${loginPath}"><i class="bi bi-box-arrow-in-right me-2"></i>Iniciar sesión</a></li>
-      <li><a class="dropdown-item" href="${registerPath}"><i class="bi bi-person-plus me-2"></i>Registrarse</a></li>
+      <li><a class="dropdown-item" href="${authPath}"><i class="bi bi-box-arrow-in-right me-2"></i>Iniciar sesión</a></li>
+      <li><a class="dropdown-item" href="${authPath}"><i class="bi bi-person-plus me-2"></i>Registrarse</a></li>
     `;
   }
 }
@@ -69,8 +68,8 @@ function updateAuthUI(user) {
 function handlePageSpecificAuth() {
   const currentPath = window.location.pathname;
   
-  // Si estamos en páginas de login/registro, manejar según corresponda
-  if (currentPath.includes('inicioSesion.html') || currentPath.includes('registro.html')) {
+  // Si estamos en páginas de login/registro/auth, manejar según corresponda
+  if (currentPath.includes('inicioSesion.html') || currentPath.includes('registro.html') || currentPath.includes('auth.html')) {
     onAuthStateChanged(auth, (user) => {
       if (user) {
         // Si ya está autenticado, redirigir al inicio
