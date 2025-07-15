@@ -1,0 +1,44 @@
+.btn-celeste {
+  background-color: #054283;
+  color: white;
+  border: none;
+}
+.btn-celeste:hover,
+.btn-celeste:focus {
+  background-color: #054283;
+  color: white;
+}
+.btn-group > .btn {
+  min-width: 50px;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  font-size: 0.7rem;
+  background-color: #1E90FF;
+  color: white;
+  border: 1px solid #1E90FF;
+  transition: background-color 0.2s ease;
+}
+.btn-group > .btn:hover,
+.btn-group > .btn:focus {
+  background-color: #187bcd;
+  border-color: #187bcd;
+  color: white;
+}
+#btnAnterior, #btnSiguiente {
+  min-width: 50px;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  font-size: 0.7rem;
+  height: 38px;
+  white-space: nowrap;
+  background-color: #1E90FF;
+  color: white;
+  border: 1px solid #1E90FF;
+  transition: background-color 0.2s ease;
+}
+#btnAnterior:hover, #btnSiguiente:hover,
+#btnAnterior:focus, #btnSiguiente:focus {
+  background-color: #187bcd;
+  border-color: #187bcd;
+  color: white;
+}

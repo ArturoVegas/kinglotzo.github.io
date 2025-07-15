@@ -1,0 +1,12 @@
+.footer-redes {
+  background-color: transparent !important;
+  color: white;
+  margin-top: 40px;
+  border-top: 2px solid #007bff;
+  border: none !important;
+  box-shadow: none !important;
+}
+.footer-redes .red-social:hover {
+  color: #007bff;
+  transition: color 0.3s ease;
+}
