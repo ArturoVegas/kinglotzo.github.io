@@ -115,7 +115,8 @@ async function publicarComentario() {
     return;
   }
 
-  const nick = user.displayName?.trim();
+  const nick = user.displayName?.trim() || user.email?.split("@")[0] || "Anónimo";
+
 
 const comentario = {
   usuario: nick && nick !== "" ? nick : "Anónimo",

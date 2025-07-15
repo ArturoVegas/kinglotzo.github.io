@@ -4,6 +4,8 @@ import { cargarCapitulo } from "./vermangas.js";
 import { cargarUltimasActualizaciones } from "./index.js";
 import { cargarNombresMangas, inicializarBuscadorConAutocomplete } from "./buscador.js";
 import { cargarMangasPopulares } from "./mangasPopulares.js";
+import { cargarCarruselPrincipal } from "./carrusel.js";
+import { cargarNoticias } from "./noticias.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const pathname = window.location.pathname;
@@ -36,5 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
   cargarNombresMangas().then(() => {
     inicializarBuscadorConAutocomplete();
     cargarMangasPopulares();
+     cargarCarruselPrincipal();
+    cargarNoticias();
   });
 });
