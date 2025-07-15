@@ -342,17 +342,25 @@ if (!path.includes("admin.html")) {
 
       urlsSubidas.push(urlSubida);
     }
-
     try {
-      // Guardar urls en Firebase en la ruta del capítulo
-      await set(ref(db, `mangas/${nombreManga}/capitulos/${numeroCapitulo}`), urlsSubidas);
+      const paginas = {};
+      for (let i = 0; i < urlsSubidas.length; i++) {
+        const nombrePagina = i.toString().padStart(4, "0");
+        paginas[nombrePagina] = urlsSubidas[i];
+      }
+
+      // Guardar capítulo como objeto con fecha y páginas
+      await set(ref(db, `mangas/${nombreManga}/capitulos/${numeroCapitulo}`), {
+        fecha: Date.now(),
+        imagenes: paginas
+      });
+
       // Crear nodo comentarios vacío para capítulo
       await update(ref(db, `comentarios/${nombreManga}/${numeroCapitulo}`), { creadoEn: Date.now() });
 
       alert("Capítulo subido con éxito.");
       formSubirCapitulo.reset();
       progresoContainer.innerHTML = "";
-      // Recargar capítulos existentes
       inputManga.dispatchEvent(new Event("change"));
     } catch (error) {
       console.error("Error al guardar capítulo:", error);
