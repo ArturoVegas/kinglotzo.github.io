@@ -8,7 +8,7 @@ const contenedor = document.getElementById("contenedor-mangas");
 const paginacion = document.getElementById("paginacion");
 
 function getMangasPorPagina() {
-  return window.innerWidth < 768 ? 6 : 12;
+  return window.innerWidth < 768 ? 8 : 12;
 }
 
 function renderizarPagina(pagina) {
@@ -23,7 +23,7 @@ function renderizarPagina(pagina) {
 
   mangasAMostrar.forEach(([nombre, data]) => {
     const tarjeta = document.createElement("div");
-    tarjeta.className = window.innerWidth < 768 ? "col-6" : "col-2";
+    tarjeta.className = window.innerWidth < 768 ? "col-3" : "col-md-2";
 
     tarjeta.innerHTML = `
       <a href="../html/infoMangas.html?manga=${encodeURIComponent(nombre)}" class="text-decoration-none text-reset">

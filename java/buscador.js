@@ -7,7 +7,7 @@ async function cargarNombresMangas() {
   try {
     const snapshot = await get(ref(db, 'mangas'));
     if (snapshot.exists()) {
-      listaNombresMangas = Object.keys(snapshot.val()); // Array con los nombres de mangas
+      listaNombresMangas = Object.keys(snapshot.val());
     } else {
       listaNombresMangas = [];
     }
@@ -22,7 +22,6 @@ function inicializarBuscadorConAutocomplete() {
   const inputBuscar = document.getElementById('input-buscar');
   if (!formBuscar || !inputBuscar) return;
 
-  // Crear contenedor para las sugerencias
   const contenedorSugerencias = document.createElement('ul');
   contenedorSugerencias.style.position = 'absolute';
   contenedorSugerencias.style.zIndex = '9999';
@@ -38,16 +37,17 @@ function inicializarBuscadorConAutocomplete() {
 
   contenedorSugerencias.classList.add('autocomplete-list');
 
-  inputBuscar.parentNode.style.position = 'relative'; // Para que el ul se posicione respecto a esto
-
+  inputBuscar.parentNode.style.position = 'relative';
   inputBuscar.parentNode.appendChild(contenedorSugerencias);
+
+  let clickEnSugerencia = false;
 
   inputBuscar.addEventListener('input', () => {
     const valor = inputBuscar.value.trim().toLowerCase();
     contenedorSugerencias.innerHTML = '';
 
     if (!valor) {
-      contenedorSugerencias.classList.remove('show'); // ocultar lista si no hay texto
+      contenedorSugerencias.classList.remove('show');
       return;
     }
 
@@ -56,7 +56,7 @@ function inicializarBuscadorConAutocomplete() {
     ).slice(0, 10);
 
     if (filtrados.length === 0) {
-      contenedorSugerencias.classList.remove('show'); // ocultar lista si no hay resultados
+      contenedorSugerencias.classList.remove('show');
       return;
     }
 
@@ -65,32 +65,33 @@ function inicializarBuscadorConAutocomplete() {
       li.textContent = nombre.replaceAll("_", " ");
       li.style.padding = '5px 10px';
 
-      li.addEventListener('click', () => {
-        inputBuscar.value = nombre;
-        contenedorSugerencias.innerHTML = '';
-        contenedorSugerencias.classList.remove('show'); // ocultar al seleccionar
+      li.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        clickEnSugerencia = true;
+        window.location.href = `/html/infoMangas.html?manga=${encodeURIComponent(nombre)}`;
       });
 
       contenedorSugerencias.appendChild(li);
     });
 
-    contenedorSugerencias.classList.add('show'); // mostrar lista si hay sugerencias
+    contenedorSugerencias.classList.add('show');
   });
 
-  // Ocultar lista al perder foco
   inputBuscar.addEventListener('blur', () => {
     setTimeout(() => {
-      contenedorSugerencias.innerHTML = '';
-      contenedorSugerencias.classList.remove('show');
+      if (!clickEnSugerencia) {
+        contenedorSugerencias.innerHTML = '';
+        contenedorSugerencias.classList.remove('show');
+      }
+      clickEnSugerencia = false;
     }, 150);
   });
 
-  // Enviar formulario con la busqueda
   formBuscar.addEventListener('submit', e => {
     e.preventDefault();
     const mangaBuscado = inputBuscar.value.trim();
     if (mangaBuscado) {
-      window.location.href = `./html/infoMangas.html?manga=${encodeURIComponent(mangaBuscado)}`;
+      window.location.href = `/html/infoMangas.html?manga=${encodeURIComponent(mangaBuscado)}`;
     }
   });
 }
