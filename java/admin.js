@@ -96,7 +96,12 @@ if (!path.includes("admin.html")) {
   btnGestionNoticias.addEventListener("click", () => mostrarSeccion("gestionNoticiasSection"));
 
   btnLogout.addEventListener("click", () => {
-    signOut(auth).then(() => window.location.href = "auth.html");
+    signOut(auth).then(() => {
+      // Limpiar datos del checkbox "recordarme"
+      localStorage.removeItem('rememberUser');
+      localStorage.removeItem('userEmail');
+      window.location.href = "auth.html";
+    });
   });
 
   // Crear nodos vacíos si no existen

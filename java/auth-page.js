@@ -102,15 +102,24 @@ function showSuccess(element, message) {
 function loadRememberedUser() {
   const rememberUser = localStorage.getItem('rememberUser');
   const userEmail = localStorage.getItem('userEmail');
+  const rememberMeLabel = document.querySelector('label[for="rememberMe"]');
   
   if (rememberUser === 'true' && userEmail) {
     document.getElementById('loginEmail').value = userEmail;
     document.getElementById('rememberMe').checked = true;
     
     // Aplicar color verde al label
-    const rememberMeLabel = document.querySelector('label[for="rememberMe"]');
     if (rememberMeLabel) {
       rememberMeLabel.classList.add('checked');
+    }
+  } else {
+    // Limpiar estado del checkbox si no hay datos guardados
+    document.getElementById('loginEmail').value = '';
+    document.getElementById('rememberMe').checked = false;
+    
+    // Remover color verde del label
+    if (rememberMeLabel) {
+      rememberMeLabel.classList.remove('checked');
     }
   }
 }

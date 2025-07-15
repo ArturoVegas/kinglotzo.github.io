@@ -23,73 +23,116 @@
 
 
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-md row-personalizada px-3">
-    <div class="container-fluid">
-        <!-- Logo -->
-        <a class="navbar-brand d-flex align-items-center" href="../index.html">
-          <img src="../Recursos/imagenes/imagen al principio.png" alt="Logo" class="img-fluid logo-img me-2" />
-          <img src="../Recursos/imagenes/whitePearltranslation.png" alt="Nombre Scan" class="img-fluid nombre-img" />
-        </a>
+  <!-- Contenedor principal del lector Cubari -->
+  <div class="cubari-reader-wrapper">
+    <!-- Barra de progreso -->
+    <div class="reader-progress">
+      <div class="reader-progress-bar" id="progress-bar"></div>
+    </div>
 
-        <!-- Botón hamburguesa -->
-        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+    <!-- Información del capítulo -->
+    <div class="reader-info" id="reader-info">
+      <h5 id="chapter-title">Cargando capítulo...</h5>
+      <p id="chapter-progress">0 / 0 páginas</p>
+    </div>
 
-        <!-- Menú colapsable -->
-        <div class="collapse navbar-collapse mt-2 mt-md-0" id="navbarContent">
-          <ul class="navbar-nav flex-column flex-md-row w-100 justify-content-center justify-content-md-center align-items-center align-items-md-center">
-            <li class="nav-item"><a class="nav-link text-white" href="../index.html">Inicio</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="../html/mangas.html">Nuestros mangas</a></li>
-            
-          </ul>
+    <!-- Botón para mostrar/ocultar controles -->
+    <div class="toggle-controls" id="toggle-controls">
+      <i class="bi bi-gear"></i>
+    </div>
 
-          <!-- Buscador + botón inicio sesión -->
-          <form id="form-buscar" class="d-flex mt-3 mt-md-0 ms-md-auto w-100 w-md-50 align-items-center" role="search">
-            <input id="input-buscar" class="form-control border-dark" type="search" placeholder="🔍 Buscar..." />
-            <div class="dropdown ms-2">
-              <button class="btn btn-outline-light dropdown-toggle" type="button" id="authDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="height: 38px; font-size: 0.8rem;">
-                <i class="bi bi-person-circle me-1"></i>Cuenta
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="authDropdown">
-                <li><a class="dropdown-item" href="../html/auth.html"><i class="bi bi-box-arrow-in-right me-2"></i>Iniciar sesión</a></li>
-                <li><a class="dropdown-item" href="../html/auth.html"><i class="bi bi-person-plus me-2"></i>Registrarse</a></li>
-              </ul>
-            </div>
-          </form>
-        </div>
+    <!-- Controles del lector -->
+    <div class="reader-controls" id="reader-controls">
+      <h6>Configuración del lector</h6>
+      
+      <div class="control-group">
+        <label>Modo de lectura</label>
+        <button class="control-button active" data-mode="vertical">Vertical</button>
+        <button class="control-button" data-mode="horizontal">Horizontal</button>
+        <button class="control-button" data-mode="webtoon">Webtoon</button>
       </div>
-    </nav>
-
-  <!-- Contenido principal -->
-  <div class="container container-fluid mt-4">
-    <h2 id="titulo-capitulo" class="text-center mb-4 maspopulares">Cargando capítulo...</h2>
-    <div id="imagenes-capitulo" class="d-flex flex-column align-items-center gap-4"></div>
-  </div>
-
-  <!-- Comentarios -->
-  <!-- Comentarios -->
-<div class="row justify-content-center">
-  <div class="col-12 col-md-11 col-lg-9 comment-section-custom">
-
-    <div class="comment-header-custom d-flex justify-content-between align-items-center mb-2">
-      <div class="comment-count-custom">0 Comentarios</div>
-      <button id="btn-iniciar-sesion" class="btn btn-primary btn-sm">Iniciar sesión para comentar</button>
-
-      <button id="btn-logout" class="btn btn-danger btn-sm" style="display:none;">Cerrar sesión</button>
+      
+      <div class="control-group">
+        <label>Ajuste de imagen</label>
+        <button class="control-button active" data-fit="fit-width">Ajustar ancho</button>
+        <button class="control-button" data-fit="fit-height">Ajustar alto</button>
+        <button class="control-button" data-fit="original-size">Tamaño original</button>
+      </div>
+      
+      <div class="control-group">
+        <label>Espaciado entre páginas</label>
+        <input type="range" class="control-slider" id="spacing-slider" min="0" max="50" value="10">
+      </div>
+      
+      <div class="control-group">
+        <label>Zoom</label>
+        <button class="control-button" id="zoom-out">-</button>
+        <span id="zoom-level">100%</span>
+        <button class="control-button" id="zoom-in">+</button>
+      </div>
     </div>
 
-    <div id="comment-form" class="comment-input-area-custom mb-3 d-flex gap-3 align-items-start" style="display:none;">
-      <div class="user-avatar-custom" id="user-avatar">U</div>
-      <textarea id="input-comentario" class="form-control comment-textarea-custom" placeholder="Escribe tu comentario..." rows="3"></textarea>
-      <button id="btn-publicar-comentario" class="btn btn-success align-self-start">Publicar</button>
+    <!-- Navegación flotante -->
+    <div class="reader-navigation" id="reader-navigation">
+      <button class="nav-button" id="nav-prev-chapter" title="Capítulo anterior">
+        <i class="bi bi-skip-backward"></i>
+      </button>
+      <button class="nav-button" id="nav-prev-page" title="Página anterior">
+        <i class="bi bi-chevron-left"></i>
+      </button>
+      <a class="nav-button" id="nav-back-manga" href="#" title="Volver al manga">
+        <i class="bi bi-book"></i>
+      </a>
+      <button class="nav-button" id="nav-next-page" title="Página siguiente">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+      <button class="nav-button" id="nav-next-chapter" title="Capítulo siguiente">
+        <i class="bi bi-skip-forward"></i>
+      </button>
     </div>
 
-    <div id="lista-comentarios" class="mt-3"></div>
+    <!-- Overlay para navegación con click -->
+    <div class="reader-click-overlay" id="click-overlay">
+      <div class="click-zone previous" id="click-prev"></div>
+      <div class="click-zone menu" id="click-menu"></div>
+      <div class="click-zone next" id="click-next"></div>
+    </div>
 
+    <!-- Contenedor del lector -->
+    <div class="reader-container vertical" id="reader-container">
+      <!-- Las imágenes se cargarán aquí dinámicamente -->
+    </div>
+
+    <!-- Loading indicator -->
+    <div class="reader-loading" id="reader-loading" style="display: none;">
+      <div class="spinner"></div>
+      <span>Cargando capítulo...</span>
+    </div>
   </div>
-</div>
+
+  <!-- Contenedor separado para comentarios -->
+  <div class="comments-wrapper" id="comments-section">
+    <div class="row justify-content-center">
+      <div class="col-12 col-md-11 col-lg-9 comment-section-custom">
+
+        <div class="comment-header-custom d-flex justify-content-between align-items-center mb-2">
+          <div class="comment-count-custom">0 Comentarios</div>
+          <button id="btn-iniciar-sesion" class="btn btn-primary btn-sm">Iniciar sesión para comentar</button>
+
+          <button id="btn-logout" class="btn btn-danger btn-sm" style="display:none;">Cerrar sesión</button>
+        </div>
+
+        <div id="comment-form" class="comment-input-area-custom mb-3 d-flex gap-3 align-items-start" style="display:none;">
+          <div class="user-avatar-custom" id="user-avatar">U</div>
+          <textarea id="input-comentario" class="form-control comment-textarea-custom" placeholder="Escribe tu comentario..." rows="3"></textarea>
+          <button id="btn-publicar-comentario" class="btn btn-success align-self-start">Publicar</button>
+        </div>
+
+        <div id="lista-comentarios" class="mt-3"></div>
+
+      </div>
+    </div>
+  </div>
 <!-- Footer -->
     <footer class="footer-redes py-4 mt-4">
       <div class="container text-center">
@@ -106,6 +149,7 @@
 
   <!-- Scripts -->
   <script type="module" src="../java/main.js"></script>
+  <script type="module" src="../java/cubari-reader.js"></script>
   <script type="module" src="../java/comentarios.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
 </body>

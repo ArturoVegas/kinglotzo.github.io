@@ -39,15 +39,18 @@ function updateAuthUI(user) {
       <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión</a></li>
     `;
     
-    // Agregar evento de logout
-    document.getElementById('logoutBtn').addEventListener('click', (e) => {
-      e.preventDefault();
-      signOut(auth).then(() => {
-        window.location.reload();
-      }).catch((error) => {
-        console.error('Error al cerrar sesión:', error);
+      // Agregar evento de logout
+      document.getElementById('logoutBtn').addEventListener('click', (e) => {
+        e.preventDefault();
+        signOut(auth).then(() => {
+          // Limpiar datos del checkbox "recordarme"
+          localStorage.removeItem('rememberUser');
+          localStorage.removeItem('userEmail');
+          window.location.reload();
+        }).catch((error) => {
+          console.error('Error al cerrar sesión:', error);
+        });
       });
-    });
   } else if (!user && authDropdown && dropdownMenu) {
     // Usuario no autenticado - mostrar opciones de login/registro
     authDropdown.innerHTML = `<i class="bi bi-person-circle me-1"></i>Cuenta`;
