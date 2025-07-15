@@ -759,13 +759,6 @@ body {
   }
 }
 
-/* Caption de noticias con mejor posicionamiento */
-#carouselNoticias .carousel-caption {
-  bottom: 10px;
-  left: 10px;
-  right: 10px;
-  padding: 0.5rem;
-  background-color: rgba(0, 0, 0, 0.7) !important;
-  border-radius: 5px;
-}
+
+
 

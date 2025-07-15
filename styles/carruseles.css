@@ -78,3 +78,67 @@
   padding: 0.5rem 1rem;
   margin-top: -5px;
 }
+
+
+#carouselNoticias .carousel-inner {
+  height: 750px; /* Ajusta según el espacio que quieras usar */
+  overflow: hidden;
+  position: relative;
+}
+
+#carouselNoticias .carousel-item {
+  height: 50%;
+}
+
+#carouselNoticias .carousel-item img {
+  width: 50%;
+  height: 100%;
+  object-fit: cover; /* Recorta sin deformar */
+  object-position: center;
+  border-radius: 0.5rem;
+}
+
+#carouselNoticias .carousel-caption {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  padding: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 5px;
+  z-index: 10;
+  color: #fff;
+  font-size: 0.9rem;
+}
+
+#carouselNoticias .carousel-control-prev,
+#carouselNoticias .carousel-control-next {
+  width: 10%; /* Ajusta el área de clic sin que invada el carrusel */
+  top: -50%;
+  bottom: 0;
+  z-index: 15;
+}
+
+#carouselNoticias .carousel-control-prev-icon,
+#carouselNoticias .carousel-control-next-icon {
+  background-size: 100% 100%;
+  width: 2rem;
+  height: 2rem;
+}
+
+/* Opcional: alinea verticalmente el ícono en el centro */
+#carouselNoticias .carousel-control-prev,
+#carouselNoticias .carousel-control-next {
+  display: flex;
+  align-items: center;
+}
+
+#carouselNoticias .carousel-indicators {
+  position: absolute;
+  bottom: 350px; /* Puedes ajustar este valor según dónde quieras que aparezcan */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  margin: 0;
+  padding: 0;
+}
