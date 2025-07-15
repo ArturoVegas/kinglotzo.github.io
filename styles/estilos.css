@@ -719,3 +719,53 @@ body {
   cursor: pointer;
 }
 
+/* ================================================
+   Carrusel de Noticias - Imágenes estandarizadas Esto es para que todas las imágenes tengan la misma altura y se vean bien en el carrusel
+   ================================================ */
+
+/* Contenedor del carrusel de noticias con altura fija */
+#carouselNoticias {
+  height: 300px; /* altura fija para el carrusel */
+  overflow: hidden;
+}
+
+/* Imágenes del carrusel de noticias estandarizadas */
+#carouselNoticias .carousel-item img {
+  width: 100%;
+  height: 300px; /* altura fija para todas las imágenes */
+  object-fit: cover; /* recorta la imagen manteniendo proporción */
+  object-position: center; /* centra la imagen */
+}
+
+/* Ajustes para móviles - altura reducida */
+@media (max-width: 576px) {
+  #carouselNoticias {
+    height: 200px;
+  }
+  
+  #carouselNoticias .carousel-item img {
+    height: 200px;
+  }
+}
+
+/* Ajustes para tablets */
+@media (max-width: 768px) {
+  #carouselNoticias {
+    height: 250px;
+  }
+  
+  #carouselNoticias .carousel-item img {
+    height: 250px;
+  }
+}
+
+/* Caption de noticias con mejor posicionamiento */
+#carouselNoticias .carousel-caption {
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  padding: 0.5rem;
+  background-color: rgba(0, 0, 0, 0.7) !important;
+  border-radius: 5px;
+}
+
