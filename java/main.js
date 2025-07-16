@@ -6,6 +6,7 @@ import { cargarNombresMangas, inicializarBuscadorConAutocomplete } from "./busca
 import { cargarMangasPopulares } from "./mangasPopulares.js";
 import { cargarCarruselPrincipal } from "./carrusel.js";
 import { cargarNoticias } from "./noticias.js";
+import { initAuth } from "./auth.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const pathname = window.location.pathname;
@@ -41,4 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
      cargarCarruselPrincipal();
     cargarNoticias();
   });
+
+  // Inicializar sistema de autenticación
+  initAuth();
 });

@@ -4,6 +4,8 @@ import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebase
 import {
   getAuth,
   signInWithEmailAndPassword,
+  setPersistence,
+  browserSessionPersistence
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
 
 const firebaseConfig = {
@@ -39,6 +41,9 @@ if (loginForm) {
     const password = document.getElementById("password").value;
 
     try {
+      // Configurar persistencia solo durante la sesión (sin checkbox)
+      await setPersistence(auth, browserSessionPersistence);
+      
       const credenciales = await signInWithEmailAndPassword(auth, email, password);
       const user = credenciales.user;
 
@@ -46,11 +51,37 @@ if (loginForm) {
       if (user.uid === adminUID) {
         window.location.href = "admin.html"; // Panel admin
       } else {
-        window.location.href = "../index.html"; // Usuario normal
+        // Usuario normal - redirigir inmediatamente
+        window.location.href = "../index.html";
       }
     } catch (error) {
       console.error("Login error:", error.message);
-      if (errorMsg) errorMsg.textContent = "Error: " + error.message;
+      let errorMessage;
+      
+      switch (error.code) {
+        case 'auth/user-not-found':
+          errorMessage = 'Error al iniciar sesión: la cuenta no existe';
+          break;
+        case 'auth/wrong-password':
+          errorMessage = 'Error al iniciar sesión: usuario o contraseña incorrectos';
+          break;
+        case 'auth/invalid-email':
+          errorMessage = 'Error al iniciar sesión: correo electrónico inválido';
+          break;
+        case 'auth/invalid-credential':
+          errorMessage = 'Error al iniciar sesión: usuario o contraseña incorrectos';
+          break;
+        case 'auth/user-disabled':
+          errorMessage = 'Error al iniciar sesión: esta cuenta ha sido deshabilitada';
+          break;
+        case 'auth/too-many-requests':
+          errorMessage = 'Error al iniciar sesión: demasiados intentos fallidos. Intenta más tarde';
+          break;
+        default:
+          errorMessage = 'Error al iniciar sesión: usuario o contraseña incorrectos';
+      }
+      
+      if (errorMsg) errorMsg.textContent = errorMessage;
     }
   });
 }

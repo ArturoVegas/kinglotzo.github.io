@@ -156,11 +156,14 @@ function actualizarUI(user) {
 }
 
 function redirigirLogin() {
-  window.location.href = "../html/inicioSesion.html";
+  window.location.href = "../html/auth.html";
 }
 
 async function logout() {
   await signOut(auth);
+  // Limpiar datos del checkbox "recordarme"
+  localStorage.removeItem('rememberUser');
+  localStorage.removeItem('userEmail');
   alert("Sesión cerrada.");
 }
 

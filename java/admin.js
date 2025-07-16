@@ -71,7 +71,7 @@ if (!path.includes("admin.html")) {
   onAuthStateChanged(auth, async (user) => {
     if (!user || user.uid !== adminUID) {
       alert("No autorizado. Redirigiendo a inicio de sesión.");
-      window.location.href = "inicioSesion.html";
+      window.location.href = "auth.html";
       return;
     }
     mostrarSeccion("nuevoMangaSection");
@@ -96,7 +96,12 @@ if (!path.includes("admin.html")) {
   btnGestionNoticias.addEventListener("click", () => mostrarSeccion("gestionNoticiasSection"));
 
   btnLogout.addEventListener("click", () => {
-    signOut(auth).then(() => window.location.href = "inicioSesion.html");
+    signOut(auth).then(() => {
+      // Limpiar datos del checkbox "recordarme"
+      localStorage.removeItem('rememberUser');
+      localStorage.removeItem('userEmail');
+      window.location.href = "auth.html";
+    });
   });
 
   // Crear nodos vacíos si no existen

@@ -38,8 +38,15 @@
           </ul>
           <form id="form-buscar" class="d-flex mt-3 mt-md-0 ms-md-auto w-100 w-md-50 align-items-center" role="search">
             <input id="input-buscar" class="form-control border-dark" type="search" placeholder="🔍 Buscar..." />
-            <a href="./html/inicioSesion.html" class="btn btn-outline-light ms-2" style="height: 38px; font-size: 0.8rem;">Iniciar sesión</a>
-            <a href="./html/registro.html" class="btn btn-outline-light ms-2" style="height: 38px; font-size: 0.8rem;">Registrarse</a>
+            <div class="dropdown ms-2">
+              <button class="btn btn-outline-light dropdown-toggle" type="button" id="authDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="height: 38px; font-size: 0.8rem;">
+                <i class="bi bi-person-circle me-1"></i>Cuenta
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="authDropdown">
+                <li><a class="dropdown-item" href="./html/auth.html"><i class="bi bi-box-arrow-in-right me-2"></i>Iniciar sesión</a></li>
+                <li><a class="dropdown-item" href="./html/auth.html"><i class="bi bi-person-plus me-2"></i>Registrarse</a></li>
+              </ul>
+            </div>
           </form>
         </div>
       </div>
