@@ -360,8 +360,9 @@ if (!path.includes("admin.html")) {
         imagenes: paginas
       });
 
-      // Crear nodo comentarios vacío para capítulo
-      await update(ref(db, `comentarios/${nombreManga}/${numeroCapitulo}`), { creadoEn: Date.now() });
+       await set(ref(db, `mangas/${nombreManga}/capitulos/${numeroCapitulo}`), {
+        fecha: Date.now(),
+        imagenes: paginas});
 
       alert("Capítulo subido con éxito.");
       formSubirCapitulo.reset();

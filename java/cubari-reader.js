@@ -426,7 +426,6 @@ class CubariReader {
   }
 
   showUI() {
-    this.readerControls.classList.add('visible');
     this.readerNavigation.classList.add('visible');
     this.readerInfo.classList.add('visible');
     this.isUIVisible = true;
