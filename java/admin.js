@@ -1,4 +1,6 @@
-// admin.js
+// ==============================
+// IMPORTACIÓN DE MÓDULOS FIREBASE
+// ==============================
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
 import {
   getAuth,
@@ -15,7 +17,9 @@ import {
   push
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
 
-// Config Firebase (ajusta a tu proyecto)
+// ==============================
+// CONFIGURACIÓN DE FIREBASE
+// ==============================
 const firebaseConfig = {
   apiKey: "AIzaSyArUObX1yvBE1F7JOotiFVBVp_FuFGtLks",
   authDomain: "prueba-base-de-datos-270a7.firebaseapp.com",
@@ -27,18 +31,25 @@ const firebaseConfig = {
   measurementId: "G-W512T7N7GB"
 };
 
+// ==============================
+// INICIALIZACIÓN
+// ==============================
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
-
 const adminUID = "Cqh5y2MlsObi4ox90jlbAiRGu4D2";
-
 const path = location.pathname;
 
+// ==============================
+// VERIFICACIÓN DE PÁGINA ADMIN
+// ==============================
 if (!path.includes("admin.html")) {
   console.warn("No es la página de admin. Script detenido.");
 } else {
-  // DOM
+
+  // ==============================
+  // REFERENCIAS A ELEMENTOS DEL DOM
+  // ==============================
   const nuevoMangaSection = document.getElementById("nuevoMangaSection");
   const subirCapituloSection = document.getElementById("subirCapituloSection");
   const gestionNoticiasSection = document.getElementById("gestionNoticiasSection");
@@ -51,11 +62,11 @@ if (!path.includes("admin.html")) {
   const inputManga = document.getElementById("mangaSeleccionado");
   const datalist = document.getElementById("listaMangas");
   const capitulosExistentes = document.getElementById("capitulosExistentes");
-  const formNuevoManga = document.getElementById("formNuevoManga");
-  const formSubirCapitulo = document.getElementById("formSubirCapitulo");
   const selectCapitulos = document.getElementById("capituloSeleccionado");
   const progresoContainer = document.getElementById("progresoContainer");
 
+  const formNuevoManga = document.getElementById("formNuevoManga");
+  const formSubirCapitulo = document.getElementById("formSubirCapitulo");
   const formNoticia = document.getElementById("formNoticia");
   const textoNoticia = document.getElementById("textoNoticia");
   const imagenNoticia = document.getElementById("imagenNoticia");
@@ -67,13 +78,16 @@ if (!path.includes("admin.html")) {
   const descripcionCarrusel = document.getElementById("descripcionCarrusel");
   const listaCarrusel = document.getElementById("listaCarrusel");
 
-  // Autenticación y redirección
+  // ==============================
+  // AUTENTICACIÓN DE ADMIN
+  // ==============================
   onAuthStateChanged(auth, async (user) => {
     if (!user || user.uid !== adminUID) {
       alert("No autorizado. Redirigiendo a inicio de sesión.");
       window.location.href = "auth.html";
       return;
     }
+
     mostrarSeccion("nuevoMangaSection");
     await inicializarNodosVacios();
     cargarMangasEnDatalist();
@@ -81,11 +95,14 @@ if (!path.includes("admin.html")) {
     cargarCarrusel();
   });
 
-  // Navegación secciones
+  // ==============================
+  // NAVEGACIÓN ENTRE SECCIONES
+  // ==============================
   function mostrarSeccion(nombre) {
     nuevoMangaSection.classList.add("d-none");
     subirCapituloSection.classList.add("d-none");
     gestionNoticiasSection.classList.add("d-none");
+
     if (nombre === "nuevoMangaSection") nuevoMangaSection.classList.remove("d-none");
     if (nombre === "subirCapituloSection") subirCapituloSection.classList.remove("d-none");
     if (nombre === "gestionNoticiasSection") gestionNoticiasSection.classList.remove("d-none");
@@ -97,34 +114,35 @@ if (!path.includes("admin.html")) {
 
   btnLogout.addEventListener("click", () => {
     signOut(auth).then(() => {
-      // Limpiar datos del checkbox "recordarme"
       localStorage.removeItem('rememberUser');
       localStorage.removeItem('userEmail');
       window.location.href = "auth.html";
     });
   });
 
-  // Crear nodos vacíos si no existen
+  // ==============================
+  // INICIALIZAR NODOS SI NO EXISTEN
+  // ==============================
   async function inicializarNodosVacios() {
     try {
       const comentariosSnap = await get(ref(db, "comentarios"));
-      if (!comentariosSnap.exists()) {
-        await set(ref(db, "comentarios"), { initialized: true });
-      }
+      if (!comentariosSnap.exists()) await set(ref(db, "comentarios"), { initialized: true });
+
       const noticiasSnap = await get(ref(db, "noticias"));
-      if (!noticiasSnap.exists()) {
-        await set(ref(db, "noticias"), { initialized: true });
-      }
+      if (!noticiasSnap.exists()) await set(ref(db, "noticias"), { initialized: true });
+
       const carruselSnap = await get(ref(db, "carrusel"));
-      if (!carruselSnap.exists()) {
-        await set(ref(db, "carrusel"), { initialized: true });
-      }
+      if (!carruselSnap.exists()) await set(ref(db, "carrusel"), { initialized: true });
     } catch (e) {
       console.error("Error inicializando nodos:", e);
     }
   }
 
-  // Cargar mangas para datalist autocompletado
+  // ==============================
+  // FUNCIONES DE MANGAS
+  // ==============================
+
+  // Cargar mangas en datalist
   async function cargarMangasEnDatalist() {
     try {
       const snapshot = await get(ref(db, 'mangas'));
@@ -142,7 +160,7 @@ if (!path.includes("admin.html")) {
     }
   }
 
-  // Mostrar capítulos existentes al elegir manga
+  // Mostrar capítulos existentes al seleccionar manga
   inputManga.addEventListener("change", async () => {
     const nombre = inputManga.value.trim();
     selectCapitulos.innerHTML = '<option value="">-- Selecciona un capítulo --</option>';
@@ -182,7 +200,9 @@ if (!path.includes("admin.html")) {
     }
   });
 
-  // Subir imagen a Cloudinary (función auxiliar)
+  // ==============================
+  // FUNCIONES DE CLOUDINARY
+  // ==============================
   async function subirImagenCloudinary(file, folder) {
     const formData = new FormData();
     formData.append("file", file);
@@ -198,50 +218,142 @@ if (!path.includes("admin.html")) {
     return data.secure_url;
   }
 
-  // Formulario nuevo manga
+  // ==============================
+  // GÉNEROS (input con autocompletado + botón añadir + lista visual)
+  // ==============================
+  const generosValidos = ["Acción", "Aventura", "Romance", "Comedia", "Drama", "Fantasia", "Recuentos de la vida", "Terror", "Misterio"];
+
+  const inputGenero = document.getElementById("inputGenero");
+  const btnAgregar = document.getElementById("btnAgregarGenero");
+  const listaGenerosDiv = document.getElementById("listaGenerosSeleccionados");
+
+  let generosSeleccionados = [];
+
+  // Autocompletado con sugerencias dinámicas
+  inputGenero.addEventListener("input", () => {
+    const val = inputGenero.value.toLowerCase();
+
+    const sugerencias = generosValidos.filter(g => g.toLowerCase().startsWith(val) && !generosSeleccionados.includes(g));
+
+    mostrarSugerencias(sugerencias);
+  });
+
+  function mostrarSugerencias(sugerencias) {
+    let contenedor = document.getElementById("contenedorSugerencias");
+    if (!contenedor) {
+      contenedor = document.createElement("div");
+      contenedor.id = "contenedorSugerencias";
+      contenedor.style.border = "1px solid #ccc";
+      contenedor.style.position = "absolute";
+      contenedor.style.backgroundColor = "white";
+      contenedor.style.zIndex = 1000;
+      contenedor.style.maxHeight = "150px";
+      contenedor.style.overflowY = "auto";
+      contenedor.style.width = inputGenero.offsetWidth + "px";
+      inputGenero.parentNode.appendChild(contenedor);
+    }
+
+    contenedor.innerHTML = "";
+
+    if (sugerencias.length === 0) {
+      contenedor.style.display = "none";
+      return;
+    }
+    contenedor.style.display = "block";
+
+    sugerencias.forEach(genero => {
+      const div = document.createElement("div");
+      div.textContent = genero;
+      div.style.padding = "4px";
+      div.style.cursor = "pointer";
+
+      div.addEventListener("mousedown", (e) => {
+        e.preventDefault();
+        agregarGenero(genero);
+        contenedor.style.display = "none";
+      });
+
+      contenedor.appendChild(div);
+    });
+  }
+
+
+  function agregarGenero(genero) {
+    if (!genero) return alert("Escribe o selecciona un género");
+    if (!generosValidos.includes(genero)) return alert("Género no válido");
+    if (generosSeleccionados.includes(genero)) return alert("Género ya agregado");
+
+    generosSeleccionados.push(genero);
+    inputGenero.value = "";
+    actualizarLista();
+  }
+
+  function actualizarLista() {
+    listaGenerosDiv.innerHTML = "";
+    generosSeleccionados.forEach((g, i) => {
+      const tag = document.createElement("span");
+      tag.textContent = g;
+      tag.className = "badge bg-info text-dark me-2";
+
+      const btnEliminar = document.createElement("button");
+      btnEliminar.textContent = "×";
+      btnEliminar.className = "btn btn-sm btn-link text-dark ms-1 p-0";
+      btnEliminar.onclick = () => {
+        generosSeleccionados.splice(i, 1);
+        actualizarLista();
+      };
+
+      tag.appendChild(btnEliminar);
+      listaGenerosDiv.appendChild(tag);
+    });
+  }
+
+  document.addEventListener("click", (e) => {
+    const contenedor = document.getElementById("contenedorSugerencias");
+    if (contenedor && !inputGenero.contains(e.target) && !contenedor.contains(e.target)) {
+      contenedor.style.display = "none";
+    }
+  });
+
+  // ==============================
+  // FORMULARIO NUEVO MANGA
+  // ==============================
   formNuevoManga.addEventListener("submit", async e => {
     e.preventDefault();
 
-    const nombreMangaInput = document.getElementById("nombreManga");
-    const nombreManga = nombreMangaInput.value.trim();
+    const nombreManga = document.getElementById("nombreManga").value.trim();
     const sinopsis = document.getElementById("sinopsis").value.trim();
     const autor = document.getElementById("autor").value.trim();
-    const generos = document.getElementById("generos").value.trim();
+    const generos = generosSeleccionados;
     const estado = document.getElementById("estado").value;
     const frecuencia = document.getElementById("frecuencia").value;
     const fechaLanzamiento = document.getElementById("fechaLanzamiento").value;
-    const cloudinaryFolderInput = document.getElementById("cloudinaryFolder")?.value.trim() || "";
+    const cloudinaryFolder = document.getElementById("cloudinaryFolder")?.value.trim() || "";
 
     const portadaInput = document.getElementById("portada");
     if (!portadaInput || portadaInput.files.length === 0) {
       alert("Debes seleccionar una imagen de portada.");
       return;
     }
-    const portadaFile = portadaInput.files[0];
-
-    const folderPath = cloudinaryFolderInput || `mangas/${nombreManga}`;
 
     const claveManga = nombreManga
       .replace(/[^A-Za-z0-9\sáéíóúÁÉÍÓÚñÑüÜ.,;:¡!¿?'"()\-]/g, "")
       .trim();
 
     try {
-      // Verificar si el manga ya existe
-      const mangaSnapshot = await get(ref(db, `mangas/${claveManga}`));
-      if (mangaSnapshot.exists()) {
-        alert(`El manga "${claveManga}" ya existe en la base de datos.`);
+      const snapshot = await get(ref(db, `mangas/${claveManga}`));
+      if (snapshot.exists()) {
+        alert(`El manga "${claveManga}" ya existe.`);
         return;
       }
 
-      // Subir portada a Cloudinary
-      const urlPortada = await subirImagenCloudinary(portadaFile, folderPath);
+      const urlPortada = await subirImagenCloudinary(portadaInput.files[0], cloudinaryFolder || `mangas/${nombreManga}`);
 
-      // Crear objeto manga
       const mangaData = {
         portada: urlPortada,
         sinopsis,
         autor,
-        generos: generos.split(",").map(g => g.trim()),
+        generos,
         estado,
         frecuencia,
         fechaLanzamiento,
@@ -249,14 +361,13 @@ if (!path.includes("admin.html")) {
         visitas: 0
       };
 
-      // Guardar en Firebase
       await set(ref(db, `mangas/${claveManga}`), mangaData);
-
-      // Crear nodo comentarios vacío para manga
       await update(ref(db, `comentarios/${claveManga}`), { creadoEn: Date.now() });
 
-      alert("Manga guardado correctamente con portada subida.");
+      alert("Manga guardado correctamente.");
       formNuevoManga.reset();
+      generosSeleccionados = [];
+      actualizarLista();
       cargarMangasEnDatalist();
     } catch (error) {
       console.error("Error:", error);
@@ -264,7 +375,9 @@ if (!path.includes("admin.html")) {
     }
   });
 
-  // Formulario subir capítulo
+  // ==============================
+  // FORMULARIO SUBIR CAPÍTULO
+  // ==============================
   formSubirCapitulo.addEventListener("submit", async e => {
     e.preventDefault();
 
@@ -278,149 +391,65 @@ if (!path.includes("admin.html")) {
       return;
     }
 
-    try {
-      const capSnapshot = await get(ref(db, `mangas/${nombreManga}/capitulos/${numeroCapitulo}`));
-      if (capSnapshot.exists()) {
-        alert(`El capítulo "${numeroCapitulo}" ya existe para el manga "${nombreManga}".`);
-        return;
-      }
-    } catch (err) {
-      console.error("Error al verificar capítulo existente:", err);
-      alert("Error al verificar capítulo existente.");
+    const snapshot = await get(ref(db, `mangas/${nombreManga}/capitulos/${numeroCapitulo}`));
+    if (snapshot.exists()) {
+      alert(`El capítulo "${numeroCapitulo}" ya existe.`);
       return;
     }
 
-    const imagenes = imagenesInput.files;
     const urlsSubidas = [];
-
     progresoContainer.innerHTML = "";
 
-    for (let i = 0; i < imagenes.length; i++) {
-      const img = imagenes[i];
+    for (let i = 0; i < imagenesInput.files.length; i++) {
+      const img = imagenesInput.files[i];
 
       const barraWrapper = document.createElement("div");
-      barraWrapper.style.marginBottom = "5px";
-
       const label = document.createElement("div");
-      label.textContent = `Subiendo imagen ${i + 1} de ${imagenes.length}: ${img.name}`;
-      label.style.fontSize = "0.9rem";
-      label.style.marginBottom = "2px";
-
       const barraProgreso = document.createElement("progress");
+
+      label.textContent = `Subiendo imagen ${i + 1}: ${img.name}`;
       barraProgreso.max = 100;
       barraProgreso.value = 0;
-      barraProgreso.style.width = "100%";
 
       barraWrapper.appendChild(label);
       barraWrapper.appendChild(barraProgreso);
       progresoContainer.appendChild(barraWrapper);
 
-      const urlSubida = await new Promise((resolve, reject) => {
-        const formData = new FormData();
-        formData.append("file", img);
-        formData.append("upload_preset", "para subir mangas");
-        formData.append("folder", carpetaCloud);
-
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", "https://api.cloudinary.com/v1_1/djxnb3qrn/image/upload");
-
-        xhr.upload.addEventListener("progress", (event) => {
-          if (event.lengthComputable) {
-            const porcentaje = (event.loaded / event.total) * 100;
-            barraProgreso.value = porcentaje;
-          }
-        });
-
-        xhr.onload = () => {
-          if (xhr.status === 200) {
-            const resp = JSON.parse(xhr.responseText);
-            resolve(resp.secure_url);
-          } else {
-            reject(new Error(`Error al subir la imagen ${img.name}`));
-          }
-        };
-
-        xhr.onerror = () => reject(new Error("Error en la conexión de red."));
-
-        xhr.send(formData);
-      });
-
-      urlsSubidas.push(urlSubida);
-    }
-    try {
-      const paginas = {};
-      for (let i = 0; i < urlsSubidas.length; i++) {
-        const nombrePagina = i.toString().padStart(4, "0");
-        paginas[nombrePagina] = urlsSubidas[i];
+      try {
+        // Subida sin progreso visible porque fetch no da progreso nativo en JS puro
+        const url = await subirImagenCloudinary(img, `${carpetaCloud}/cap${numeroCapitulo}`);
+        barraProgreso.value = 100;
+        urlsSubidas.push(url);
+      } catch (error) {
+        alert(`Error subiendo la imagen ${img.name}: ${error.message}`);
+        return;
       }
+    }
 
-      // Guardar capítulo como objeto con fecha y páginas
+    try {
       await set(ref(db, `mangas/${nombreManga}/capitulos/${numeroCapitulo}`), {
-        fecha: Date.now(),
-        imagenes: paginas
-      });
-
-       await set(ref(db, `mangas/${nombreManga}/capitulos/${numeroCapitulo}`), {
-        fecha: Date.now(),
-        imagenes: paginas});
-
+  fecha: new Date().toISOString(),
+  imagenes: urlsSubidas
+});
+      await update(ref(db, `comentarios/${nombreManga}/${numeroCapitulo}`), { creadoEn: Date.now() });
       alert("Capítulo subido con éxito.");
       formSubirCapitulo.reset();
       progresoContainer.innerHTML = "";
-      inputManga.dispatchEvent(new Event("change"));
+      cargarMangasEnDatalist();
     } catch (error) {
-      console.error("Error al guardar capítulo:", error);
-      alert("Error al guardar capítulo: " + error.message);
+      alert("Error guardando capítulo en Firebase: " + error.message);
     }
   });
 
-  // Gestión Noticias
-
-  async function cargarNoticias() {
-    try {
-      const snapshot = await get(ref(db, "noticias"));
-      listaNoticias.innerHTML = "";
-      if (!snapshot.exists()) return;
-
-      const noticias = snapshot.val();
-      // Eliminar clave "initialized" si está
-      if ("initialized" in noticias) delete noticias.initialized;
-
-      for (const key in noticias) {
-        if (!noticias.hasOwnProperty(key)) continue;
-        const noticia = noticias[key];
-        const li = document.createElement("li");
-        li.classList.add("list-group-item", "d-flex", "justify-content-between", "align-items-center");
-        li.textContent = noticia.texto || "(Sin texto)";
-
-        if (noticia.imagen) {
-          const img = document.createElement("img");
-          img.src = noticia.imagen;
-          img.style.width = "50px";
-          img.style.height = "auto";
-          img.classList.add("ms-3");
-          li.appendChild(img);
-        }
-
-        const btnBorrar = document.createElement("button");
-        btnBorrar.textContent = "Eliminar";
-        btnBorrar.classList.add("btn", "btn-sm", "btn-danger");
-        btnBorrar.addEventListener("click", () => eliminarNoticia(key));
-
-        li.appendChild(btnBorrar);
-        listaNoticias.appendChild(li);
-      }
-    } catch (e) {
-      console.error("Error cargando noticias:", e);
-    }
-  }
-
+  // ==============================
+  // GESTIÓN DE NOTICIAS
+  // ==============================
   formNoticia.addEventListener("submit", async e => {
     e.preventDefault();
 
     const texto = textoNoticia.value.trim();
     if (!texto) {
-      alert("El texto es obligatorio");
+      alert("El texto de la noticia no puede estar vacío.");
       return;
     }
 
@@ -430,120 +459,125 @@ if (!path.includes("admin.html")) {
         urlImagen = await subirImagenCloudinary(imagenNoticia.files[0], "noticias");
       }
 
-      // Push nueva noticia
-      const nuevaRef = push(ref(db, "noticias"));
-      await set(nuevaRef, {
-        texto,
-        imagen: urlImagen,
-        creadoEn: Date.now()
-      });
+      const nuevaNoticiaRef = push(ref(db, "noticias"));
+      await set(nuevaNoticiaRef, { texto, imagen: urlImagen, titulo: texto.substring(0, 20) });
 
+      alert("Noticia añadida.");
       formNoticia.reset();
       cargarNoticias();
-    } catch (e) {
-      console.error("Error subiendo noticia:", e);
-      alert("Error al subir noticia.");
+    } catch (error) {
+      alert("Error al añadir noticia: " + error.message);
     }
   });
 
-  async function eliminarNoticia(key) {
-    if (!confirm("¿Seguro que quieres eliminar esta noticia?")) return;
+  async function cargarNoticias() {
     try {
-      await remove(ref(db, `noticias/${key}`));
-      cargarNoticias();
-    } catch (e) {
-      console.error("Error eliminando noticia:", e);
-      alert("Error al eliminar noticia.");
+      const snapshot = await get(ref(db, "noticias"));
+      listaNoticias.innerHTML = "";
+      if (!snapshot.exists()) return;
+      const noticias = snapshot.val();
+
+      if (noticias.initialized) delete noticias.initialized;
+
+      Object.entries(noticias).forEach(([key, noticia]) => {
+        const div = document.createElement("div");
+        div.classList.add("noticia", "mb-3", "p-2", "border", "rounded", "position-relative");
+        div.innerHTML = `
+          <h5>${noticia.titulo || "Sin título"}</h5>
+          <p>${noticia.texto || ""}</p>
+          ${noticia.imagen ? `<img src="${noticia.imagen}" alt="Imagen noticia" style="max-width: 200px;">` : ""}
+          <button class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2 btn-eliminar-noticia" data-id="${key}" title="Eliminar noticia">×</button>
+        `;
+        listaNoticias.appendChild(div);
+      });
+
+      document.querySelectorAll(".btn-eliminar-noticia").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          const id = btn.getAttribute("data-id");
+          if (confirm("¿Seguro que quieres eliminar esta noticia?")) {
+            try {
+              await remove(ref(db, `noticias/${id}`));
+              alert("Noticia eliminada");
+              cargarNoticias();
+            } catch (err) {
+              alert("Error al eliminar noticia: " + err.message);
+            }
+          }
+        });
+      });
+    } catch (error) {
+      console.error("Error al cargar noticias:", error);
     }
   }
 
-  // Gestión Carrusel
+  // ==============================
+  // GESTIÓN DE CARRUSEL
+  // ==============================
+  formCarrusel.addEventListener("submit", async e => {
+    e.preventDefault();
+
+    const titulo = tituloCarrusel.value.trim();
+    const descripcion = descripcionCarrusel.value.trim();
+
+    if (!titulo || !descripcion) {
+      alert("Título y descripción son obligatorios.");
+      return;
+    }
+
+    try {
+      let urlImagen = "";
+      if (imagenCarrusel.files.length > 0) {
+        urlImagen = await subirImagenCloudinary(imagenCarrusel.files[0], "carrusel");
+      }
+
+      const nuevoItemRef = push(ref(db, "carrusel"));
+      await set(nuevoItemRef, { titulo, descripcion, imagen: urlImagen });
+
+      alert("Elemento añadido al carrusel.");
+      formCarrusel.reset();
+      cargarCarrusel();
+    } catch (error) {
+      alert("Error al añadir elemento al carrusel: " + error.message);
+    }
+  });
 
   async function cargarCarrusel() {
     try {
       const snapshot = await get(ref(db, "carrusel"));
       listaCarrusel.innerHTML = "";
       if (!snapshot.exists()) return;
-
       const carrusel = snapshot.val();
-      if ("initialized" in carrusel) delete carrusel.initialized;
 
-      for (const key in carrusel) {
-        if (!carrusel.hasOwnProperty(key)) continue;
-        const item = carrusel[key];
+      if (carrusel.initialized) delete carrusel.initialized;
 
-        const li = document.createElement("li");
-        li.classList.add("list-group-item", "d-flex", "justify-content-between", "align-items-center");
+      Object.entries(carrusel).forEach(([key, item]) => {
+        const div = document.createElement("div");
+        div.classList.add("carrusel-item", "mb-3", "p-2", "border", "rounded", "position-relative");
+        div.innerHTML = `
+          <h5>${item.titulo || "Sin título"}</h5>
+          <p>${item.descripcion || ""}</p>
+          ${item.imagen ? `<img src="${item.imagen}" alt="Imagen carrusel" style="max-width: 200px;">` : ""}
+          <button class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2 btn-eliminar-carrusel" data-id="${key}" title="Eliminar carrusel">×</button>
+        `;
+        listaCarrusel.appendChild(div);
+      });
 
-        const titulo = item.titulo || "(Sin título)";
-        const descripcion = item.descripcion || "";
-        const textoLi = document.createElement("div");
-        textoLi.innerHTML = `<strong>${titulo}</strong><br/><small>${descripcion}</small>`;
-        li.appendChild(textoLi);
-
-        if (item.imagen) {
-          const img = document.createElement("img");
-          img.src = item.imagen;
-          img.style.width = "50px";
-          img.style.height = "auto";
-          img.classList.add("ms-3");
-          li.appendChild(img);
-        }
-
-        const btnBorrar = document.createElement("button");
-        btnBorrar.textContent = "Eliminar";
-        btnBorrar.classList.add("btn", "btn-sm", "btn-danger");
-        btnBorrar.addEventListener("click", () => eliminarCarrusel(key));
-
-        li.appendChild(btnBorrar);
-        listaCarrusel.appendChild(li);
-      }
-    } catch (e) {
-      console.error("Error cargando carrusel:", e);
-    }
-  }
-
-  formCarrusel.addEventListener("submit", async e => {
-    e.preventDefault();
-
-    try {
-      if (!imagenCarrusel.files.length) {
-        alert("Debes seleccionar una imagen para el carrusel");
-        return;
-      }
-
-      // Limitar max 5 imágenes
-      const snapshot = await get(ref(db, "carrusel"));
-      const carruselActual = snapshot.exists() ? snapshot.val() : {};
-      const cantidadActual = Object.keys(carruselActual).filter(k => k !== "initialized").length;
-      if (cantidadActual >= 5) {
-        alert("El carrusel ya tiene el máximo de 5 imágenes.");
-        return;
-      }
-
-      const urlImg = await subirImagenCloudinary(imagenCarrusel.files[0], "carrusel");
-      const titulo = tituloCarrusel.value.trim();
-      const descripcion = descripcionCarrusel.value.trim();
-
-      const nuevaRef = push(ref(db, "carrusel"));
-      await set(nuevaRef, { imagen: urlImg, titulo, descripcion, creadoEn: Date.now() });
-
-      formCarrusel.reset();
-      cargarCarrusel();
+      document.querySelectorAll(".btn-eliminar-carrusel").forEach(btn => {
+        btn.addEventListener("click", async () => {
+          const id = btn.getAttribute("data-id");
+          if (confirm("¿Seguro que quieres eliminar este elemento del carrusel?")) {
+            try {
+              await remove(ref(db, `carrusel/${id}`));
+              alert("Elemento del carrusel eliminado");
+              cargarCarrusel();
+            } catch (err) {
+              alert("Error al eliminar carrusel: " + err.message);
+            }
+          }
+        });
+      });
     } catch (error) {
-      console.error("Error subiendo imagen carrusel:", error);
-      alert("Error al subir imagen del carrusel.");
-    }
-  });
-
-  async function eliminarCarrusel(key) {
-    if (!confirm("¿Seguro que quieres eliminar esta imagen del carrusel?")) return;
-    try {
-      await remove(ref(db, `carrusel/${key}`));
-      cargarCarrusel();
-    } catch (e) {
-      console.error("Error eliminando imagen carrusel:", e);
-      alert("Error al eliminar imagen del carrusel.");
+      console.error("Error al cargar carrusel:", error);
     }
   }
 }

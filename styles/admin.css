@@ -1,0 +1,47 @@
+/* Inputs, selects y textareas con fondo blanco y texto negro */
+#inputGenero,
+input.form-control,
+select.form-select,
+textarea.form-control {
+  background-color: white !important;
+  color: black !important;
+  font-size: 0.9rem;          /* Texto un poco más pequeño */
+  padding: 0.25rem 0.5rem;   /* Menos padding */
+  height: auto;
+  min-height: 1.8rem;
+  border-radius: 0.25rem;
+  max-width: 700px;          /* Para que no ocupen todo el ancho */
+  width: 100%;               /* Permite que se adapten dentro del max-width */
+  box-sizing: border-box;    /* Para que padding no aumente ancho */
+}
+
+/* Para el datalist (aunque no tiene estilos directos, algunas veces navegadores usan input styles) */
+datalist {
+  background-color: white;
+  color: black;
+}
+
+/* Opcional: reduce el ancho del inputGenero si quieres que no sea tan ancho */
+#inputGenero {
+  max-width: 300px;
+}
+#contenedorSugerencias {
+  border: 1px solid #ccc;
+  position: absolute;
+  background-color: white;
+  color: black;
+  z-index: 1000;
+  max-height: 150px;
+  overflow-y: auto;
+  width: 100%;
+}
+
+#contenedorSugerencias div {
+  padding: 4px;
+  cursor: pointer;
+  color: black;
+}
+
+#contenedorSugerencias div:hover {
+  background-color: #e0e0e0;
+}

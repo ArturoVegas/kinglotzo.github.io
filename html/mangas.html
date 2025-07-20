@@ -25,7 +25,7 @@
   <nav class="navbar navbar-expand-md row-personalizada px-3">
       <div class="container-fluid">
         <!-- Logo -->
-        <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <a class="navbar-brand d-flex align-items-center" href="../index.html">
           <img src="../Recursos/imagenes/imagen al principio.png" alt="Logo" class="img-fluid logo-img me-2" />
           <img src="../Recursos/imagenes/whitePearltranslation.png" alt="Nombre Scan" class="img-fluid nombre-img" />
         </a>
@@ -60,7 +60,6 @@
       </div>
     </nav>
 
-
   <!-- Contenido principal -->
   <div class="container-fluid d-flex flex-column align-items-center">
     <div class="row justify-content-center align-items-start my-4 w-100" style="max-width: 1140px;">
@@ -70,37 +69,39 @@
         <div class="p-3 rounded">
           <h5 class="text-light mb-3">Listas de Manga</h5>
 
-          <!-- Filtros -->
-          <div class="d-flex flex-wrap gap-2">
+          <!-- Contenedor filtros en fila -->
+          <div class="d-flex flex-wrap gap-3 mb-3">
             <div class="dropdown">
-              <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">Género All</button>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Acción</a></li>
-                <li><a class="dropdown-item" href="#">Aventura</a></li>
-                <li><a class="dropdown-item" href="#">Romance</a></li>
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownGeneroBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                Filtrar por Género
+              </button>
+              <ul class="dropdown-menu p-2" id="dropdown-genero" style="max-height: 300px; overflow-y: auto;">
+                <!-- Géneros aquí -->
               </ul>
             </div>
+
             <div class="dropdown">
-              <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">Estado Todo</button>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">En emisión</a></li>
-                <li><a class="dropdown-item" href="#">Finalizado</a></li>
-                <li><a class="dropdown-item" href="#">Pausado</a></li>
+              <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" id="btnEstadoFiltro">Estado Todo</button>
+              <ul class="dropdown-menu" id="listaEstado">
+                <li><a class="dropdown-item" href="#" data-estado="">Todos</a></li>
+                <li><a class="dropdown-item" href="#" data-estado="En emisión">En emisión</a></li>
+                <li><a class="dropdown-item" href="#" data-estado="Finalizado">Finalizado</a></li>
+                <li><a class="dropdown-item" href="#" data-estado="Pausado">Pausado</a></li>
               </ul>
             </div>
+
             <div class="dropdown">
-              <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">Tipo Todo</button>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Manga</a></li>
-                <li><a class="dropdown-item" href="#">Manhwa</a></li>
-                <li><a class="dropdown-item" href="#">Novela</a></li>
+              <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" id="btnFrecuenciaFiltro">Frecuencia Todo</button>
+              <ul class="dropdown-menu" id="listaFrecuencia">
+                <li><a class="dropdown-item" href="#" data-frecuencia="">Todos</a></li>
+                <li><a class="dropdown-item" href="#" data-frecuencia="Semanal">Semanal</a></li>
+                <li><a class="dropdown-item" href="#" data-frecuencia="Mensual">Mensual</a></li>
               </ul>
             </div>
           </div>
 
           <!-- Tarjetas -->
-          <div id="contenedor-mangas" class="row mt-4 g-2 row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6">
-
+          <div id="contenedor-mangas" class="row mt-4 g-3 row-cols-3 row-cols-sm-3 row-cols-md-4 row-cols-lg-4">
             <!-- Tarjetas dinámicas aquí -->
           </div>
 
@@ -116,12 +117,12 @@
       </div>
 
       <!-- Noticias -->
-      <div class="col-12 col-lg-4 mb-4 mb-lg-0">
+      <div class="col-12 col-lg-4 mb-4 mb-lg-0 d-flex flex-column">
         <h1 class="maspopulares text-center mb-3">Noticias</h1>
-        <div id="carouselNoticias" class="carousel slide" data-bs-ride="carousel">
-          <div class="carousel-inner rounded">
-            <div class="carousel-item active">
-              <img src="../Recursos/imagenes/istockphoto-1181476528-612x612.jpg" class="d-block w-100 rounded" alt="Noticia 1" />
+        <div id="carouselNoticias" class="carousel slide flex-grow-1" data-bs-ride="carousel" style="min-height: 400px;">
+          <div class="carousel-inner rounded h-100">
+            <div class="carousel-item active h-100">
+              <img src="../Recursos/imagenes/istockphoto-1181476528-612x612.jpg" class="d-block w-100 rounded h-100 object-fit-cover" alt="Noticia 1" />
               <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded">
                 <p>¡Nuevo proyecto en camino!</p>
               </div>
