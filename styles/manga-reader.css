@@ -608,7 +608,9 @@
     flex-direction: column;
     align-items: stretch;
     padding: 1rem;
-    gap: 1rem;
+    gap: 1.5rem;
+    position: relative;
+    z-index: 2;
   }
 
   .reader-controls .left,
@@ -617,7 +619,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: 0.5rem;
+    gap: 0.6rem;
   }
 
   .reader-controls label {
@@ -629,9 +631,8 @@
   .reader-controls button {
     width: 100%;
     font-size: 1rem;
-    padding: 0.7rem 1rem;
-    border-radius: 0.5rem;
-    border: 1px solid #ccc;
+    padding: 0.7rem;
+    border-radius: 0.4rem;
     box-sizing: border-box;
   }
 
@@ -640,14 +641,6 @@
     color: white;
     border: none;
     cursor: pointer;
-  }
-
-  .reader-controls button:hover {
-    background-color: #555;
-  }
-
-  .reader-controls .right {
-    align-items: stretch;
   }
 
   .reader-controls .center .mode-buttons {
@@ -659,9 +652,43 @@
     width: 100%;
   }
 
-  /* Asegurar que el contenido debajo no se oculte */
-  body {
-    padding-bottom: 8rem; /* espacio para controles móviles */
+  /* Ajustar el título */
+  .reader-controls .left h2 {
+    text-align: center;
+    width: 100%;
+    font-size: 1.5rem;
+    margin: 0;
+  }
+
+  /* Ajustar el botón de engranaje */
+  .reader-controls .right {
+    align-items: stretch;
+  }
+
+  .reader-controls .right button {
+    width: 100%;
+  }
+
+  /* Ajustar el contenedor del panel flotante de configuración */
+  .settings-panel {
+    position: static !important;
+    width: 100% !important;
+    box-shadow: none;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .settings-panel label,
+  .settings-panel select,
+  .settings-panel input {
+    font-size: 1rem;
+  }
+
+  /* Evitar que el menú se monte sobre otras cosas */
+  .reader-controls,
+  .settings-panel {
+    z-index: 5;
   }
 }
 
