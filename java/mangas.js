@@ -18,7 +18,7 @@ let estadoSeleccionado = "";
 let frecuenciaSeleccionada = "";
 
 function getMangasPorPagina() {
-  return window.innerWidth < 768 ? 8 : 12;
+  return window.innerWidth < 768 ? 9 : 12;
 }
 
 function renderizarPagina(pagina) {
@@ -39,7 +39,7 @@ function renderizarPagina(pagina) {
 
   mangasAMostrar.forEach(([nombre, data]) => {
     const tarjeta = document.createElement("div");
-    tarjeta.className = window.innerWidth < 768 ? "col-3" : "col-md-2";
+    tarjeta.className = "col";  // Solo 'col'
 
     tarjeta.innerHTML = `
       <a href="../html/infoMangas.html?manga=${encodeURIComponent(nombre)}" class="text-decoration-none text-reset">
@@ -56,6 +56,7 @@ function renderizarPagina(pagina) {
     contenedor.appendChild(tarjeta);
   });
 }
+
 
 function renderizarPaginacion() {
   if (!paginacion) return;

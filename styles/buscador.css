@@ -13,11 +13,39 @@
   list-style: none;
   display: none;
 }
+
 .autocomplete-list.show {
   display: block;
 }
+
 .autocomplete-list li:hover {
   background-color: #007bff;
   color: white;
   cursor: pointer;
+}
+
+/* Ajustes para móviles */
+@media (max-width: 767.98px) {
+  #navbarContent {
+    flex-direction: column !important; /* menú en columna */
+  }
+
+  #form-buscar {
+    width: 100% !important;
+    margin-top: 1rem !important;
+    order: 2; /* aparece después del menú */
+  }
+
+  #input-buscar {
+    width: 100% !important; /* input ocupa todo el ancho */
+  }
+
+  .autocomplete-list {
+    width: 100% !important; /* desplegable ancho completo */
+  }
+
+  /* Para separar un poco el form del menú en móvil */
+  #form-buscar {
+    position: relative; /* importante para posición de autocomplete */
+  }
 }

@@ -8,12 +8,23 @@ async function cargarNombresMangas() {
     const snapshot = await get(ref(db, 'mangas'));
     if (snapshot.exists()) {
       listaNombresMangas = Object.keys(snapshot.val());
+      console.log("Lista de mangas cargada:", listaNombresMangas);
     } else {
       listaNombresMangas = [];
+      console.log("No existen mangas en la BD");
     }
   } catch (error) {
     console.error("Error cargando nombres de mangas para autocompletado:", error);
     listaNombresMangas = [];
+  }
+}
+
+function getRutaInfoMangas() {
+  const pathname = window.location.pathname; // ej: "/index.html" o "/html/mangas.html"
+  if (pathname.startsWith('/html/')) {
+    return 'infoMangas.html'; // ya dentro de /html/
+  } else {
+    return './html/infoMangas.html'; // en raíz o fuera de /html/
   }
 }
 
@@ -68,9 +79,9 @@ function inicializarBuscadorConAutocomplete() {
       li.addEventListener('mousedown', (e) => {
         e.preventDefault();
         clickEnSugerencia = true;
-        window.location.href = `infoMangas.html?manga=${encodeURIComponent(nombre)}`;
 
-
+        const rutaInfo = getRutaInfoMangas();
+        window.location.href = `${rutaInfo}?manga=${encodeURIComponent(nombre)}`;
       });
 
       contenedorSugerencias.appendChild(li);
@@ -93,8 +104,8 @@ function inicializarBuscadorConAutocomplete() {
     e.preventDefault();
     const mangaBuscado = inputBuscar.value.trim();
     if (mangaBuscado) {
-      window.location.href = `infoMangas.html?manga=${encodeURIComponent(mangaBuscado)}`;
-
+      const rutaInfo = getRutaInfoMangas();
+      window.location.href = `${rutaInfo}?manga=${encodeURIComponent(mangaBuscado)}`;
     }
   });
 }
