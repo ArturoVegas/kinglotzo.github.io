@@ -2,9 +2,10 @@ import { ref, get } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-dat
 import { db } from "./firebaseInit.js";
 import { tiempoDesde } from "./utils.js";
 
-const ultimasActualizacionesCont = document.getElementById("ultimas-actualizaciones");
+
 
 async function cargarUltimasActualizaciones() {
+  const ultimasActualizacionesCont = document.getElementById("ultimas-actualizaciones");
   if (!ultimasActualizacionesCont) return;
 
   try {
