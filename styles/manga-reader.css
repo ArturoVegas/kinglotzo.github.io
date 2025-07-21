@@ -135,7 +135,6 @@
   padding: 15px;
   z-index: 800;
 
-  /* Ajustes para transiciones más suaves y sin animar visibility */
   opacity: 0;
   pointer-events: none;
   visibility: hidden;
@@ -224,28 +223,6 @@
   visibility: visible;
 }
 
-.chapter-title.fixed {
-  top: 20px;
-  left: 20px;
-  transform: translateX(0);
-  padding: 12px 18px;
-  font-size: 0.95rem;
-  max-width: 300px;
-  min-width: auto;
-  text-align: left;
-  border-radius: 10px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(12px);
-}
-
-/* Título oculto */
-.chapter-title.hidden {
-  opacity: 0;
-  visibility: hidden;
-  transform: translate(-50%, -50%) scale(0.8);
-  pointer-events: none;
-}
-
 .chapter-title h5 {
   margin: 0;
   font-size: inherit;
@@ -253,6 +230,7 @@
   color: var(--reader-text);
 }
 
+/* Controles internos */
 .reader-controls h6 {
   color: var(--reader-text);
   margin-bottom: 15px;
@@ -331,11 +309,12 @@
   border: none;
 }
 
+/* Navegación inferior */
 .reader-navigation {
   position: fixed;
   bottom: 30px;
   left: 50%;
-  transform: translateX(-50%);
+  transform: translateX(-50%) translateY(20px);
   background: var(--reader-overlay);
   backdrop-filter: blur(10px);
   border-radius: 50px;
@@ -347,7 +326,6 @@
   opacity: 0;
   pointer-events: none;
   visibility: hidden;
-  transform: translateX(-50%) translateY(20px);
   transition: opacity 0.3s ease, transform 0.3s ease;
   border: 1px solid var(--reader-border);
 }
@@ -401,6 +379,7 @@
   transition: width 0.3s ease;
 }
 
+/* Información fija */
 .reader-info {
   position: fixed;
   top: 20px;
@@ -441,8 +420,7 @@
   opacity: 0.8;
 }
 
-
-
+/* Toggle controles */
 .toggle-controls {
   position: fixed;
   top: 20px;
@@ -474,64 +452,6 @@
   transform: scale(1.05);
 }
 
-@media (max-width: 768px) {
-  .reader-controls {
-    top: 70px;
-    right: 10px;
-    left: 10px;
-    width: auto;
-    padding: 12px;
-    max-width: none;
-  }
-  
-  .toggle-controls {
-    top: 15px;
-    right: 60px;
-    width: 45px;
-    height: 45px;
-  }
-  
-  .reader-info {
-    top: 10px;
-    left: 10px;
-    right: 120px;
-    max-width: none;
-  }
-  
-  .chapter-title {
-    top: 35%;
-    left: 20px;
-    right: 20px;
-    transform: translateY(-50%);
-    max-width: none;
-    min-width: auto;
-    padding: 15px 20px;
-    font-size: 1.1rem;
-  }
-  
-  .chapter-title.fixed {
-    top: 15px;
-    left: 15px;
-    right: 70px;
-    transform: translateY(0);
-    padding: 10px 15px;
-    font-size: 0.9rem;
-    max-width: none;
-  }
-  
-  .reader-navigation {
-    bottom: 20px;
-    left: 20px;
-    right: 20px;
-    transform: none;
-    width: auto;
-  }
-  
-  .reader-navigation.visible {
-    transform: none;
-  }
-}
-
 /* Overlay para clicks */
 .reader-click-overlay {
   position: absolute;
@@ -551,8 +471,6 @@
 .reader-loading {
   position: fixed;
   top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
   background: var(--reader-overlay);
   backdrop-filter: blur(10px);
   border-radius: 12px;
@@ -603,28 +521,21 @@
   transform: translateY(10px);
   pointer-events: none;
 }
+
+/* MEDIA QUERIES - MÓVIL */
+
 @media (max-width: 768px) {
-  .chapter-title {
-    top: 40%; /* un poco más abajo para centrar */
-    left: 50%; /* centrar horizontal */
-    right: auto;
-    transform: translate(-50%, -50%);
-    max-width: 90vw;
-    padding: 15px 20px;
-    font-size: 1.1rem;
+  /* Ajustes para reader-controls */
+  .reader-controls {
+    top: 70px;
+    right: 10px;
+    left: 10px;
+    width: auto;
+    padding: 20px;
+    max-width: 100%;
   }
   
-  .chapter-title.fixed {
-    top: 15px;
-    left: 15px;
-    right: auto;
-    transform: translateX(0);
-    padding: 10px 15px;
-    font-size: 0.9rem;
-    max-width: 90vw;
-  }
-}
-@media (max-width: 768px) {
+  /* Ajustes para toggle-controls */
   .toggle-controls {
     top: 60px;      /* un poco más abajo */
     right: 15px;    /* menos cerca del borde */
@@ -632,10 +543,25 @@
     height: 45px;
     z-index: 1100;  /* asegurar que esté arriba */
   }
-}
-@media (max-width: 768px) {
+  
+  /* Ajustes para reader-info */
+  .reader-info {
+    top: 10px;
+    left: 10px;
+    right: 120px;
+    max-width: none;
+  }
+  
+  /* Ajustes para chapter-title - se posiciona justo arriba del engranaje (.config-button) */
+  #reader-info,
+  #chapter-title {
+    display: none !important;
+  }
+
+
+  /* Ajustes para reader-navigation */
   .reader-navigation {
-    bottom: 70px;       /* subirla para no chocar con toggle */
+    bottom: 40px;       /* subirla para no chocar con toggle */
     left: 50%;
     transform: translateX(-50%);
     width: auto;
@@ -644,14 +570,3 @@
     gap: 10px;
   }
 }
-@media (max-width: 768px) {
-  .reader-controls {
-    max-width: 100%;
-    right: 10px;
-    left: 10px;
-    padding: 20px;
-  }
-}
-
-
-
