@@ -31,11 +31,13 @@ document.addEventListener("DOMContentLoaded", () => {
     cargarCapitulo(manga, cap, tituloCap, imagenesContainer);
   }
 
- if (pathname.endsWith("index.html") || pathname === "/" || pathname === "/index.html") {
-  console.log("Página index detectada, cargando últimas actualizaciones...");
+const page = window.location.pathname.split("/").pop();
+
+if (page === "" || page === "index.html") {
+  console.log("✅ Página index detectada, cargando últimas actualizaciones...");
   cargarUltimasActualizaciones()
-    .then(() => console.log("Últimas actualizaciones cargadas correctamente"))
-    .catch(err => console.error("Error cargando últimas actualizaciones:", err));
+    .then(() => console.log("✅ Últimas actualizaciones cargadas correctamente"))
+    .catch(err => console.error("❌ Error cargando últimas actualizaciones:", err));
 }
 
   
