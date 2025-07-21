@@ -403,43 +403,42 @@
 
 .reader-info {
   position: fixed;
-  top: 20px;
+  top: 10px;
   left: 50%;
   transform: translateX(-50%) translateY(-10px);
-  background: var(--reader-overlay);
+  background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(10px);
   border-radius: 12px;
-  padding: 15px;
+  padding: 10px 20px;
   z-index: 1000;
   opacity: 0;
   pointer-events: none;
   visibility: hidden;
   transition: opacity 0.3s ease, transform 0.3s ease;
-  border: 1px solid var(--reader-border);
-  max-width: 1000px;
-  text-align: center; /* CENTRAR TEXTO */
+  border: 1px solid #ffffff33;
+  max-width: 90%;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }
 
 .reader-info.visible {
   opacity: 1;
   pointer-events: auto;
   visibility: visible;
-  transform: translateX(-50%) translateY(0); /* anima desde arriba */
+  transform: translateX(-50%) translateY(0);
 }
 
 .reader-info h5 {
-  color: var(--reader-text);
-  margin-bottom: 5px;
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 0.3rem;
+  color: #fff;
 }
 
 .reader-info p {
-  color: var(--reader-text);
-  margin: 0;
-  font-size: 0.8rem;
-  opacity: 0.8;
+  font-size: 0.9rem;
+  color: #ccc;
 }
+
 
 
 
@@ -604,5 +603,66 @@
   pointer-events: none;
 }
 
+@media (max-width: 768px) {
+  .reader-controls {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 1rem;
+    gap: 1rem;
+  }
+
+  .reader-controls .left,
+  .reader-controls .center,
+  .reader-controls .right {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+  }
+
+  .reader-controls label {
+    font-size: 1rem;
+  }
+
+  .reader-controls input,
+  .reader-controls select,
+  .reader-controls button {
+    width: 100%;
+    font-size: 1rem;
+    padding: 0.7rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+
+  .reader-controls button {
+    background-color: #333;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+
+  .reader-controls button:hover {
+    background-color: #555;
+  }
+
+  .reader-controls .right {
+    align-items: stretch;
+  }
+
+  .reader-controls .center .mode-buttons {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .reader-controls .center .mode-buttons button {
+    width: 100%;
+  }
+
+  /* Asegurar que el contenido debajo no se oculte */
+  body {
+    padding-bottom: 8rem; /* espacio para controles móviles */
+  }
+}
 
 
