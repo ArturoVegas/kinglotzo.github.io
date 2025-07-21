@@ -33,14 +33,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (pathname.endsWith("index.html") || pathname === "/" || pathname === "/index.html") {
     cargarUltimasActualizaciones();
-  }
-  if (pathname.endsWith("index.html") || pathname === "/" || pathname === "/index.html") {
-  console.log("Página index detectada, cargando últimas actualizaciones...");
+      console.log("Página index detectada, cargando últimas actualizaciones...");
   cargarUltimasActualizaciones()
     .then(() => console.log("Últimas actualizaciones cargadas correctamente"))
     .catch(err => console.error("Error cargando últimas actualizaciones:", err));
-}
-
+  }
+  
 
   // Buscador (para todas las páginas que tengan el formulario)
   cargarNombresMangas().then(() => {
