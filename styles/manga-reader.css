@@ -401,11 +401,11 @@
   transition: width 0.3s ease;
 }
 
-/* Información del capítulo */
 .reader-info {
   position: fixed;
   top: 20px;
-  left: 29%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
   background: var(--reader-overlay);
   backdrop-filter: blur(10px);
   border-radius: 12px;
@@ -414,17 +414,17 @@
   opacity: 0;
   pointer-events: none;
   visibility: hidden;
-  transform: translateY(-10px);
   transition: opacity 0.3s ease, transform 0.3s ease;
   border: 1px solid var(--reader-border);
   max-width: 1000px;
+  text-align: center; /* CENTRAR TEXTO */
 }
 
 .reader-info.visible {
   opacity: 1;
   pointer-events: auto;
   visibility: visible;
-  transform: translateY(0);
+  transform: translateX(-50%) translateY(0); /* anima desde arriba */
 }
 
 .reader-info h5 {
@@ -440,6 +440,8 @@
   font-size: 0.8rem;
   opacity: 0.8;
 }
+
+
 
 .toggle-controls {
   position: fixed;
@@ -601,24 +603,6 @@
   transform: translateY(10px);
   pointer-events: none;
 }
-#reader-navigation, #chapter-title {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
 
-#reader-navigation.visible, #chapter-title.visible {
-  opacity: 1;
-  pointer-events: auto;
-}
 
-#reader-info {
-  color: #fff !important;
-  z-index: 1000 !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-  background-color: rgba(0, 0, 0, 0.8); /* asegúrate de tener contraste */
-}
-#reader-info h5, #reader-info p {
-  color: #fff !important;
-}
+

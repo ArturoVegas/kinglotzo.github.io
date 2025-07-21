@@ -144,12 +144,14 @@ class CubariReader {
   if (this.isBarVisible) {
     clearTimeout(this.autoHideTimer);
     this.autoHideTimer = setTimeout(() => this.hideBar(), 3000);
+
     return;
   }
   this.isBarVisible = true;
   this.readerNavigation.classList.add('visible');
   this.readerInfo.classList.add('visible'); // <--- aquí, mostrar contenedor completo
-
+  
+  
   clearTimeout(this.autoHideTimer);
   this.autoHideTimer = setTimeout(() => this.hideBar(), 3000);
 }
