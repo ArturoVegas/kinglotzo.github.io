@@ -68,7 +68,9 @@ function inicializarBuscadorConAutocomplete() {
       li.addEventListener('mousedown', (e) => {
         e.preventDefault();
         clickEnSugerencia = true;
-        window.location.href = `/html/infoMangas.html?manga=${encodeURIComponent(nombre)}`;
+        window.location.href = `infoMangas.html?manga=${encodeURIComponent(nombre)}`;
+
+
       });
 
       contenedorSugerencias.appendChild(li);
@@ -91,7 +93,8 @@ function inicializarBuscadorConAutocomplete() {
     e.preventDefault();
     const mangaBuscado = inputBuscar.value.trim();
     if (mangaBuscado) {
-      window.location.href = `/html/infoMangas.html?manga=${encodeURIComponent(mangaBuscado)}`;
+      window.location.href = `infoMangas.html?manga=${encodeURIComponent(mangaBuscado)}`;
+
     }
   });
 }
