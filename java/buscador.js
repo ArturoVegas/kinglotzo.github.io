@@ -20,13 +20,20 @@ async function cargarNombresMangas() {
 }
 
 function getRutaInfoMangas() {
-  const pathname = window.location.pathname; // ej: "/index.html" o "/html/mangas.html"
-  if (pathname.startsWith('/html/')) {
-    return 'infoMangas.html'; // ya dentro de /html/
+  const origin = window.location.origin;
+  const pathParts = window.location.pathname.split('/');
+  
+  // Elimina el archivo actual (ej: index.html)
+  pathParts.pop();
+
+  // Si ya estamos en "html", no agregues de nuevo
+  if (pathParts[pathParts.length - 1] === 'html') {
+    return `${origin}${pathParts.join('/')}/infoMangas.html`;
   } else {
-    return './html/infoMangas.html'; // en raíz o fuera de /html/
+    return `${origin}${pathParts.join('/')}/html/infoMangas.html`;
   }
 }
+
 
 function inicializarBuscadorConAutocomplete() {
   const formBuscar = document.getElementById('form-buscar');
