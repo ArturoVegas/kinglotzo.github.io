@@ -8,7 +8,6 @@ class CubariReader {
     this.images = [];
     this.currentImageIndex = 0;
     this.availableChapters = [];
-    this.zoomLevel = 1;
     this.readingMode = 'vertical'; // vertical, horizontal, webtoon
     this.fitMode = 'fit-width'; // fit-width, fit-height, original-size
     this.spacing = 10;
@@ -41,8 +40,6 @@ class CubariReader {
     this.zoomLevelSpan = document.getElementById('zoom-level');
 
     this.spacingSlider = document.getElementById('spacing-slider');
-    this.zoomInBtn = document.getElementById('zoom-in');
-    this.zoomOutBtn = document.getElementById('zoom-out');
 
     this.navPrevChapter = document.getElementById('nav-prev-chapter');
     this.navPrevPage = document.getElementById('nav-prev-page');
@@ -92,9 +89,6 @@ class CubariReader {
       btn.addEventListener('click', (e) => this.changeFitMode(e.target.dataset.fit));
     });
 
-    // Zoom botones
-    if (this.zoomInBtn) this.zoomInBtn.addEventListener('click', () => this.zoomIn());
-    if (this.zoomOutBtn) this.zoomOutBtn.addEventListener('click', () => this.zoomOut());
 
     // Slider espacio
     if (this.spacingSlider) this.spacingSlider.addEventListener('input', (e) => this.changeSpacing(e.target.value));
@@ -334,35 +328,6 @@ hideBar() {
     }
   }
 
-  zoomIn() {
-    this.zoomLevel = Math.min(3, this.zoomLevel + 0.25);
-    this.applyZoom();
-  }
-
-  zoomOut() {
-    this.zoomLevel = Math.max(0.5, this.zoomLevel - 0.25);
-    this.applyZoom();
-  }
-
-  applyZoom() {
-    document.querySelectorAll('.reader-image').forEach(img => {
-      img.style.transform = `scale(${this.zoomLevel})`;
-    });
-
-    this.zoomLevelSpan.textContent = `${Math.round(this.zoomLevel * 100)}%`;
-  }
-
-  toggleImageZoom(img) {
-    const isZoomed = img.classList.contains('zoomed');
-
-    document.querySelectorAll('.reader-image').forEach(image => {
-      image.classList.remove('zoomed');
-    });
-
-    if (!isZoomed) {
-      img.classList.add('zoomed');
-    }
-  }
 
   previousPage() {
     if (this.readingMode === 'horizontal') {

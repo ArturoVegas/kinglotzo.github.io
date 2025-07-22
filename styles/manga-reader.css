@@ -569,4 +569,11 @@
     padding: 10px 20px;
     gap: 10px;
   }
+  /* Oculta el ajuste de imagen en móviles */
+
+  .reader-controls .control-group:nth-of-type(2) {
+    display: none;
+  }
+
+
 }
