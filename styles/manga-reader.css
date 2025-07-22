@@ -467,6 +467,36 @@
   pointer-events: auto;
 }
 
+/* Overlay zonas click izquierda y derecha para cambiar página */
+
+#click-prev,
+#click-next,
+#click-menu {
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  width: 33.3333vw;
+  z-index: 1001;
+  cursor: pointer;
+  background: transparent;
+  user-select: none;
+  /* No afectar a eventos hijos */
+  pointer-events: auto;
+}
+
+#click-prev {
+  left: 0;
+}
+
+#click-next {
+  right: 0;
+}
+
+#click-menu {
+  left: 33.3333vw;
+  width: 33.3333vw;
+}
+
 /* Estilos para el loading */
 .reader-loading {
   position: fixed;
@@ -480,6 +510,8 @@
   display: flex;
   align-items: center;
   gap: 15px;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .reader-loading .spinner {
@@ -574,6 +606,4 @@
   .reader-controls .control-group:nth-of-type(2) {
     display: none;
   }
-
-
 }

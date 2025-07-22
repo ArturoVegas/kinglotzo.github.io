@@ -329,6 +329,7 @@ hideBar() {
   }
 
 
+
   previousPage() {
     if (this.readingMode === 'horizontal') {
       this.readerContainer.scrollLeft -= window.innerWidth;
