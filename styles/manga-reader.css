@@ -94,8 +94,8 @@
   border-radius: 4px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   /* Transiciones ajustadas */
-  transition: transform 0.3s ease; /* eliminar transición automática */
-  cursor: default; /* Cambiado de pointer a default */
+  transition: transform 0.3s ease;
+  cursor: pointer; /* Cambiado a pointer para indicar clickeable */
 }
 
 /* Ajustes de imagen */
@@ -459,42 +459,58 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 5;
-  pointer-events: none;
-}
-
-.reader-click-overlay.enabled {
-  pointer-events: auto;
-}
-
-/* Overlay zonas click izquierda y derecha para cambiar página */
-
-#click-prev,
-#click-next,
-#click-menu {
-  position: fixed;
-  top: 0;
-  height: 100vh;
-  width: 33.3333vw;
   z-index: 1001;
-  cursor: pointer;
+  pointer-events: none; /* inicialmente inactivo, se activan zonas internas */
+  user-select: none;
+}
+
+/* Cada zona activa sí responde a clicks */
+.reader-click-overlay .click-zone {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  pointer-events: auto; /* activa clicks solo aquí */
   background: transparent;
   user-select: none;
-  /* No afectar a eventos hijos */
-  pointer-events: auto;
+  cursor: pointer;
+  z-index: 1002;
 }
 
+/* Zona para ir página anterior */
 #click-prev {
   left: 0;
+  width: 33.33%;
+  /* Background para testeo, elimina luego */
+  background: rgba(255, 0, 0, 0.15);
 }
 
+/* Zona para menú (si usas algo aquí) */
+#click-menu {
+  left: 33.33%;
+  width: 33.33%;
+  /* Background para testeo, elimina luego */
+  background: rgba(0, 255, 0, 0.15);
+}
+
+/* Zona para ir página siguiente */
 #click-next {
   right: 0;
+  width: 33.33%;
+  /* Background para testeo, elimina luego */
+  background: rgba(0, 0, 255, 0.15);
 }
 
-#click-menu {
-  left: 33.3333vw;
-  width: 33.3333vw;
+/* Agregado: Overlay pequeño central para toggle UI */
+#click-overlay {
+  position: absolute;
+  top: 40%;
+  left: 40%;
+  width: 20%;
+  height: 20%;
+  z-index: 1001;
+  cursor: pointer;
+  pointer-events: auto;
+  background: transparent;
 }
 
 /* Estilos para el loading */
@@ -590,7 +606,6 @@
     display: none !important;
   }
 
-
   /* Ajustes para reader-navigation */
   .reader-navigation {
     bottom: 40px;       /* subirla para no chocar con toggle */
@@ -601,9 +616,15 @@
     padding: 10px 20px;
     gap: 10px;
   }
+  
   /* Oculta el ajuste de imagen en móviles */
-
   .reader-controls .control-group:nth-of-type(2) {
     display: none;
   }
+}
+
+/* Contenedor relativo para posicionar overlays */
+#reader-container {
+  position: relative;
+  overflow: hidden;
 }

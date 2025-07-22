@@ -12,9 +12,8 @@ class CubariReader {
     this.fitMode = 'fit-width'; // fit-width, fit-height, original-size
     this.spacing = 10;
 
-    // NUEVO: Control para toggle UI y barra/nombre
-    this.isUIVisible = false;     // Controla el panel config (engrane)
-    this.isBarVisible = false;    // Controla la barra y título que aparece al mover mouse
+    this.isUIVisible = false;
+    this.isBarVisible = false;
     this.autoHideTimer = null;
 
     this.initializeElements();
@@ -23,19 +22,17 @@ class CubariReader {
   }
 
   initializeElements() {
-    console.log("[initializeElements] Buscando elementos del DOM");
-
     this.readerContainer = document.getElementById('reader-container');
-    this.readerControls = document.getElementById('reader-controls'); // panel config engranaje
+    this.readerControls = document.getElementById('reader-controls'); // engranaje panel
     this.readerNavigation = document.getElementById('reader-navigation'); // barra inferior botones
-    this.readerInfo = document.getElementById('reader-info');
-    this.toggleControls = document.getElementById('toggle-controls'); // boton engranaje
-    this.clickOverlay = document.getElementById('click-overlay');
+    this.readerInfo = document.getElementById('reader-info'); // contenedor título + info
+    this.toggleControls = document.getElementById('toggle-controls'); // botón engranaje
+    this.clickOverlay = document.getElementById('click-overlay'); // overlay clics, puede ser creado luego
     this.progressBar = document.getElementById('progress-bar');
     this.commentsSection = document.getElementById('comments-section');
     this.loadingIndicator = document.getElementById('reader-loading');
 
-    this.chapterTitle = document.getElementById('chapter-title');  // Nombre manga + capitulo
+    this.chapterTitle = document.getElementById('chapter-title');
     this.chapterProgress = document.getElementById('chapter-progress');
     this.zoomLevelSpan = document.getElementById('zoom-level');
 
@@ -46,120 +43,94 @@ class CubariReader {
     this.navBackManga = document.getElementById('nav-back-manga');
     this.navNextPage = document.getElementById('nav-next-page');
     this.navNextChapter = document.getElementById('nav-next-chapter');
-
-    this.clickPrev = document.getElementById('click-prev');
-    this.clickMenu = document.getElementById('click-menu');
-    this.clickNext = document.getElementById('click-next');
-
-    if (!this.toggleControls) console.warn("[initializeElements] No se encontró el botón toggle-controls");
-    if (!this.readerControls) console.warn("[initializeElements] No se encontró el contenedor reader-controls");
   }
 
   setupEventListeners() {
-    console.log("[setupEventListeners] Registrando listeners");
+    if (this.toggleControls) {
+      this.toggleControls.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.toggleEngrane();
+      });
+    }
 
-    // Click botón engranaje: toggle solo con click, no con mousemove
-    this.toggleControls.addEventListener('click', (e) => {
-      e.stopPropagation();
-      this.toggleEngrane();
-    });
-
-    // Mostrar barra/nombre al mover mouse o touch (independiente del engranaje)
     document.addEventListener('mousemove', () => this.showBar());
     document.addEventListener('touchstart', () => this.showBar());
 
-    // Click fuera del panel config para ocultarlo
     document.addEventListener('click', (e) => {
       if (
         this.isUIVisible &&
+        this.readerControls &&
         !this.readerControls.contains(e.target) &&
+        this.toggleControls &&
         !this.toggleControls.contains(e.target)
       ) {
         this.hideEngrane();
       }
     });
 
-    // Lectura modos
     document.querySelectorAll('[data-mode]').forEach(btn => {
       btn.addEventListener('click', (e) => this.changeReadingMode(e.target.dataset.mode));
     });
 
-    // Fit modos
     document.querySelectorAll('[data-fit]').forEach(btn => {
       btn.addEventListener('click', (e) => this.changeFitMode(e.target.dataset.fit));
     });
 
-
-    // Slider espacio
     if (this.spacingSlider) this.spacingSlider.addEventListener('input', (e) => this.changeSpacing(e.target.value));
 
-    // Navegacion capítulos y páginas
     if (this.navPrevChapter) this.navPrevChapter.addEventListener('click', () => this.previousChapter());
     if (this.navPrevPage) this.navPrevPage.addEventListener('click', () => this.previousPage());
     if (this.navNextPage) this.navNextPage.addEventListener('click', () => this.nextPage());
     if (this.navNextChapter) this.navNextChapter.addEventListener('click', () => this.nextChapter());
 
-    // Zonas click para páginas
-    if (this.clickPrev) this.clickPrev.addEventListener('click', () => this.previousPage());
-    if (this.clickMenu) this.clickMenu.addEventListener('click', () => this.toggleUI()); // Este toggleUI es distinto al engranaje
-    if (this.clickNext) this.clickNext.addEventListener('click', () => this.nextPage());
+    // Setup overlay click zones
+    this.setupClickOverlay();
 
-    // Teclado
-    document.removeEventListener('keydown', this.handleKeyPress); // evitar duplicados
+    document.removeEventListener('keydown', this.handleKeyPress);
     document.addEventListener('keydown', this.handleKeyPress.bind(this));
 
-    // Scroll progreso
     window.addEventListener('scroll', () => this.updateProgress());
-
-    // Responsive
     window.addEventListener('resize', () => this.adjustLayout());
   }
 
-  // Toggle solo panel config (engrane)
   toggleEngrane() {
     this.isUIVisible = !this.isUIVisible;
     if (this.isUIVisible) {
-      this.readerControls.classList.add('visible');
-      this.toggleControls.classList.add('active');
+      this.readerControls?.classList.add('visible');
+      this.toggleControls?.classList.add('active');
     } else {
-      this.readerControls.classList.remove('visible');
-      this.toggleControls.classList.remove('active');
+      this.readerControls?.classList.remove('visible');
+      this.toggleControls?.classList.remove('active');
     }
   }
 
   hideEngrane() {
     this.isUIVisible = false;
-    this.readerControls.classList.remove('visible');
-    this.toggleControls.classList.remove('active');
+    this.readerControls?.classList.remove('visible');
+    this.toggleControls?.classList.remove('active');
   }
 
-  // Mostrar barra y título al mover mouse/touch (independiente del engranaje)
   showBar() {
-  if (this.isBarVisible) {
+    if (this.isBarVisible) {
+      clearTimeout(this.autoHideTimer);
+      this.autoHideTimer = setTimeout(() => this.hideBar(), 3000);
+      return;
+    }
+    this.isBarVisible = true;
+    this.readerNavigation?.classList.add('visible');
+    this.readerInfo?.classList.add('visible');
+
     clearTimeout(this.autoHideTimer);
     this.autoHideTimer = setTimeout(() => this.hideBar(), 3000);
-
-    return;
   }
-  this.isBarVisible = true;
-  this.readerNavigation.classList.add('visible');
-  this.readerInfo.classList.add('visible'); // <--- aquí, mostrar contenedor completo
-  
-  
-  clearTimeout(this.autoHideTimer);
-  this.autoHideTimer = setTimeout(() => this.hideBar(), 3000);
-}
 
-hideBar() {
-  this.isBarVisible = false;
-  this.readerNavigation.classList.remove('visible');
-  this.readerInfo.classList.remove('visible');  // <--- ocultar contenedor completo
-}
+  hideBar() {
+    this.isBarVisible = false;
+    this.readerNavigation?.classList.remove('visible');
+    this.readerInfo?.classList.remove('visible');
+  }
 
-  // Este toggleUI está separado del engranaje, para el clickMenu (zona central)
   toggleUI() {
-    // Si quieres manejar que el clickMenu haga algo, implementa aquí
-    // Por ejemplo, mostrar u ocultar barra/nombre:
     if (this.isBarVisible) {
       this.hideBar();
     } else {
@@ -184,7 +155,7 @@ hideBar() {
       await this.loadChapterImages();
       this.setupNavigation();
       this.hideLoading();
-      this.showBar(); // Mostrar barra con título al cargar capítulo
+      this.showBar();
     } catch (error) {
       console.error('Error cargando capítulo:', error);
       this.showError('Error al cargar el capítulo');
@@ -195,7 +166,6 @@ hideBar() {
     try {
       const mangaRef = ref(db, `mangas/${this.currentManga}/capitulos`);
       const snapshot = await get(mangaRef);
-
       if (snapshot.exists()) {
         const chapters = snapshot.val();
         this.availableChapters = Object.keys(chapters).sort((a, b) => parseInt(a) - parseInt(b));
@@ -265,12 +235,25 @@ hideBar() {
         this.updateProgress();
       });
 
-      imgElement.addEventListener('click', (e) => {
-        if (this.readingMode === 'horizontal') {
-          this.nextPage();
-        } else {
-          this.toggleImageZoom(e.target);
-        }
+      // Aquí está el cambio importante para clicks izquierdo/derecho en todos los modos
+     imgElement.addEventListener('click', (e) => {
+  e.preventDefault();
+  if (e.button === 0) {
+    const rect = e.target.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    if (clickX < rect.width / 2) {
+      this.previousPage();
+    } else {
+      this.nextPage();
+    }
+  }
+});
+
+
+      // Detectar click derecho para página anterior
+      imgElement.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
+        this.previousPage();
       });
 
       this.readerContainer.appendChild(imgElement);
@@ -328,13 +311,11 @@ hideBar() {
     }
   }
 
-
-
   previousPage() {
     if (this.readingMode === 'horizontal') {
       this.readerContainer.scrollLeft -= window.innerWidth;
     } else {
-      window.scrollBy(0, -window.innerHeight * 0.8);
+      window.scrollBy({ top: -window.innerHeight * 0.8, behavior: 'smooth' });
     }
   }
 
@@ -342,7 +323,7 @@ hideBar() {
     if (this.readingMode === 'horizontal') {
       this.readerContainer.scrollLeft += window.innerWidth;
     } else {
-      window.scrollBy(0, window.innerHeight * 0.8);
+      window.scrollBy({ top: window.innerHeight * 0.8, behavior: 'smooth' });
     }
   }
 
@@ -369,23 +350,22 @@ hideBar() {
   setupNavigation() {
     const currentIndex = this.availableChapters.indexOf(this.currentChapter);
 
-    this.navPrevChapter.disabled = currentIndex <= 0;
-    this.navNextChapter.disabled = currentIndex >= this.availableChapters.length - 1;
+    if (this.navPrevChapter) this.navPrevChapter.disabled = currentIndex <= 0;
+    if (this.navNextChapter) this.navNextChapter.disabled = currentIndex >= this.availableChapters.length - 1;
 
-    this.navBackManga.href = `infoMangas.html?manga=${encodeURIComponent(this.currentManga)}`;
-
-    this.clickOverlay.classList.add('enabled');
-
-    this.adjustClickOverlay();
+    if (this.navBackManga)
+      this.navBackManga.href = `infoMangas.html?manga=${encodeURIComponent(this.currentManga)}`;
   }
 
   updateChapterInfo() {
     const mangaName = this.currentManga.replaceAll("_", " ");
-    this.chapterTitle.textContent = `${mangaName} - Capítulo ${this.currentChapter}`;
-    this.chapterProgress.textContent = `${this.images.length} páginas`;
+    if (this.chapterTitle) this.chapterTitle.textContent = `${mangaName} - Capítulo ${this.currentChapter}`;
+    if (this.chapterProgress) this.chapterProgress.textContent = `${this.images.length} páginas`;
   }
 
   updateProgress() {
+    if (!this.progressBar) return;
+
     if (this.readingMode === 'horizontal') {
       const scrollPercent = (this.readerContainer.scrollLeft / (this.readerContainer.scrollWidth - this.readerContainer.clientWidth)) * 100;
       this.progressBar.style.width = `${scrollPercent}%`;
@@ -396,7 +376,7 @@ hideBar() {
   }
 
   handleKeyPress(event) {
-    switch(event.key) {
+    switch (event.key) {
       case 'ArrowLeft':
         event.preventDefault();
         this.previousPage();
@@ -423,23 +403,61 @@ hideBar() {
   }
 
   showLoading() {
-    this.loadingIndicator.style.display = 'flex';
+    if (this.loadingIndicator) this.loadingIndicator.style.display = 'flex';
   }
 
   hideLoading() {
-    this.loadingIndicator.style.display = 'none';
+    if (this.loadingIndicator) this.loadingIndicator.style.display = 'none';
   }
 
   showError(message) {
     this.hideLoading();
-    this.chapterTitle.textContent = 'Error';
-    this.chapterProgress.textContent = message;
-    this.readerContainer.innerHTML = `<div style="text-align: center; padding: 50px; color: var(--reader-text);">${message}</div>`;
+    if (this.chapterTitle) this.chapterTitle.textContent = 'Error';
+    if (this.chapterProgress) this.chapterProgress.textContent = message;
+    if (this.readerContainer)
+      this.readerContainer.innerHTML = `<div style="text-align: center; padding: 50px; color: var(--reader-text);">${message}</div>`;
   }
 
-  adjustClickOverlay() {
-    const commentsTop = this.commentsSection.offsetTop;
-    this.clickOverlay.style.height = `${commentsTop}px`;
+  setupClickOverlay() {
+    if (!this.readerContainer) {
+      console.warn('No se encontró #reader-container para colocar overlay de clic');
+      return;
+    }
+
+    let overlay = document.getElementById('click-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'click-overlay';
+      this.readerContainer.appendChild(overlay);
+    }
+
+    // overlay solo zona central para toggle UI (20% ancho x 20% alto en centro)
+    overlay.style.position = 'absolute';
+    overlay.style.top = '40%';
+    overlay.style.left = '40%';
+    overlay.style.width = '20%';
+    overlay.style.height = '20%';
+    overlay.style.zIndex = 20;
+    overlay.style.cursor = 'pointer';
+    overlay.style.pointerEvents = 'auto';
+
+    // limpiar contenido y crear solo una zona
+    overlay.innerHTML = '';
+
+    overlay.onclick = (e) => {
+      if (this.isClickAllowed(e)) {
+        this.toggleUI();
+      }
+    };
+
+    this.readerContainer.style.position = 'relative';
+  }
+
+  isClickAllowed(event) {
+    if (!this.commentsSection) return true;
+
+    const commentsRect = this.commentsSection.getBoundingClientRect();
+    return event.clientY < commentsRect.top;
   }
 
   toggleFullscreen() {
@@ -451,50 +469,62 @@ hideBar() {
   }
 
   adjustLayout() {
+    if (!this.readerContainer) return;
+
     if (this.readingMode === 'horizontal') {
       this.readerContainer.style.height = '100vh';
       this.readerContainer.style.overflowX = 'auto';
       this.readerContainer.style.overflowY = 'hidden';
+      this.readerContainer.style.display = 'flex';
+      this.readerContainer.style.flexWrap = 'nowrap';
     } else {
       this.readerContainer.style.height = 'auto';
       this.readerContainer.style.overflowX = 'visible';
       this.readerContainer.style.overflowY = 'visible';
+      this.readerContainer.style.display = 'block';
     }
+  }
+
+  toggleImageZoom(imgElement) {
+    if (!imgElement) return;
+    imgElement.classList.toggle('zoomed');
   }
 }
 
-// Inicializar el lector cuando se carga la página
+// Al cargar la página
 document.addEventListener('DOMContentLoaded', () => {
-  console.log("[DOMContentLoaded] Página cargada, inicializando CubariReader");
   new CubariReader();
 });
 
-// Elementos que deben ocultarse al mostrar los comentarios
-const elementsToHide = [
-  document.getElementById('reader-controls'),
-  document.getElementById('reader-navigation'),
-  document.getElementById('chapter-title'),
-  document.getElementById('reader-info'),
-];
+// Ocultar UI cuando la sección de comentarios está visible
+(() => {
+  const elementsToHide = [
+    document.getElementById('reader-controls'),
+    document.getElementById('reader-navigation'),
+    document.getElementById('chapter-title'),
+    document.getElementById('reader-info'),
+  ].filter(Boolean);
 
-// Añadir clase 'fading' a todos desde el inicio
-elementsToHide.forEach(el => el.classList.add('fading'));
+  // Añadir clase 'fading' desde el inicio
+  elementsToHide.forEach(el => el.classList.add('fading'));
 
-// Observador para detectar visibilidad de la sección de comentarios
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      // Comentarios visibles: ocultar elementos
-      elementsToHide.forEach(el => el.classList.add('hidden'));
-    } else {
-      // Comentarios no visibles: mostrar elementos
-      elementsToHide.forEach(el => el.classList.remove('hidden'));
-    }
+  const commentsSection = document.getElementById('comments-section');
+  if (!commentsSection) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Ocultar UI cuando comentarios visibles
+        elementsToHide.forEach(el => el.classList.add('hidden'));
+      } else {
+        // Mostrar UI cuando comentarios no visibles
+        elementsToHide.forEach(el => el.classList.remove('hidden'));
+      }
+    });
+  }, {
+    root: null,
+    threshold: 0.1
   });
-}, {
-  root: null, // usa el viewport
-  threshold: 0.1 // se activa si al menos el 10% del comments-section entra en pantalla
-});
 
-// Empieza a observar los comentarios
-observer.observe(document.getElementById('comments-section'));
+  observer.observe(commentsSection);
+})();
