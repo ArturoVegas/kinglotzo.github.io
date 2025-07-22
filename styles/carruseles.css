@@ -1,42 +1,35 @@
-/* Carrusel de portada */
 #carouselWrapper {
   width: 100%;
   max-height: 800px;
   overflow: hidden;
 }
-
 #carouselExampleCaptions {
   width: 100%;
-  max-height: 400px;  /* altura máxima para escritorio */
+  aspect-ratio: 32 / 10	;  /* misma proporción siempre */
   overflow: hidden;
   position: relative;
-  aspect-ratio: 16 / 9; /* mantener proporción */
-  height: auto;
+  height: auto;          /* se ajusta automáticamente */
 }
 
 #carouselExampleCaptions .carousel-item img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover;     /* llena el contenedor sin deformar */
   object-position: center;
 }
 
-/* Para pantallas pequeñas */
+/* Opcional: eliminar diferencias innecesarias en móviles */
 @media (max-width: 576px) {
   #carouselExampleCaptions {
-    max-height: none;
-    aspect-ratio: auto;
-    height: 220px;
+    aspect-ratio: 32 / 10	;  /* mantenemos exactamente igual */
+    height: auto;
   }
-
   #carouselExampleCaptions .carousel-item img {
-    height: 100%;
-    object-fit: cover;
-    object-position: center top;
+    object-position: center;
   }
 }
 
-/* Carrusel horizontal de populares */
+
 #carrusel-populares {
   display: flex;
   overflow-x: auto;
@@ -47,80 +40,65 @@
   scrollbar-width: thin;
   scrollbar-color: #054283 transparent;
 }
-
 #carrusel-populares::-webkit-scrollbar {
   height: 8px;
 }
-
 #carrusel-populares::-webkit-scrollbar-track {
   background: transparent;
 }
-
 #carrusel-populares::-webkit-scrollbar-thumb {
   background-color: #054283;
   border-radius: 4px;
 }
-
 .popular-card-wrapper {
   flex: 0 0 16.66%;
   max-width: 16.66%;
   display: flex;
   flex-direction: column;
 }
-
 @media (max-width: 992px) {
   .popular-card-wrapper {
     flex: 0 0 33.33%;
     max-width: 33.33%;
   }
 }
-
 @media (max-width: 576px) {
   .popular-card-wrapper {
     flex: 0 0 50%;
     max-width: 50%;
   }
 }
-
 #carrusel-populares .card {
   height: 100%;
   display: flex;
   flex-direction: column;
 }
-
 #carrusel-populares .card-img-top {
   height: 200px;
   object-fit: cover;
   object-position: top;
 }
-
 #carrusel-populares .card-body {
   flex-grow: 1;
   padding: 0.5rem 1rem;
   margin-top: -5px;
 }
 
-/* Carrusel de noticias con proporción igual en móvil y escritorio */
-#carouselNoticias {
-  aspect-ratio: 16 / 9;
-  width: 100%;
-  max-width: 100%;
+
+#carouselNoticias .carousel-inner {
+  height: 750px; /* Ajusta según el espacio que quieras usar */
   overflow: hidden;
   position: relative;
 }
 
-#carouselNoticias .carousel-inner {
-  height: 100%;
-}
-
 #carouselNoticias .carousel-item {
-  height: 100%;
+  height: 50%;
 }
 
 #carouselNoticias .carousel-item img {
-  width: 100%;
+  width: 50%;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; /* Recorta sin deformar */
   object-position: center;
   border-radius: 0.5rem;
 }
@@ -140,12 +118,10 @@
 
 #carouselNoticias .carousel-control-prev,
 #carouselNoticias .carousel-control-next {
-  width: 10%;
-  top: 0;
+  width: 10%; /* Ajusta el área de clic sin que invada el carrusel */
+  top: -50%;
   bottom: 0;
   z-index: 15;
-  display: flex;
-  align-items: center;
 }
 
 #carouselNoticias .carousel-control-prev-icon,
@@ -155,9 +131,16 @@
   height: 2rem;
 }
 
+/* Opcional: alinea verticalmente el ícono en el centro */
+#carouselNoticias .carousel-control-prev,
+#carouselNoticias .carousel-control-next {
+  display: flex;
+  align-items: center;
+}
+
 #carouselNoticias .carousel-indicators {
   position: absolute;
-  bottom: 1rem;
+  bottom: 350px; /* Puedes ajustar este valor según dónde quieras que aparezcan */
   left: 50%;
   transform: translateX(-50%);
   z-index: 20;

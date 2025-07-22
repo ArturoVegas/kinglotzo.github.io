@@ -20,3 +20,6 @@ footer {
   max-height: 650px;
   overflow: hidden;
 }
+#carouselExampleCaptions .carousel-caption {
+  display: none !important;
+}
