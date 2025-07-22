@@ -10,8 +10,6 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 
   <!-- CSS personalizado -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
   <link rel="stylesheet" href="../styles/buscador.css" />
   <link rel="stylesheet" href="../styles/navbar.css" />
   <link rel="stylesheet" href="../styles/reset.css" />
@@ -23,50 +21,78 @@
 </head>
 <body>
   <nav class="navbar navbar-expand-md row-personalizada px-3">
-      <div class="container-fluid">
-        <!-- Logo -->
-        <a class="navbar-brand d-flex align-items-center" href="../index.html">
-          <img src="../Recursos/imagenes/imagen al principio.png" alt="Logo" class="img-fluid logo-img me-2" />
-          <img src="../Recursos/imagenes/whitePearltranslation.png" alt="Nombre Scan" class="img-fluid nombre-img" />
-        </a>
+    <div class="container-fluid">
+      <!-- Logo -->
+      <a class="navbar-brand d-flex align-items-center" href="../index.html">
+        <img src="../Recursos/imagenes/imagen al principio.png" alt="Logo White Pearl Translation" class="img-fluid logo-img me-2" />
+        <img src="../Recursos/imagenes/whitePearltranslation.png" alt="Nombre Scan White Pearl Translation" class="img-fluid nombre-img" />
+      </a>
 
-        <!-- Botón hamburguesa -->
-        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+      <!-- Botón hamburguesa -->
+      <button
+        class="navbar-toggler ms-auto"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarContent"
+        aria-controls="navbarContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-        <!-- Menú colapsable -->
-        <div class="collapse navbar-collapse mt-2 mt-md-0" id="navbarContent">
-          <ul class="navbar-nav flex-column flex-md-row w-100 justify-content-center justify-content-md-center align-items-center align-items-md-center">
-            <li class="nav-item"><a class="nav-link text-white" href="../index.html">Inicio</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="../html/mangas.html">Nuestros mangas</a></li>
-          </ul>
+      <!-- Menú colapsable -->
+      <div class="collapse navbar-collapse mt-2 mt-md-0" id="navbarContent">
+        <ul
+          class="navbar-nav flex-column flex-md-row w-100 justify-content-center justify-content-md-center align-items-center align-items-md-center"
+        >
+          <li class="nav-item"><a class="nav-link text-white" href="../index.html">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link text-white" href="../html/mangas.html">Nuestros mangas</a></li>
+        </ul>
 
-          <!-- Buscador + botón inicio sesión -->
-          <form id="form-buscar" class="d-flex mt-3 mt-md-0 ms-md-auto w-100 w-md-50 align-items-center" role="search">
-            <input id="input-buscar" class="form-control border-dark" type="search" placeholder="🔍 Buscar..." />
-            <div class="dropdown ms-2">
-              <button class="btn btn-outline-light dropdown-toggle" type="button" id="authDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="height: 38px; font-size: 0.8rem;">
-                <i class="bi bi-person-circle me-1"></i>Cuenta
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="authDropdown">
-                <li><a class="dropdown-item" href="../html/auth.html"><i class="bi bi-box-arrow-in-right me-2"></i>Iniciar sesión</a></li>
-                <li><a class="dropdown-item" href="../html/auth.html"><i class="bi bi-person-plus me-2"></i>Registrarse</a></li>
-              </ul>
-            </div>
-          </form>
-        </div>
+        <!-- Buscador + botón inicio sesión -->
+        <form
+          id="form-buscar"
+          class="d-flex mt-3 mt-md-0 ms-md-auto w-100 w-md-50 align-items-center"
+          role="search"
+          aria-label="Formulario de búsqueda"
+        >
+          <input
+            id="input-buscar"
+            class="form-control border-dark"
+            type="search"
+            placeholder="🔍 Buscar..."
+            aria-label="Buscar"
+          />
+          <div class="dropdown ms-2">
+            <button
+              class="btn btn-outline-light dropdown-toggle"
+              type="button"
+              id="authDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              style="height: 38px; font-size: 0.8rem;"
+              aria-label="Menú cuenta"
+            >
+              <i class="bi bi-person-circle me-1"></i>Cuenta
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="authDropdown">
+              <li><a class="dropdown-item" href="../html/auth.html"><i class="bi bi-box-arrow-in-right me-2"></i>Iniciar sesión</a></li>
+              <li><a class="dropdown-item" href="../html/auth.html"><i class="bi bi-person-plus me-2"></i>Registrarse</a></li>
+            </ul>
+          </div>
+        </form>
       </div>
-    </nav>
+    </div>
+  </nav>
 
   <!-- Contenido principal -->
-  <div class="container-fluid d-flex flex-column align-items-center">
-    <div class="row justify-content-center align-items-start my-4 w-100" style="max-width: 1140px;">
-
+  <div class="container my-4">
+    <div class="row justify-content-center align-items-start">
       <!-- Manga Listas -->
       <div class="col-12 col-lg-8">
         <div class="p-3 rounded">
-          <h5 class="text-light mb-3">Listas de Manga</h5>
+          <h5 class="text-light mb-3 maspopulares">Listas de Manga</h5>
 
           <!-- Contenedor filtros en fila -->
           <div class="d-flex flex-wrap gap-3 mb-3">
@@ -80,7 +106,9 @@
             </div>
 
             <div class="dropdown">
-              <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" id="btnEstadoFiltro">Estado Todo</button>
+              <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" id="btnEstadoFiltro">
+                Estado Todo
+              </button>
               <ul class="dropdown-menu" id="listaEstado">
                 <li><a class="dropdown-item" href="#" data-estado="">Todos</a></li>
                 <li><a class="dropdown-item" href="#" data-estado="En emisión">En emisión</a></li>
@@ -90,7 +118,9 @@
             </div>
 
             <div class="dropdown">
-              <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" id="btnFrecuenciaFiltro">Frecuencia Todo</button>
+              <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" id="btnFrecuenciaFiltro">
+                Frecuencia Todo
+              </button>
               <ul class="dropdown-menu" id="listaFrecuencia">
                 <li><a class="dropdown-item" href="#" data-frecuencia="">Todos</a></li>
                 <li><a class="dropdown-item" href="#" data-frecuencia="Semanal">Semanal</a></li>
@@ -117,7 +147,7 @@
 
       <!-- Noticias -->
       <div class="col-12 col-lg-4 mb-4 mb-lg-0 d-flex flex-column">
-        <h1 class="maspopulares text-center mb-3">Noticias</h1>
+        <h5 class="text-center mb-3 maspopulares">Noticias</h5>
         <div id="carouselNoticias" class="carousel slide flex-grow-1" data-bs-ride="carousel" style="min-height: 400px;">
           <div class="carousel-inner rounded h-100">
             <div class="carousel-item active h-100">
@@ -128,33 +158,31 @@
             </div>
             <!-- Más items si quieres -->
           </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#carouselNoticias" data-bs-slide="prev">
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselNoticias" data-bs-slide="prev" aria-label="Anterior noticia">
             <span class="carousel-control-prev-icon"></span>
-            <span class="visually-hidden">Anterior</span>
           </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselNoticias" data-bs-slide="next">
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselNoticias" data-bs-slide="next" aria-label="Siguiente noticia">
             <span class="carousel-control-next-icon"></span>
-            <span class="visually-hidden">Siguiente</span>
           </button>
         </div>
       </div>
     </div>
-
-    <!-- Footer -->
-    <footer class="footer-redes py-4 mt-4 w-100" style="max-width: 1140px;">
-      <div class="container text-center">
-        <h5 class="mb-3 text-light">Síguenos en nuestras redes</h5>
-        <div class="d-flex justify-content-center gap-4">
-          <a href="https://web.facebook.com/profile.php?id=61556342730848" target="_blank" class="text-decoration-none text-light fs-3">
-            <i class="bi bi-facebook"></i>
-          </a>
-          <a href="https://discord.com/invite/sJJZkrkXz6" target="_blank" class="text-decoration-none text-light fs-3">
-            <i class="bi bi-discord"></i>
-          </a>
-        </div>
-      </div>
-    </footer>
   </div>
+
+  <!-- Footer -->
+  <footer class="footer-redes py-4 mt-4 w-100 bg-dark">
+    <div class="container text-center">
+      <h5 class="mb-3 text-light">Síguenos en nuestras redes</h5>
+      <div class="d-flex justify-content-center gap-4">
+        <a href="https://web.facebook.com/profile.php?id=61556342730848" target="_blank" class="text-decoration-none text-light fs-3" rel="noopener noreferrer" aria-label="Facebook">
+          <i class="bi bi-facebook"></i>
+        </a>
+        <a href="https://discord.com/invite/sJJZkrkXz6" target="_blank" class="text-decoration-none text-light fs-3" rel="noopener noreferrer" aria-label="Discord">
+          <i class="bi bi-discord"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
 
   <!-- Scripts -->
   <script type="module" src="../java/main.js"></script>

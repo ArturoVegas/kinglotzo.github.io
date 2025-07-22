@@ -1,0 +1,22 @@
+#ultimas-actualizaciones {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.row.justify-content-center {
+  margin-bottom: 0 !important;
+}
+
+footer {
+  margin-top: 40px !important;
+}
+#ultimas-actualizaciones.row {
+  padding-bottom: 0 !important;
+}
+
+
+
+#noticias-columna {
+  max-height: 650px;
+  overflow: hidden;
+}

@@ -6,18 +6,20 @@
   <title>White Pearl Translation</title>
 
   <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 
   <!-- Estilos personalizados -->
-  <link rel="stylesheet" href="./styles/reset.css">
-  <link rel="stylesheet" href="./styles/navbar.css">
-  <link rel="stylesheet" href="./styles/carruseles.css">
-  <link rel="stylesheet" href="./styles/botones.css">
-  <link rel="stylesheet" href="./styles/titulos.css">
-  <link rel="stylesheet" href="./styles/footer.css">
-  <link rel="stylesheet" href="./styles/cards.css">
-  <link rel="stylesheet" href="./styles/buscador.css">
+  <link rel="stylesheet" href="./styles/reset.css" />
+  <link rel="stylesheet" href="./styles/navbar.css" />
+  <link rel="stylesheet" href="./styles/carruseles.css" />
+  <link rel="stylesheet" href="./styles/botones.css" />
+  <link rel="stylesheet" href="./styles/titulos.css" />
+  <link rel="stylesheet" href="./styles/footer.css" />
+  <link rel="stylesheet" href="./styles/cards.css" />
+  <link rel="stylesheet" href="./styles/buscador.css" />
+    <link rel="stylesheet" href="./styles/index.css" />
+
 </head>
 <body>
   <div class="container-fluid p-0 overflow-hidden">
@@ -28,23 +30,64 @@
           <img src="./Recursos/imagenes/imagen al principio.png" alt="Logo" class="img-fluid logo-img me-2" />
           <img src="./Recursos/imagenes/whitePearltranslation.png" alt="Nombre Scan" class="img-fluid nombre-img" />
         </a>
-        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <button
+          class="navbar-toggler ms-auto"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarContent"
+          aria-controls="navbarContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse mt-2 mt-md-0" id="navbarContent">
-          <ul class="navbar-nav flex-column flex-md-row w-100 justify-content-center align-items-center">
-            <li class="nav-item"><a class="nav-link text-white" href="index.html">Inicio</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="./html/mangas.html">Nuestros mangas</a></li>
+          <ul
+            class="navbar-nav flex-column flex-md-row w-100 justify-content-center align-items-center"
+            role="menu"
+          >
+            <li class="nav-item" role="none">
+              <a class="nav-link text-white" href="index.html" role="menuitem">Inicio</a>
+            </li>
+            <li class="nav-item" role="none">
+              <a class="nav-link text-white" href="./html/mangas.html" role="menuitem">Nuestros mangas</a>
+            </li>
           </ul>
-          <form id="form-buscar" class="d-flex mt-3 mt-md-0 ms-md-auto w-100 w-md-50 align-items-center" role="search">
-            <input id="input-buscar" class="form-control border-dark" type="search" placeholder="🔍 Buscar..." />
+          <form
+            id="form-buscar"
+            class="d-flex mt-3 mt-md-0 ms-md-auto w-100 w-md-50 align-items-center"
+            role="search"
+            aria-label="Formulario de búsqueda"
+          >
+            <input
+              id="input-buscar"
+              class="form-control border-dark"
+              type="search"
+              placeholder="🔍 Buscar..."
+              aria-label="Buscar"
+            />
             <div class="dropdown ms-2">
-              <button class="btn btn-outline-light dropdown-toggle" type="button" id="authDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="height: 38px; font-size: 0.8rem;">
+              <button
+                class="btn btn-outline-light dropdown-toggle"
+                type="button"
+                id="authDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                style="height: 38px; font-size: 0.8rem;"
+              >
                 <i class="bi bi-person-circle me-1"></i>Cuenta
               </button>
-              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="authDropdown">
-                <li><a class="dropdown-item" href="./html/auth.html"><i class="bi bi-box-arrow-in-right me-2"></i>Iniciar sesión</a></li>
-                <li><a class="dropdown-item" href="./html/auth.html"><i class="bi bi-person-plus me-2"></i>Registrarse</a></li>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="authDropdown" role="menu">
+                <li role="none">
+                  <a class="dropdown-item" href="./html/auth.html" role="menuitem">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar sesión
+                  </a>
+                </li>
+                <li role="none">
+                  <a class="dropdown-item" href="./html/auth.html" role="menuitem">
+                    <i class="bi bi-person-plus me-2"></i>Registrarse
+                  </a>
+                </li>
               </ul>
             </div>
           </form>
@@ -56,14 +99,32 @@
     <div class="row m-0 p-0">
       <div class="col-12 p-0">
         <div id="carouselWrapper">
-          <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+          <div
+            id="carouselExampleCaptions"
+            class="carousel slide"
+            data-bs-ride="carousel"
+            data-bs-interval="5000"
+            aria-label="Carrusel de imágenes destacado"
+          >
             <div class="carousel-indicators"></div>
             <div class="carousel-inner"><!-- Dinámico desde Firebase --></div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+            <button
+              class="carousel-control-prev"
+              type="button"
+              data-bs-target="#carouselExampleCaptions"
+              data-bs-slide="prev"
+              aria-label="Anterior"
+            >
               <span class="carousel-control-prev-icon"></span>
               <span class="visually-hidden">Anterior</span>
             </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+            <button
+              class="carousel-control-next"
+              type="button"
+              data-bs-target="#carouselExampleCaptions"
+              data-bs-slide="next"
+              aria-label="Siguiente"
+            >
               <span class="carousel-control-next-icon"></span>
               <span class="visually-hidden">Siguiente</span>
             </button>
@@ -87,43 +148,82 @@
     </div>
 
     <!-- Últimas actualizaciones y Noticias -->
-    <div class="row justify-content-center my-0">
-      <!-- Últimas actualizaciones -->
+     <div class="row justify-content-center align-items-start">
+
+        <!-- Últimas actualizaciones -->
       <div class="col-12 col-md-6">
         <h1 class="maspopulares text-center mb-3">Últimas actualizaciones</h1>
-        <div id="ultimas-actualizaciones" class="row row-cols-3 g-3 px-2 px-sm-3 px-md-0">
+        <div
+          id="ultimas-actualizaciones"
+          class="row row-cols-3 g-3 px-2 px-sm-3 px-md-0"
+          aria-live="polite"
+          aria-relevant="additions"
+        >
           <!-- Tarjetas dinámicas -->
         </div>
       </div>
 
       <!-- Noticias -->
-      <div class="col-12 col-md-4 mt-4 mt-md-0">
+       <div class="col-12 col-md-4 mt-md-0" id="noticias-columna">
+
         <h1 class="maspopulares text-center mb-3">Noticias</h1>
-        <div id="carouselNoticias" class="carousel slide" data-bs-ride="carousel">
+        <div
+          id="carouselNoticias"
+          class="carousel slide"
+          data-bs-ride="carousel"
+          aria-label="Carrusel de noticias"
+        >
           <div class="carousel-indicators"></div>
           <div class="carousel-inner rounded">
             <!-- Noticias dinámicas -->
           </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#carouselNoticias" data-bs-slide="prev">
+          <button
+            class="carousel-control-prev"
+            type="button"
+            data-bs-target="#carouselNoticias"
+            data-bs-slide="prev"
+            aria-label="Anterior"
+          >
             <span class="carousel-control-prev-icon"></span>
             <span class="visually-hidden">Anterior</span>
           </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselNoticias" data-bs-slide="next">
+          <button
+            class="carousel-control-next"
+            type="button"
+            data-bs-target="#carouselNoticias"
+            data-bs-slide="next"
+            aria-label="Siguiente"
+          >
             <span class="carousel-control-next-icon"></span>
             <span class="visually-hidden">Siguiente</span>
           </button>
         </div>
       </div>
     </div>
-  </div> <!-- Fin container-fluid -->
+  </div>
+  <!-- Fin container-fluid -->
 
   <!-- Footer (ya fuera del container-fluid) -->
-  <footer class="footer-redes py-0 mt-4">
+  <footer class="footer-redes py-0 mb-5">
     <div class="container text-center">
       <h5 class="mb-3 text-light">Síguenos en nuestras redes</h5>
       <div class="d-flex justify-content-center gap-4">
-        <a href="https://web.facebook.com/profile.php?id=61556342730848" target="_blank" class="text-decoration-none text-light fs-3"><i class="bi bi-facebook"></i></a>
-        <a href="https://discord.com/invite/sJJZkrkXz6" target="_blank" class="text-decoration-none text-light fs-3"><i class="bi bi-discord"></i></a>
+        <a
+          href="https://web.facebook.com/profile.php?id=61556342730848"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-decoration-none text-light fs-3"
+          aria-label="Facebook"
+          ><i class="bi bi-facebook"></i
+        ></a>
+        <a
+          href="https://discord.com/invite/sJJZkrkXz6"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-decoration-none text-light fs-3"
+          aria-label="Discord"
+          ><i class="bi bi-discord"></i
+        ></a>
       </div>
     </div>
   </footer>

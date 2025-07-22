@@ -17,69 +17,121 @@
   <link rel="stylesheet" href="../styles/cards.css" />
   <link rel="stylesheet" href="../styles/titulos.css" />
   <link rel="stylesheet" href="../styles/manga-info.css" />
-  
 </head>
 <body>
-  <div class="container-fluid">
+  <!-- Nav fuera de container-fluid para que ocupe todo el ancho -->
+  <nav class="navbar navbar-expand-md row-personalizada px-3 w-100">
+    <div class="container-fluid">
+      <!-- Logo -->
+      <a class="navbar-brand d-flex align-items-center" href="../index.html">
+        <img src="../Recursos/imagenes/imagen al principio.png" alt="Logo" class="img-fluid logo-img me-2" />
+        <img src="../Recursos/imagenes/whitePearltranslation.png" alt="Nombre Scan" class="img-fluid nombre-img" />
+      </a>
 
-    <!-- Navbar -->
-      <nav class="navbar navbar-expand-md row-personalizada px-3">
-      <div class="container-fluid">
-        <!-- Logo -->
-        <a class="navbar-brand d-flex align-items-center" href="../index.html">
-          <img src="../Recursos/imagenes/imagen al principio.png" alt="Logo" class="img-fluid logo-img me-2" />
-          <img src="../Recursos/imagenes/whitePearltranslation.png" alt="Nombre Scan" class="img-fluid nombre-img" />
-        </a>
+      <!-- Botón hamburguesa -->
+      <button
+        class="navbar-toggler ms-auto"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarContent"
+        aria-controls="navbarContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
 
-        <!-- Botón hamburguesa -->
-        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+      <!-- Menú colapsable -->
+      <div class="collapse navbar-collapse mt-2 mt-md-0" id="navbarContent">
+        <ul
+          class="navbar-nav flex-column flex-md-row w-100 justify-content-center justify-content-md-center align-items-center align-items-md-center"
+          role="menu"
+        >
+          <li class="nav-item" role="none">
+            <a class="nav-link text-white" href="../index.html" role="menuitem">Inicio</a>
+          </li>
+          <li class="nav-item" role="none">
+            <a class="nav-link text-white" href="../html/mangas.html" role="menuitem">Nuestros mangas</a>
+          </li>
+        </ul>
 
-        <!-- Menú colapsable -->
-        <div class="collapse navbar-collapse mt-2 mt-md-0" id="navbarContent">
-          <ul class="navbar-nav flex-column flex-md-row w-100 justify-content-center justify-content-md-center align-items-center align-items-md-center">
-            <li class="nav-item"><a class="nav-link text-white" href="../index.html">Inicio</a></li>
-            <li class="nav-item"><a class="nav-link text-white" href="../html/mangas.html">Nuestros mangas</a></li>
-            
-          </ul>
-
-          <!-- Buscador + botón inicio sesión -->
-          <form id="form-buscar" class="d-flex mt-3 mt-md-0 ms-md-auto w-100 w-md-50 align-items-center" role="search">
-            <input id="input-buscar" class="form-control border-dark" type="search" placeholder="🔍 Buscar..." />
-            <div class="dropdown ms-2">
-              <button class="btn btn-outline-light dropdown-toggle" type="button" id="authDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="height: 38px; font-size: 0.8rem;">
-                <i class="bi bi-person-circle me-1"></i>Cuenta
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="authDropdown">
-                <li><a class="dropdown-item" href="../html/auth.html"><i class="bi bi-box-arrow-in-right me-2"></i>Iniciar sesión</a></li>
-                <li><a class="dropdown-item" href="../html/auth.html"><i class="bi bi-person-plus me-2"></i>Registrarse</a></li>
-              </ul>
-            </div>
-          </form>
-        </div>
+        <!-- Buscador + botón inicio sesión -->
+        <form
+          id="form-buscar"
+          class="d-flex mt-3 mt-md-0 ms-md-auto w-100 w-md-50 align-items-center"
+          role="search"
+          aria-label="Formulario de búsqueda"
+        >
+          <input
+            id="input-buscar"
+            class="form-control border-dark"
+            type="search"
+            placeholder="🔍 Buscar..."
+            aria-label="Buscar"
+          />
+          <div class="dropdown ms-2">
+            <button
+              class="btn btn-outline-light dropdown-toggle"
+              type="button"
+              id="authDropdown"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              style="height: 38px; font-size: 0.8rem;"
+            >
+              <i class="bi bi-person-circle me-1"></i>Cuenta
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="authDropdown" role="menu">
+              <li role="none">
+                <a class="dropdown-item" href="../html/auth.html" role="menuitem">
+                  <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar sesión
+                </a>
+              </li>
+              <li role="none">
+                <a class="dropdown-item" href="../html/auth.html" role="menuitem">
+                  <i class="bi bi-person-plus me-2"></i>Registrarse
+                </a>
+              </li>
+            </ul>
+          </div>
+        </form>
       </div>
-    </nav>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
     <!-- Contenido principal -->
     <div class="row my-4 gx-0 align-items-start">
       <!-- Portada y detalles -->
       <div class="col-12 col-md-4 d-flex flex-column align-items-center">
         <img id="manga-portada" class="img-fluid rounded img-manga-ajustada mb-3" alt="Imagen del manga" />
         <div class="w-73 px-3 py-2 rounded mx-auto" style="background-color: #2a2a2a;">
-          <div class="row mb-2"><div class="col-4 text-light fw-bold">Autor:</div><div class="col-8 text-light" id="manga-autor">-</div></div>
-          <div class="row mb-2"><div class="col-4 text-light fw-bold">Géneros:</div><div class="col-8 text-light" id="manga-genero">-</div></div>
-          <div class="row mb-2"><div class="col-4 text-light fw-bold">Estado:</div><div class="col-8 text-light" id="manga-estado">-</div></div>
-          <div class="row mb-2"><div class="col-4 text-light fw-bold">Fecha lanzamiento:</div><div class="col-8 text-light" id="manga-fecha">-</div></div>
-          <div class="row mb-2"><div class="col-4 text-light fw-bold">Frecuencia:</div><div class="col-8 text-light" id="manga-frecuencia">-</div></div>
-          <div class="row mb-2"><div class="col-4 text-light fw-bold">Editorial:</div><div class="col-8 text-light" id="manga-editorial">-</div></div>
-          <div class="row"><div class="col-4 text-light fw-bold">Volúmenes:</div><div class="col-8 text-light" id="manga-volumenes">-</div></div>
+          <div class="row mb-2">
+            <div class="col-4 text-light fw-bold">Autor:</div>
+            <div class="col-8 text-light" id="manga-autor">-</div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-4 text-light fw-bold">Géneros:</div>
+            <div class="col-8 text-light" id="manga-genero">-</div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-4 text-light fw-bold">Estado:</div>
+            <div class="col-8 text-light" id="manga-estado">-</div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-4 text-light fw-bold">Fecha lanzamiento:</div>
+            <div class="col-8 text-light" id="manga-fecha">-</div>
+          </div>
+          <div class="row mb-2">
+            <div class="col-4 text-light fw-bold">Frecuencia:</div>
+            <div class="col-8 text-light" id="manga-frecuencia">-</div>
+          </div>
         </div>
       </div>
 
       <!-- Sinopsis y capítulos -->
       <div class="col-12 col-md-7 col-manga-info">
         <div class="row">
-          <h5 id="manga-titulo" class="tituloMangaDescripcion mt-2">Cargando título...</h5>
+          <h5 id="manga-titulo" class="tituloMangaDescripcion mt-2 maspopulares">Cargando título...</h5>
           <p id="manga-sinopsis" class="sinopsis">Cargando sinopsis...</p>
           <div class="row">
             <h5 class="tituloListaCaps">Lista de capítulos</h5>
@@ -94,15 +146,31 @@
     </div>
 
     <!-- Comentarios -->
-   
+    <!-- Aquí podrías insertar el sistema de comentarios -->
 
     <!-- Footer -->
     <footer class="footer-redes py-4 mt-4">
       <div class="container text-center">
         <h5 class="mb-3 text-light">Síguenos en nuestras redes</h5>
         <div class="d-flex justify-content-center gap-4">
-          <a href="https://web.facebook.com/profile.php?id=61556342730848" target="_blank" class="text-decoration-none text-light fs-3"><i class="bi bi-facebook"></i></a>
-          <a href="https://discord.com/invite/sJJZkrkXz6" target="_blank" class="text-decoration-none text-light fs-3"><i class="bi bi-discord"></i></a>
+          <a
+            href="https://web.facebook.com/profile.php?id=61556342730848"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-decoration-none text-light fs-3"
+            aria-label="Facebook"
+          >
+            <i class="bi bi-facebook"></i>
+          </a>
+          <a
+            href="https://discord.com/invite/sJJZkrkXz6"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-decoration-none text-light fs-3"
+            aria-label="Discord"
+          >
+            <i class="bi bi-discord"></i>
+          </a>
         </div>
       </div>
     </footer>
