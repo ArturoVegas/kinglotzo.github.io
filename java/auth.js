@@ -31,41 +31,45 @@ const auth = getAuth(app);
 function updateAuthUI(user) {
   const authDropdown = document.getElementById('authDropdown');
   const dropdownMenu = document.querySelector('#authDropdown + .dropdown-menu');
-  
+
   if (user && authDropdown && dropdownMenu) {
-    // Usuario autenticado - cambiar el dropdown
-    authDropdown.innerHTML = `<i class="bi bi-person-circle me-1"></i>${user.displayName || user.email.split('@')[0]}`;
+    const displayName = user.displayName || user.email.split('@')[0];
+
+    // Mostrar nombre + ícono en el dropdown button (no es enlace)
+    authDropdown.innerHTML = `<i class="bi bi-person-circle me-1"></i>${displayName}`;
+
+    // Menú con opción "Mi perfil" y "Cerrar sesión"
     dropdownMenu.innerHTML = `
+      <li><a class="dropdown-item" href="../html/perfilUsuario.html"><i class="bi bi-person me-2"></i>Mi perfil</a></li>
       <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión</a></li>
     `;
-    
-      // Agregar evento de logout
-      document.getElementById('logoutBtn').addEventListener('click', (e) => {
-        e.preventDefault();
-        signOut(auth).then(() => {
-          // Limpiar datos del checkbox "recordarme"
-          localStorage.removeItem('rememberUser');
-          localStorage.removeItem('userEmail');
-          window.location.reload();
-        }).catch((error) => {
-          console.error('Error al cerrar sesión:', error);
-        });
+
+    // Evento logout
+    document.getElementById('logoutBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      signOut(auth).then(() => {
+        localStorage.removeItem('rememberUser');
+        localStorage.removeItem('userEmail');
+        window.location.reload();
+      }).catch((error) => {
+        console.error('Error al cerrar sesión:', error);
       });
+    });
+
   } else if (!user && authDropdown && dropdownMenu) {
-    // Usuario no autenticado - mostrar opciones de login/registro
     authDropdown.innerHTML = `<i class="bi bi-person-circle me-1"></i>Cuenta`;
-    
-    // Determinar rutas correctas según la ubicación actual
+
     const currentPath = window.location.pathname;
     const isInSubfolder = currentPath.includes('/html/');
     const authPath = isInSubfolder ? '../html/auth.html' : './html/auth.html';
-    
+
     dropdownMenu.innerHTML = `
       <li><a class="dropdown-item" href="${authPath}"><i class="bi bi-box-arrow-in-right me-2"></i>Iniciar sesión</a></li>
       <li><a class="dropdown-item" href="${authPath}"><i class="bi bi-person-plus me-2"></i>Registrarse</a></li>
     `;
   }
 }
+
 
 // Función para manejar el estado de autenticación en páginas específicas
 function handlePageSpecificAuth() {
