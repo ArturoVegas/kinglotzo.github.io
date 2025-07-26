@@ -40,7 +40,7 @@ function updateAuthUI(user) {
 
     // Menú con opción "Mi perfil" y "Cerrar sesión"
     dropdownMenu.innerHTML = `
-      <li><a class="dropdown-item" href="../html/perfilUsuario.html"><i class="bi bi-person me-2"></i>Mi perfil</a></li>
+      <li><a class="dropdown-item" href="/html/perfilUsuario.html"><i class="bi bi-person me-2"></i>Mi perfil</a></li>
       <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión</a></li>
     `;
 
