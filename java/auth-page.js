@@ -1,5 +1,3 @@
-// auth-page.js - Funcionalidad para autenticación unificada con Firebase
-
 import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
 import {
   getAuth,
@@ -12,9 +10,10 @@ import {
   browserSessionPersistence,
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
-import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
+import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
 
-// ✅ Firebase config
+console.log("🔥 auth-page.js cargado y ejecutándose");
+
 const firebaseConfig = {
   apiKey: "AIzaSyArUObX1yvBE1F7JOotiFVBVp_FuFGtLks",
   authDomain: "prueba-base-de-datos-270a7.firebaseapp.com",
@@ -31,7 +30,7 @@ const auth = getAuth(app);
 const db = getDatabase(app);
 const adminUID = "Cqh5y2MlsObi4ox90jlbAiRGu4D2";
 
-// ✅ Elementos DOM
+// DOM elements
 const loginTab = document.getElementById('loginTab');
 const registerTab = document.getElementById('registerTab');
 const loginForm = document.getElementById('loginForm');
@@ -44,27 +43,41 @@ const registerSuccess = document.getElementById('registerSuccess');
 const rememberMeCheckbox = document.getElementById('rememberMe');
 const rememberMeLabel = document.querySelector('label[for="rememberMe"]');
 
-// ✅ Variables de control
 let registroEnProceso = false;
 
-// ✅ Redirección y verificación
+// 🔁 NUEVA LÓGICA EN onAuthStateChanged
 onAuthStateChanged(auth, async (user) => {
-  if (user && user.emailVerified && !registroEnProceso) {
-    const userRef = ref(db, `usuarios/${user.uid}`);
-    const snapshot = await get(userRef);
+  console.log('🔄 Estado de autenticación cambió:', user ? user.uid : 'no autenticado');
 
-    if (!snapshot.exists()) {
-      await guardarPerfilUsuario(user);
+  if (user && !registroEnProceso) {
+    if (!user.emailVerified) {
+      console.warn("⚠️ Correo NO verificado. Cerrando sesión.");
+      alert("Tu correo aún no ha sido verificado. Verifícalo y vuelve a iniciar sesión.");
+      await auth.signOut();
+      return;
     }
 
-    window.location.href = user.uid === adminUID ? "admin.html" : "../index.html";
-  } else if (user && !user.emailVerified) {
-    await auth.signOut();
-    alert('Debes verificar tu correo electrónico antes de continuar.');
+    try {
+      const userRef = ref(db, `usuarios/${user.uid}`);
+      const { get } = await import("https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js");
+      const snapshot = await get(userRef);
+
+      if (!snapshot.exists()) {
+        await guardarPerfilUsuario({
+          uid: user.uid,
+          email: user.email,
+          displayName: user.displayName
+        });
+      }
+
+      window.location.href = user.uid === adminUID ? "admin.html" : "../index.html";
+
+    } catch (error) {
+      console.error("❌ Error verificando/guardando perfil:", error);
+    }
   }
 });
 
-// ✅ UI - Cambio de pestañas
 function showRegister() {
   registerTab.classList.add('active');
   loginTab.classList.remove('active');
@@ -100,7 +113,6 @@ function showLogin() {
   clearMessages();
 }
 
-// ✅ Mensajes de error y éxito
 function clearMessages() {
   loginError.classList.add('d-none');
   registerError.classList.add('d-none');
@@ -117,7 +129,6 @@ function showSuccess(element, message) {
   element.classList.remove('d-none');
 }
 
-// ✅ Traducción de errores
 function traducirErrorFirebase(code, tipo = 'login') {
   const errores = {
     login: {
@@ -138,7 +149,6 @@ function traducirErrorFirebase(code, tipo = 'login') {
   return errores[tipo][code] || 'Error inesperado.';
 }
 
-// ✅ Recordar usuario
 function loadRememberedUser() {
   const rememberUser = localStorage.getItem('rememberUser');
   const userEmail = localStorage.getItem('userEmail');
@@ -148,16 +158,14 @@ function loadRememberedUser() {
     rememberMeCheckbox.checked = true;
     rememberMeLabel.classList.add('checked');
   } else {
+    document.getElementById('loginEmail').value = '';
     rememberMeCheckbox.checked = false;
     rememberMeLabel.classList.remove('checked');
   }
 }
 
-// ✅ Guardar en la base de datos tras verificación
 async function guardarPerfilUsuario(user) {
-  const userPath = `usuarios/${user.uid}`;
-  const userRef = ref(db, userPath);
-
+  const userRef = ref(db, `usuarios/${user.uid}`);
   const perfilUsuario = {
     nombre: user.displayName || user.email.split('@')[0],
     email: user.email,
@@ -176,9 +184,10 @@ async function guardarPerfilUsuario(user) {
   };
 
   await set(userRef, perfilUsuario);
+  console.log("✅ Perfil guardado en Firebase Realtime Database");
 }
 
-// ✅ Login
+// LOGIN
 loginFormElement.addEventListener('submit', async (e) => {
   e.preventDefault();
   clearMessages();
@@ -199,8 +208,7 @@ loginFormElement.addEventListener('submit', async (e) => {
 
     if (!user.emailVerified) {
       await auth.signOut();
-      alert("Debes verificar tu correo antes de iniciar sesión.");
-      return;
+      return alert("Tu correo no está verificado. Verifícalo antes de iniciar sesión.");
     }
 
     if (rememberMe) {
@@ -211,15 +219,15 @@ loginFormElement.addEventListener('submit', async (e) => {
       localStorage.removeItem('userEmail');
     }
 
-    window.location.href = user.uid === adminUID ? "admin.html" : "../index.html";
+    // Redirección ocurre en onAuthStateChanged
 
   } catch (error) {
-    console.error('Login error:', error);
+    console.error('Error de login:', error);
     showError(loginError, traducirErrorFirebase(error.code, 'login'));
   }
 });
 
-// ✅ Registro
+// REGISTRO
 registerFormElement.addEventListener('submit', async (e) => {
   e.preventDefault();
   clearMessages();
@@ -248,22 +256,26 @@ registerFormElement.addEventListener('submit', async (e) => {
     const user = userCredential.user;
 
     await updateProfile(user, { displayName: nick });
-    await sendEmailVerification(user);
-    await auth.signOut();
+    await new Promise(resolve => setTimeout(resolve, 500));
+    await user.reload();
 
-    showSuccess(registerSuccess, 'Se ha enviado un correo de verificación. Verifica tu cuenta antes de iniciar sesión.');
-    registerFormElement.reset();
+    await sendEmailVerification(user);
+    alert("📨 Te enviamos un correo de verificación.\n\nPor favor, revisa tu bandeja de entrada y luego vuelve a iniciar sesión.");
+
+    await auth.signOut();
     registroEnProceso = false;
+    registerFormElement.reset();
 
   } catch (error) {
-    console.error('Registro error:', error);
+    console.error('❌ Error completo de registro:', error);
     registroEnProceso = false;
 
     if (auth.currentUser) {
       try {
         await auth.currentUser.delete();
-      } catch (e) {
-        console.error("No se pudo eliminar usuario:", e);
+        console.log("🗑️ Usuario eliminado debido a error en registro");
+      } catch (deleteError) {
+        console.error("❌ Error eliminando usuario:", deleteError);
       }
     }
 
@@ -271,13 +283,13 @@ registerFormElement.addEventListener('submit', async (e) => {
   }
 });
 
-// ✅ Validaciones visuales
+// Validación confirmación
 document.getElementById('registerConfirmPassword').addEventListener('input', function () {
   const password = document.getElementById('registerPassword').value;
   this.style.borderColor = (this.value && password !== this.value) ? '#dc3545' : 'rgba(255, 255, 255, 0.2)';
 });
 
-// ✅ Limpieza dinámica de errores
+// Limpiar mensajes
 [
   'loginEmail',
   'loginPassword',
@@ -289,7 +301,6 @@ document.getElementById('registerConfirmPassword').addEventListener('input', fun
   document.getElementById(id).addEventListener('input', clearMessages);
 });
 
-// ✅ Eventos iniciales
 loginTab.addEventListener('click', showLogin);
 registerTab.addEventListener('click', showRegister);
 rememberMeCheckbox.addEventListener('change', () => {
