@@ -41,6 +41,12 @@ async function cargarInfoManga() {
       portadaEl.src = data.portada || "";
       portadaEl.alt = decodeURIComponent(nombreManga).replaceAll("_", " ");
 
+      // Cargar banner del manga si existe
+      const bannerEl = document.getElementById("manga-banner");
+      if (bannerEl && data.banner) {
+        bannerEl.style.backgroundImage = `url('${data.banner}')`;
+      }
+
       setText("manga-titulo", decodeURIComponent(nombreManga).replaceAll("_", " "));
       setText("manga-sinopsis", data.sinopsis || "Sin sinopsis.");
       setText("manga-autor", data.autor || "Desconocido");
