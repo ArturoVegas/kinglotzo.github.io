@@ -39,10 +39,15 @@ function updateAuthUI(user) {
     authDropdown.innerHTML = `<i class="bi bi-person-circle me-1"></i>${displayName}`;
 
     // Menú con opción "Mi perfil" y "Cerrar sesión"
-    dropdownMenu.innerHTML = `
-      <li><a class="dropdown-item" href="/html/perfilUsuario.html"><i class="bi bi-person me-2"></i>Mi perfil</a></li>
-      <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión</a></li>
-    `;
+    const currentPath = window.location.pathname;
+const isInSubfolder = currentPath.includes('/html/');
+const perfilPath = isInSubfolder ? 'perfilUsuario.html' : './html/perfilUsuario.html';
+
+dropdownMenu.innerHTML = `
+  <li><a class="dropdown-item" href="${perfilPath}"><i class="bi bi-person me-2"></i>Mi perfil</a></li>
+  <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión</a></li>
+`;
+;
 
     // Evento logout
     document.getElementById('logoutBtn').addEventListener('click', (e) => {
