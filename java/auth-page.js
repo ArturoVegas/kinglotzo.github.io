@@ -47,9 +47,20 @@ const registerSuccess = document.getElementById('registerSuccess');
 const rememberMeCheckbox = document.getElementById('rememberMe');
 const rememberMeLabel = document.querySelector('label[for="rememberMe"]');
 
-// Redirigir si ya está autenticado
+// Variable para controlar el redirect durante el registro
+let registroEnProceso = false;
+
+// Redirigir si ya está autenticado (pero no durante el registro)
 onAuthStateChanged(auth, (user) => {
-  if (user) window.location.href = '../index.html';
+  console.log('🔄 Estado de autenticación cambió:', user ? user.uid : 'no autenticado');
+  
+  // Solo redirigir si hay un usuario autenticado Y no estamos en proceso de registro
+  if (user && !registroEnProceso) {
+    console.log('📍 Redirigiendo usuario autenticado...');
+    setTimeout(() => {
+      window.location.href = user.uid === adminUID ? "admin.html" : "../index.html";
+    }, 100);
+  }
 });
 
 // Mostrar formularios
@@ -141,28 +152,87 @@ function loadRememberedUser() {
 }
 
 // Guardar perfil en Realtime Database
+// Esta función crea automáticamente la estructura de la base de datos si no existe
 async function guardarPerfilUsuario(user) {
-  console.log("🟢 Ejecutando guardarPerfilUsuario para:", user.uid);
+  console.log("🟢 === INICIANDO GUARDADO EN REALTIME DATABASE ===");
+  console.log("🔍 Usuario a guardar:", {
+    uid: user.uid,
+    email: user.email,
+    displayName: user.displayName
+  });
+  console.log("🔍 Database URL:", db.app.options.databaseURL);
+  
   try {
-    const userRef = ref(db, `usuarios/${user.uid}`);
-    await set(userRef, {
+    // Verificar que tenemos acceso a la base de datos
+    console.log("🔍 Verificando conexión a base de datos...");
+    
+    // Crear referencia al usuario en la base de datos
+    const userPath = `usuarios/${user.uid}`;
+    const userRef = ref(db, userPath);
+    console.log("🔍 Ruta en la base de datos:", userPath);
+    console.log("🔍 Referencia creada:", userRef.toString());
+    
+    // Datos del perfil del usuario
+    const perfilUsuario = {
       nombre: user.displayName || user.email.split('@')[0],
       email: user.email,
+      uid: user.uid, // Agregar UID explícitamente
       comentarios: 0,
       capitulosLeidos: 0,
-      favoritos: { inicializado: "0" },
+      favoritos: { 
+        inicializado: "0" 
+      },
       listas: {
         leyendo: { inicializado: "0" },
         pendientes: { inicializado: "0" },
         terminados: { inicializado: "0" }
       },
-      creadoEn: Date.now()
-    });
-    console.log("✅ Perfil guardado exitosamente");
-    alert("✅ Perfil guardado exitosamente");
+      fechaRegistro: new Date().toISOString(),
+      creadoEn: Date.now(),
+      activo: true
+    };
+    
+    console.log("🔍 Datos a guardar:", JSON.stringify(perfilUsuario, null, 2));
+    console.log("🟡 Ejecutando set() en Firebase...");
+    
+    // Guardar en la base de datos
+    await set(userRef, perfilUsuario);
+    
+    console.log("✅ === GUARDADO EXITOSO ===");
+    console.log("📊 Datos confirmados en Firebase Realtime Database");
+    console.log("🔗 Verifica en: https://prueba-base-de-datos-270a7-default-rtdb.firebaseio.com/usuarios/" + user.uid);
+    
+    // Verificación adicional: intentar leer lo que acabamos de escribir
+    setTimeout(async () => {
+      try {
+        const { get } = await import("https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js");
+        const snapshot = await get(userRef);
+        if (snapshot.exists()) {
+          console.log("✅ VERIFICACIÓN: Usuario encontrado en DB:", snapshot.val());
+        } else {
+          console.log("❌ VERIFICACIÓN: Usuario NO encontrado en DB");
+        }
+      } catch (verifyError) {
+        console.log("⚠️ VERIFICACIÓN: Error leyendo:", verifyError);
+      }
+    }, 1000);
+    
   } catch (error) {
-    console.error("❌ Error al guardar perfil:", error);
-    alert("❌ Error al guardar perfil: " + error.message);
+    console.error("❌ === ERROR EN GUARDADO ===");
+    console.error("❌ Error completo:", error);
+    console.error("❌ Error name:", error.name);
+    console.error("❌ Error message:", error.message);
+    console.error("❌ Error code:", error.code);
+    console.error("❌ Error stack:", error.stack);
+    
+    // Información adicional para debug
+    console.error("❌ Detalles del contexto:", {
+      userId: user.uid,
+      userEmail: user.email,
+      databaseURL: db.app.options.databaseURL,
+      authState: auth.currentUser ? 'authenticated' : 'not authenticated'
+    });
+    
     throw error;
   }
 }
@@ -179,8 +249,58 @@ async function pruebaEscritura() {
   }
 }
 
-// Ejecuta prueba de escritura al cargar para verificar conexión DB
-pruebaEscritura();
+// Función de diagnóstico completo
+async function diagnosticoCompleto() {
+  console.log("🔧 === DIAGNÓSTICO DE FIREBASE ===");
+  
+  // 1. Verificar configuración
+  console.log("📋 Configuración Firebase:", {
+    databaseURL: db.app.options.databaseURL,
+    projectId: db.app.options.projectId,
+    authDomain: db.app.options.authDomain
+  });
+  
+  // 2. Verificar autenticación
+  console.log("🔐 Estado de autenticación:", {
+    user: auth.currentUser ? auth.currentUser.uid : 'no autenticado',
+    email: auth.currentUser ? auth.currentUser.email : 'N/A'
+  });
+  
+  // 3. Probar escritura simple
+  try {
+    console.log("📝 Probando escritura simple...");
+    await set(ref(db, 'diagnostico/test'), {
+      mensaje: "Prueba de diagnóstico",
+      timestamp: Date.now(),
+      fecha: new Date().toISOString()
+    });
+    console.log("✅ Escritura simple exitosa");
+  } catch (error) {
+    console.error("❌ Error en escritura simple:", error);
+  }
+  
+  // 4. Probar escritura en usuarios
+  if (auth.currentUser) {
+    try {
+      console.log("👤 Probando escritura en usuarios...");
+      const testPath = `usuarios/test_${Date.now()}`;
+      await set(ref(db, testPath), {
+        nombre: "Usuario de prueba",
+        email: "test@test.com",
+        fecha: new Date().toISOString()
+      });
+      console.log("✅ Escritura en usuarios exitosa en:", testPath);
+    } catch (error) {
+      console.error("❌ Error en escritura usuarios:", error);
+    }
+  }
+  
+  console.log("🔧 === FIN DIAGNÓSTICO ===");
+}
+
+// Funciones de prueba disponibles para debug manual:
+// - pruebaEscritura(): Prueba básica de escritura
+// - diagnosticoCompleto(): Diagnóstico completo de Firebase
 
 // Formulario Login
 loginFormElement.addEventListener('submit', async (e) => {
@@ -243,24 +363,71 @@ registerFormElement.addEventListener('submit', async (e) => {
   }
 
   try {
+    // Marcar que el registro está en proceso para evitar redirects automáticos
+    registroEnProceso = true;
+    console.log("🟡 Iniciando proceso de registro...");
+    
+    // Paso 1: Crear usuario en Firebase Auth
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
+    console.log("✅ Usuario creado en Auth:", user.uid);
 
+    // Paso 2: Actualizar perfil con displayName
     await updateProfile(user, { displayName: nick });
+    console.log("✅ Perfil actualizado con displayName:", nick);
 
-    // Enviar correo de verificación (opcional)
-    await sendEmailVerification(user);
+    // Esperar un momento para asegurar que el perfil se actualice completamente
+    await new Promise(resolve => setTimeout(resolve, 500));
 
-    // Guardar perfil en DB
-    await guardarPerfilUsuario({ ...user, displayName: nick });
+    // Paso 3: Refrescar el objeto user para obtener los datos actualizados
+    await user.reload();
+    const updatedUser = auth.currentUser;
+    console.log("✅ Usuario recargado:", updatedUser.displayName);
 
+    // Paso 4: Guardar perfil en Realtime Database ANTES del redirect
+    console.log("🟡 Guardando perfil en base de datos...");
+    await guardarPerfilUsuario({
+      uid: updatedUser.uid,
+      email: updatedUser.email,
+      displayName: nick // Usar el nick directamente
+    });
+    
+    console.log("✅ Perfil guardado exitosamente en base de datos");
+
+    // Paso 5: Enviar correo de verificación (no bloquea el proceso)
+    sendEmailVerification(updatedUser).catch(err => {
+      console.warn("⚠️ Error enviando email de verificación:", err);
+    });
+
+    // Mostrar mensaje de éxito
     showSuccess(registerSuccess, 'Cuenta creada exitosamente. Redirigiendo...');
     registerFormElement.reset();
-
-    setTimeout(() => window.location.href = '../index.html', 1500);
+    
+    // Marcar que el registro terminó
+    registroEnProceso = false;
+    
+    // Redirigir después de que todo esté guardado
+    setTimeout(() => {
+      console.log("📍 Redirigiendo después de registro exitoso...");
+      window.location.href = '../index.html';
+    }, 1500);
 
   } catch (error) {
-    console.error('Error de registro:', error);
+    console.error('❌ Error completo de registro:', error);
+    
+    // Resetear el flag de registro en proceso
+    registroEnProceso = false;
+    
+    // Si el usuario fue creado pero falló algo después, intentar eliminar la cuenta
+    if (auth.currentUser) {
+      try {
+        await auth.currentUser.delete();
+        console.log("🗑️ Usuario eliminado debido a error en registro");
+      } catch (deleteError) {
+        console.error("❌ Error eliminando usuario:", deleteError);
+      }
+    }
+    
     showError(registerError, traducirErrorFirebase(error.code, 'registro'));
   }
 });
