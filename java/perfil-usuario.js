@@ -101,13 +101,11 @@ onAuthStateChanged(auth, (user) => {
 /* Función para cargar las listas de mangas del usuario */
 function cargarListasMangas(userData) {
   console.log('📚 Cargando listas de mangas...');
-  
-  // Cargar favoritos
-  const favoritos = userData.favoritos || {};
-  cargarMangasEnGrid('favoritos', favoritos);
-  
-  // Cargar listas
+
+  // Accede correctamente a todas las listas desde userData.listas
   const listas = userData.listas || {};
+
+  cargarMangasEnGrid('favoritos', listas.favoritos || {});
   cargarMangasEnGrid('leyendo', listas.leyendo || {});
   cargarMangasEnGrid('pendientes', listas.pendientes || {});
   cargarMangasEnGrid('terminados', listas.terminados || {});

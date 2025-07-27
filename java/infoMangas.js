@@ -20,6 +20,7 @@ async function incrementarVisitas(nombreManga) {
 function agregarMangaALista(lista) {
   const auth = getAuth();
   const nombreManga = obtenerNombreMangaDesdeURL();
+
   if (!nombreManga) {
     alert("No se pudo obtener el nombre del manga.");
     return;
@@ -32,22 +33,23 @@ function agregarMangaALista(lista) {
     }
 
     try {
-      // Obtener datos actuales del manga
+      // Obtener datos actuales del manga desde /mangas
       const mangaSnap = await get(ref(db, `mangas/${nombreManga}`));
       if (!mangaSnap.exists()) {
         alert("El manga no existe en la base de datos.");
         return;
       }
-      const manga = mangaSnap.val();
 
+      const manga = mangaSnap.val();
       const mangaData = {
         titulo: decodeURIComponent(nombreManga).replaceAll("_", " "),
         portada: manga.portada || "",
         timestamp: Date.now()
       };
 
-      const userPath = `usuarios/${user.uid}/listas/${lista}/${nombreManga}`;
-      await set(ref(db, userPath), mangaData);
+      // Guardar dentro de listas, incluso si es 'favoritos'
+      const ruta = `usuarios/${user.uid}/listas/${lista}/${nombreManga}`;
+      await set(ref(db, ruta), mangaData);
 
       alert(`Agregado a tu lista de "${lista}".`);
     } catch (error) {
