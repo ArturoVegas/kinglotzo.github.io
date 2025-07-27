@@ -1,6 +1,5 @@
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
-import { set } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
-import { ref, get, runTransaction } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
+import { set, remove, ref, get, runTransaction } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
 import { db } from "./firebaseInit.js";
 import { tiempoDesde } from "./utils.js";
 
@@ -17,7 +16,6 @@ async function incrementarVisitas(nombreManga) {
     console.error("Error incrementando visitas:", error);
   }
 }
-import { remove } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
 
 // Funciones para manejar la lista visual
 async function obtenerListaDelManga(usuarioUID, nombreManga) {
@@ -154,6 +152,15 @@ function obtenerNombreMangaDesdeURL() {
   return params.get("manga");
 }
 
+async function alternarCapituloVisto(uid, nombreManga, capitulo, yaVisto) {
+  const capRef = ref(db, `usuarios/${uid}/visto/${nombreManga}/${capitulo}`);
+  if (yaVisto) {
+    await remove(capRef); // si ya estaba visto, lo quitamos
+  } else {
+    await set(capRef, true); // si no estaba visto, lo marcamos
+  }
+}
+
 async function cargarInfoManga() {
   const portadaEl = document.getElementById("manga-portada");
   if (!portadaEl) return;
@@ -163,77 +170,118 @@ async function cargarInfoManga() {
 
   try {
     const snapshot = await get(ref(db, `mangas/${nombreManga}`));
-    if (snapshot.exists()) {
-      const data = snapshot.val();
-
-      const setText = (id, texto) => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = texto ?? "-";
-      };
-
-      portadaEl.src = data.portada || "";
-      portadaEl.alt = decodeURIComponent(nombreManga).replaceAll("_", " ");
-
-      // Cargar banner del manga si existe
-      const bannerEl = document.getElementById("manga-banner");
-      if (bannerEl && data.banner) {
-        bannerEl.style.backgroundImage = `url('${data.banner}')`;
-      }
-
-      setText("manga-titulo", decodeURIComponent(nombreManga).replaceAll("_", " "));
-      setText("manga-sinopsis", data.sinopsis || "Sin sinopsis.");
-      setText("manga-autor", data.autor || "Desconocido");
-      setText("manga-genero", Array.isArray(data.generos) ? data.generos.join(", ") : (data.generos || "Sin géneros"));
-      setText("manga-estado", data.estado || "Desconocido");
-      setText("manga-fecha", data.fechaLanzamiento || data.fecha_lanzamiento || "Desconocida");
-      setText("manga-frecuencia", data.frecuencia || "Desconocida");
-
-      const lista = document.getElementById("lista-capitulos");
-      if (lista) {
-        lista.innerHTML = "";
-        if (typeof data.capitulos === "object" && data.capitulos !== null) {
-          const clavesOrdenadas = Object.keys(data.capitulos).sort((a, b) =>
-            a.localeCompare(b, undefined, { numeric: true })
-          );
-
-          clavesOrdenadas.forEach(clave => {
-            const cap = data.capitulos[clave];
-            let fecha = "";
-
-            if (cap && typeof cap === "object" && !Array.isArray(cap) && cap.fecha) {
-              fecha = tiempoDesde(cap.fecha);
-            }
-
-            const li = document.createElement("li");
-            li.className = "list-group-item p-0 rectangulo-item d-flex justify-content-between align-items-center";
-
-            const enlace = document.createElement("a");
-            enlace.href = `../html/vermangas.html?manga=${encodeURIComponent(nombreManga)}&cap=${encodeURIComponent(clave)}`;
-            enlace.className = "enlace-cap py-2 px-3 flex-grow-1 text-decoration-none text-reset";
-            enlace.textContent = `Capítulo ${clave}`;
-
-            const spanFecha = document.createElement("span");
-            spanFecha.className = "text-white small ms-2";
-            spanFecha.textContent = fecha;
-
-            li.appendChild(enlace);
-            li.appendChild(spanFecha);
-
-            lista.appendChild(li);
-          });
-        } else {
-          lista.innerHTML = `<li class="list-group-item text-light">No hay capítulos disponibles.</li>`;
-        }
-      }
-      await incrementarVisitas(nombreManga);
-      controlarListaVisual();
-
-    } else {
+    if (!snapshot.exists()) {
       alert("Manga no encontrado.");
+      return;
     }
+
+    const data = snapshot.val();
+    const auth = getAuth();
+    const user = auth.currentUser;
+    let capsVistos = {};
+
+    if (user) {
+      const vistoSnap = await get(ref(db, `usuarios/${user.uid}/visto/${nombreManga}`));
+      if (vistoSnap.exists()) {
+        capsVistos = vistoSnap.val();
+      }
+    }
+
+    const setText = (id, texto) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = texto ?? "-";
+    };
+
+    portadaEl.src = data.portada || "";
+    portadaEl.alt = decodeURIComponent(nombreManga).replaceAll("_", " ");
+
+    // Cargar banner del manga si existe
+    const bannerEl = document.getElementById("manga-banner");
+    if (bannerEl && data.banner) {
+      bannerEl.style.backgroundImage = `url('${data.banner}')`;
+    }
+
+    setText("manga-titulo", decodeURIComponent(nombreManga).replaceAll("_", " "));
+    setText("manga-sinopsis", data.sinopsis || "Sin sinopsis.");
+    setText("manga-autor", data.autor || "Desconocido");
+    setText("manga-genero", Array.isArray(data.generos) ? data.generos.join(", ") : (data.generos || "Sin géneros"));
+    setText("manga-estado", data.estado || "Desconocido");
+    setText("manga-fecha", data.fechaLanzamiento || data.fecha_lanzamiento || "Desconocida");
+    setText("manga-frecuencia", data.frecuencia || "Desconocida");
+
+    const lista = document.getElementById("lista-capitulos");
+    if (lista) {
+      lista.innerHTML = "";
+      if (typeof data.capitulos === "object" && data.capitulos !== null) {
+        const clavesOrdenadas = Object.keys(data.capitulos).sort((a, b) =>
+          a.localeCompare(b, undefined, { numeric: true })
+        );
+
+        clavesOrdenadas.forEach(clave => {
+          const cap = data.capitulos[clave];
+          let fecha = "";
+          if (cap && cap.fecha) {
+            fecha = tiempoDesde(cap.fecha);
+          }
+
+          const li = document.createElement("li");
+          li.className = "list-group-item p-0 rectangulo-item d-flex justify-content-between align-items-center";
+
+          const enlace = document.createElement("a");
+          enlace.href = `../html/vermangas.html?manga=${encodeURIComponent(nombreManga)}&cap=${encodeURIComponent(clave)}`;
+          enlace.className = "enlace-cap py-2 px-3 flex-grow-1 text-decoration-none text-reset";
+          enlace.textContent = `Capítulo ${clave}`;
+
+          const spanDerecha = document.createElement("span");
+          spanDerecha.className = "d-flex align-items-center me-2";
+
+          const spanFecha = document.createElement("span");
+          spanFecha.className = "text-white small me-2";
+          spanFecha.textContent = fecha;
+
+          const icono = document.createElement("i");
+let visto = false;
+
+if (user) {
+  visto = !!capsVistos[clave];
+
+  icono.className = visto ? "bi bi-eye text-white" : "bi bi-eye-slash text-white";
+  icono.title = visto ? "Marcar como no leído" : "Marcar como leído";
+  icono.style.cursor = "pointer";
+
+  icono.addEventListener("click", async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    try {
+      await alternarCapituloVisto(user.uid, nombreManga, clave, visto);
+      visto = !visto;
+      icono.className = visto ? "bi bi-eye text-white" : "bi bi-eye-slash text-white";
+      icono.title = visto ? "Marcar como no leído" : "Marcar como leído";
+    } catch (err) {
+      console.error("Error actualizando visto:", err);
+    }
+  });
+          }
+
+          spanDerecha.appendChild(spanFecha);
+          if (user) spanDerecha.appendChild(icono);
+
+          li.appendChild(enlace);
+          li.appendChild(spanDerecha);
+          lista.appendChild(li);
+        });
+      } else {
+        lista.innerHTML = `<li class="list-group-item text-light">No hay capítulos disponibles.</li>`;
+      }
+    }
+
+    await incrementarVisitas(nombreManga);
+    controlarListaVisual();
+
   } catch (error) {
     console.error("Error cargando manga:", error);
   }
 }
 
-export { cargarInfoManga, obtenerNombreMangaDesdeURL, incrementarVisitas,agregarMangaALista};
+export { cargarInfoManga, obtenerNombreMangaDesdeURL, incrementarVisitas, agregarMangaALista };

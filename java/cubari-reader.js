@@ -1,8 +1,20 @@
 import { ref, get } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+import { set } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
+
 import { db } from "./firebaseInit.js";
 
 class CubariReader {
   constructor() {
+    this.currentUser = null;
+
+const auth = getAuth();
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    this.currentUser = user;
+  }
+});
+
     this.currentManga = null;
     this.currentChapter = null;
     this.images = [];
@@ -207,10 +219,17 @@ class CubariReader {
         this.showError('No se encontraron imágenes válidas');
         return;
       }
+      
 
       this.updateChapterInfo();
       this.renderImages();
       this.preloadImages();
+      if (this.currentUser) {
+  const vistoRef = ref(db, `usuarios/${this.currentUser.uid}/visto/${this.currentManga}/${this.currentChapter}`);
+  set(vistoRef, true).catch(err => console.error("Error al marcar como visto:", err));
+}
+
+
 
     } catch (error) {
       console.error('Error cargando imágenes:', error);
