@@ -1,3 +1,5 @@
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+import { set } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
 import { ref, get, runTransaction } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
 import { db } from "./firebaseInit.js";
 import { tiempoDesde } from "./utils.js";
@@ -14,6 +16,45 @@ async function incrementarVisitas(nombreManga) {
   } catch (error) {
     console.error("Error incrementando visitas:", error);
   }
+}
+function agregarMangaALista(lista) {
+  const auth = getAuth();
+  const nombreManga = obtenerNombreMangaDesdeURL();
+  if (!nombreManga) {
+    alert("No se pudo obtener el nombre del manga.");
+    return;
+  }
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      alert("Debes iniciar sesión para usar esta función.");
+      return;
+    }
+
+    try {
+      // Obtener datos actuales del manga
+      const mangaSnap = await get(ref(db, `mangas/${nombreManga}`));
+      if (!mangaSnap.exists()) {
+        alert("El manga no existe en la base de datos.");
+        return;
+      }
+      const manga = mangaSnap.val();
+
+      const mangaData = {
+        titulo: decodeURIComponent(nombreManga).replaceAll("_", " "),
+        portada: manga.portada || "",
+        timestamp: Date.now()
+      };
+
+      const userPath = `usuarios/${user.uid}/listas/${lista}/${nombreManga}`;
+      await set(ref(db, userPath), mangaData);
+
+      alert(`Agregado a tu lista de "${lista}".`);
+    } catch (error) {
+      console.error("Error al agregar a la lista:", error);
+      alert("Ocurrió un error al guardar el manga.");
+    }
+  });
 }
 
 function obtenerNombreMangaDesdeURL() {
@@ -102,4 +143,4 @@ async function cargarInfoManga() {
   }
 }
 
-export { cargarInfoManga, obtenerNombreMangaDesdeURL, incrementarVisitas };
+export { cargarInfoManga, obtenerNombreMangaDesdeURL, incrementarVisitas,agregarMangaALista};

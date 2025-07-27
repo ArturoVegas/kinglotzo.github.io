@@ -7,6 +7,7 @@ import { cargarMangasPopulares } from "./mangasPopulares.js";
 import { cargarCarruselPrincipal } from "./carrusel.js";
 import { cargarNoticias } from "./noticias.js";
 import { initAuth } from "./auth.js";
+import { agregarMangaALista } from "./infoMangas.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   const pathname = window.location.pathname;
@@ -18,6 +19,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (pathname.endsWith("infoMangas.html")) {
     cargarInfoManga();
+     const dropdownItems = document.querySelectorAll(".dropdown-menu .dropdown-item");
+    dropdownItems.forEach(item => {
+      item.addEventListener("click", (e) => {
+        e.preventDefault();
+        const lista = item.dataset.lista;
+        agregarMangaALista(lista);
+      });
+    });
   }
 
   if (pathname.endsWith("vermangas.html")) {

@@ -171,13 +171,6 @@ async function guardarPerfilUsuario(user) {
     email: user.email,
     uid: user.uid,
     comentarios: 0,
-    capitulosLeidos: 0,
-    favoritos: { inicializado: "0" },
-    listas: {
-      leyendo: { inicializado: "0" },
-      pendientes: { inicializado: "0" },
-      terminados: { inicializado: "0" }
-    },
     fechaRegistro: new Date().toISOString(),
     creadoEn: Date.now(),
     activo: true
