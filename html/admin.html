@@ -11,20 +11,21 @@
 
   <div class="container">
     <!-- Encabezado y botón de cerrar sesión -->
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="admin-header d-flex justify-content-between align-items-center">
       <h1 class="mb-0">Panel de Administración</h1>
       <button id="btnLogout" class="btn btn-danger">Cerrar sesión</button>
     </div>
 
     <!-- Botones de navegación -->
-    <div class="d-flex justify-content-center gap-3 mb-4 flex-wrap">
+    <div class="nav-buttons">
       <button id="btnNuevoManga" class="btn btn-outline-light">Nuevo Manga</button>
       <button id="btnSubirCapitulo" class="btn btn-outline-light">Subir Capítulo</button>
+      <button id="btnActualizarManga" class="btn btn-outline-info">Actualizar Manga</button>
       <button id="btnGestionNoticias" class="btn btn-outline-warning">Noticias y Carrusel</button>
     </div>
 
     <!-- Sección: Nuevo Manga -->
-    <div id="nuevoMangaSection" class="d-none">
+    <div id="nuevoMangaSection" class="admin-section d-none">
       <h3>Registrar Nuevo Manga</h3>
       <form id="formNuevoManga">
         <div class="mb-3">
@@ -32,13 +33,28 @@
           <input type="text" class="form-control" id="nombreManga" required />
         </div>
 
-        <div class="mb-3">
-          <label for="portada" class="form-label">Portada (imagen a subir)</label>
-          <input type="file" class="form-control" id="portada" accept="image/*" required />
-        </div>
-        <div class="mb-3">
-          <label for="cloudinaryFolder" class="form-label">Ruta en Cloudinary (opcional)</label>
-          <input type="text" class="form-control" id="cloudinaryFolder" placeholder="Ej: mangas/nombreManga" />
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="portada" class="form-label">Portada (imagen a subir)</label>
+              <input type="file" class="form-control" id="portada" accept="image/*" required />
+            </div>
+            <div class="mb-3">
+              <label for="cloudinaryFolder" class="form-label">Ruta Cloudinary portada (opcional)</label>
+              <input type="text" class="form-control" id="cloudinaryFolder" placeholder="Ej: mangas/nombreManga/portada" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="bannerManga" class="form-label">Banner para info del manga (opcional)</label>
+              <input type="file" class="form-control" id="bannerManga" accept="image/*" />
+              <div class="form-text">Banner que aparecerá en la página de información del manga</div>
+            </div>
+            <div class="mb-3">
+              <label for="rutaBannerManga" class="form-label">Ruta Cloudinary banner (opcional)</label>
+              <input type="text" class="form-control" id="rutaBannerManga" placeholder="Ej: mangas/nombreManga/banner" />
+            </div>
+          </div>
         </div>
 
         <div class="mb-3">
@@ -85,7 +101,7 @@
     </div>
 
     <!-- Sección: Subir Capítulo -->
-    <div id="subirCapituloSection" class="d-none">
+    <div id="subirCapituloSection" class="admin-section d-none">
       <h3>Subir Capítulo</h3>
       <form id="formSubirCapitulo">
         <div class="mb-3">
@@ -119,8 +135,119 @@
       <div id="progresoContainer" style="margin-top: 15px;"></div>
     </div>
 
+    <!-- Sección: Actualizar Manga -->
+    <div id="actualizarMangaSection" class="admin-section d-none">
+      <h3>Actualizar Manga Existente</h3>
+      
+      <!-- Selección del manga -->
+      <div class="mb-4">
+        <label for="mangaActualizar" class="form-label">Seleccionar manga a actualizar</label>
+        <input list="listaMangasActualizar" class="form-control" id="mangaActualizar" placeholder="Escribe el nombre del manga" required />
+        <datalist id="listaMangasActualizar"></datalist>
+        <div id="mangaSeleccionadoInfo" class="mt-3" style="display: none;">
+          <div class="alert alert-info">
+            <strong>Manga seleccionado:</strong> <span id="nombreMangaSeleccionado"></span>
+            <br><small>Deja vacíos los campos que no quieras actualizar</small>
+          </div>
+        </div>
+      </div>
+
+      <form id="formActualizarManga">
+        <!-- Información básica -->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="nombreMangaActual" class="form-label">Nuevo nombre (opcional)</label>
+              <input type="text" class="form-control" id="nombreMangaActual" placeholder="Dejar vacío para mantener el actual" />
+            </div>
+            
+            <div class="mb-3">
+              <label for="autorActual" class="form-label">Nuevo autor (opcional)</label>
+              <input type="text" class="form-control" id="autorActual" placeholder="Dejar vacío para mantener el actual" />
+            </div>
+            
+            <div class="mb-3">
+              <label for="estadoActual" class="form-label">Nuevo estado (opcional)</label>
+              <select class="form-select" id="estadoActual">
+                <option value="">Mantener estado actual</option>
+                <option value="En emisión">En emisión</option>
+                <option value="Finalizado">Finalizado</option>
+              </select>
+            </div>
+            
+            <div class="mb-3">
+              <label for="frecuenciaActual" class="form-label">Nueva frecuencia (opcional)</label>
+              <select class="form-select" id="frecuenciaActual">
+                <option value="">Mantener frecuencia actual</option>
+                <option value="Semanal">Semanal</option>
+                <option value="Mensual">Mensual</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="sinopsisActual" class="form-label">Nueva sinopsis (opcional)</label>
+              <textarea class="form-control" id="sinopsisActual" rows="4" placeholder="Dejar vacío para mantener la actual"></textarea>
+            </div>
+            
+            <div class="mb-3">
+              <label for="fechaLanzamientoActual" class="form-label">Nueva fecha de lanzamiento (opcional)</label>
+              <input type="date" class="form-control" id="fechaLanzamientoActual" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Imagenes -->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="nuevaPortada" class="form-label">Nueva portada (opcional)</label>
+              <input type="file" class="form-control" id="nuevaPortada" accept="image/*" />
+              <div class="form-text">Solo selecciona si quieres cambiar la portada actual</div>
+              <div id="portadaPreview" class="mt-2" style="display: none;">
+                <img id="portadaPreviewImg" src="" alt="Preview" class="img-thumbnail" style="max-width: 150px;">
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="nuevoBanner" class="form-label">Nuevo banner para info del manga (opcional)</label>
+              <input type="file" class="form-control" id="nuevoBanner" accept="image/*" />
+              <div class="form-text">Banner que aparecerá en la página de información del manga</div>
+              <div id="bannerPreview" class="mt-2" style="display: none;">
+                <img id="bannerPreviewImg" src="" alt="Preview" class="img-thumbnail" style="max-width: 200px; height: 100px; object-fit: cover;">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rutas Cloudinary -->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="rutaPortadaActual" class="form-label">Ruta Cloudinary para portada (opcional)</label>
+              <input type="text" class="form-control" id="rutaPortadaActual" placeholder="Ej: mangas/nombreManga/portada" />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="rutaBannerActual" class="form-label">Ruta Cloudinary para banner (opcional)</label>
+              <input type="text" class="form-control" id="rutaBannerActual" placeholder="Ej: mangas/nombreManga/banner" />
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex gap-3">
+          <button type="submit" class="btn btn-primary">Actualizar Manga</button>
+          <button type="button" id="btnLimpiarFormActualizar" class="btn btn-secondary">Limpiar Formulario</button>
+        </div>
+      </form>
+    </div>
+
     <!-- Sección: Noticias y Carrusel -->
-    <div id="gestionNoticiasSection" class="d-none">
+    <div id="gestionNoticiasSection" class="admin-section d-none">
       <h3>Administrar Noticias y Carrusel</h3>
 
       <form id="formNoticia" class="mb-4">

@@ -99,52 +99,63 @@
   </nav>
 
   <div class="container-fluid">
-    <!-- Contenido principal -->
-    <div class="row my-4 gx-0 align-items-start">
-      <!-- Portada y detalles -->
-      <div class="col-12 col-md-4 d-flex flex-column align-items-center">
-        <img id="manga-portada" class="img-fluid rounded img-manga-ajustada mb-3" alt="Imagen del manga" />
-        <div class="w-73 px-3 py-2 rounded mx-auto" style="background-color: #2a2a2a;">
-          <div class="row mb-2">
-            <div class="col-4 text-light fw-bold">Autor:</div>
-            <div class="col-8 text-light" id="manga-autor">-</div>
-          </div>
-          <div class="row mb-2">
-            <div class="col-4 text-light fw-bold">Géneros:</div>
-            <div class="col-8 text-light" id="manga-genero">-</div>
-          </div>
-          <div class="row mb-2">
-            <div class="col-4 text-light fw-bold">Estado:</div>
-            <div class="col-8 text-light" id="manga-estado">-</div>
-          </div>
-          <div class="row mb-2">
-            <div class="col-4 text-light fw-bold">Fecha lanzamiento:</div>
-            <div class="col-8 text-light" id="manga-fecha">-</div>
-          </div>
-          <div class="row mb-2">
-            <div class="col-4 text-light fw-bold">Frecuencia:</div>
-            <div class="col-8 text-light" id="manga-frecuencia">-</div>
-          </div>
-        </div>
+    <!-- Manga info container -->
+    <div class="manga-info-container">
+      <!-- Banner de fondo -->
+      <div class="manga-banner" id="manga-banner">
+        <div class="banner-overlay"></div>
       </div>
-
-      <!-- Sinopsis y capítulos -->
-      <div class="col-12 col-md-7 col-manga-info">
-        <div class="row">
-          <h5 id="manga-titulo" class="tituloMangaDescripcion mt-2 maspopulares">Cargando título...</h5>
-          <p id="manga-sinopsis" class="sinopsis">Cargando sinopsis...</p>
-          <div class="row">
-            <h5 class="tituloListaCaps">Lista de capítulos</h5>
-            <div class="lista-scroll">
-              <ul id="lista-capitulos" class="list-group list-group-flush listaCap">
-                <!-- Capítulos dinámicos -->
-              </ul>
+      
+      <!-- Header del manga -->
+      <div class="manga-header">
+        <div class="manga-cover-container">
+          <img id="manga-portada" class="manga-cover" alt="Imagen del manga" />
+        </div>
+        <div class="manga-info">
+          <h1 id="manga-titulo" class="manga-title">Cargando título...</h1>
+          <div class="manga-details">
+            <div class="detail-item">
+              <span class="detail-label">Autor:</span>
+              <span class="detail-value" id="manga-autor">-</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Géneros:</span>
+              <span class="detail-value" id="manga-genero">-</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Estado:</span>
+              <span class="detail-value" id="manga-estado">-</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Fecha:</span>
+              <span class="detail-value" id="manga-fecha">-</span>
+            </div>
+            <div class="detail-item">
+              <span class="detail-label">Frecuencia:</span>
+              <span class="detail-value" id="manga-frecuencia">-</span>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
+      <!-- Contenido del manga -->
+      <div class="manga-content">
+        <div class="sinopsis-section">
+          <h3 class="section-title"><i class="bi bi-book me-2"></i>Sinopsis</h3>
+          <p id="manga-sinopsis" class="sinopsis">Cargando sinopsis...</p>
+        </div>
+        
+        <div class="capitulos-section">
+          <h3 class="section-title"><i class="bi bi-list me-2"></i>Lista de capítulos</h3>
+          <div class="lista-scroll">
+            <ul id="lista-capitulos" class="list-group list-group-flush listaCap">
+              <!-- Capítulos dinámicos -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    
     <!-- Comentarios -->
     <!-- Aquí podrías insertar el sistema de comentarios -->
 

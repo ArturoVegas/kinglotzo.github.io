@@ -1,52 +1,156 @@
-.img-manga-ajustada {
-  max-width: 60%;
-  height: auto;
-  object-fit: contain;
+/* Container principal */
+.manga-info-container {
+  max-width: 1200px;
+  margin: 40px auto;
+  background: linear-gradient(135deg, #2c2c2c 0%, #383838 100%);
+  border-radius: 20px;
+  padding: 0;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  color: #f1f1f1;
+  border: 1px solid #444;
+  overflow: hidden;
+  position: relative;
 }
-.tituloMangaDescripcion {
-  color: #fff;
-  margin-bottom: 1rem;
-  font-size: 30px;
-}
-.sinopsis {
-  max-height: 400px;
-  overflow-y: auto;
-  color: #ccc;
-  padding-right: 10px;
-}
-.listaCap {
-  background-color: #1e1e1e;
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-}
-.listaCap .list-group-item {
-  background-color: #054283;
-  color: #ffffff;
-  padding: 0.4rem 0.75rem;
-  border: none;
-}
-.tituloListaCaps {
-  color: #fff;
-}
-.enlace-cap {
-  color: #fff;
-  text-decoration: none;
+
+/* Banner de fondo */
+.manga-banner {
   width: 100%;
-  height: 100%;
-  transition: background-color 0.3s, color 0.3s;
+  height: 300px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  transition: filter 0.3s ease;
 }
-.enlace-cap:hover {
-  background-color: #413f3f;
-  color: #1e90ff;
+
+/* Clase para aplicar el efecto blur */
+.manga-banner.blurred {
+  filter: blur(8px);
 }
-.rectangulo-item {
-  background-color: #054283;
-  border-radius: 0.5rem;
-  margin-bottom: 0.5rem;
-  border: 3px solid #fffbfb;
-  padding: 2px;
+
+.banner-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.7) 100%);
+}
+
+/* Header del manga */
+.manga-header {
+  position: relative;
+  z-index: 10;
+  margin-top: -80px;
+  display: flex;
+  align-items: flex-end;
+  gap: 30px;
+  padding: 60px 40px 30px;
+  background: rgba(44, 44, 44, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px 20px 0 0;
+  margin-left: 20px;
+  margin-right: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+/* Contenedor de portada del manga */
+.manga-cover-container {
+  position: relative;
+  flex-shrink: 0;
+  margin-top: -60px;
+  z-index: 20;
+}
+
+.manga-cover {
+  width: 200px;
+  height: 280px;
+  border-radius: 15px;
+  object-fit: cover;
+  border: 4px solid #0d6efd;
+  box-shadow: 0 15px 30px rgba(13, 110, 253, 0.4);
+  transition: transform 0.3s ease;
+}
+
+.manga-cover:hover {
+  transform: scale(1.05);
+}
+
+/* Información del manga */
+.manga-info {
+  flex-grow: 1;
+  padding-left: 20px;
+}
+
+.manga-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  background: linear-gradient(45deg, #0d6efd, #6610f2);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.2;
+}
+
+.manga-details {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.detail-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #adb5bd;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.detail-value {
+  font-size: 1rem;
+  color: #ffffff;
+  font-weight: 500;
+}
+
+/* Contenido del manga */
+.manga-content {
+  padding: 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #0d6efd;
+}
+
+.sinopsis {
+  color: #ccc;
+  line-height: 1.6;
+  font-size: 1rem;
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.capitulos-section {
+  max-height: 500px;
   overflow: hidden;
 }
+
 .lista-scroll {
   max-height: 400px;
   overflow-y: auto;
@@ -55,8 +159,106 @@
   border-radius: 0.5rem;
   background-color: #1e1e1e;
 }
-.col-manga-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
+
+.listaCap {
+  background-color: #1e1e1e;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.listaCap .list-group-item {
+  background-color: #054283;
+  color: #ffffff;
+  padding: 0.4rem 0.75rem;
+  border: none;
+  margin-bottom: 5px;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+.listaCap .list-group-item:hover {
+  background-color: #0d6efd;
+  transform: translateX(5px);
+}
+
+.enlace-cap {
+  color: #fff;
+  text-decoration: none;
+  width: 100%;
+  height: 100%;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.enlace-cap:hover {
+  color: #ffffff;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .manga-info-container {
+    margin: 20px;
+  }
+  
+  .manga-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 20px;
+    padding: 50px 20px 30px;
+  }
+  
+  .manga-cover-container {
+    margin-top: -50px;
+  }
+  
+  .manga-cover {
+    width: 160px;
+    height: 220px;
+  }
+  
+  .manga-info {
+    padding-left: 0;
+  }
+  
+  .manga-title {
+    font-size: 2rem;
+    text-align: center;
+  }
+  
+  .manga-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 30px 20px;
+  }
+  
+  .manga-details {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 576px) {
+  .manga-header {
+    padding: 40px 15px 20px;
+  }
+  
+  .manga-content {
+    padding: 20px 15px;
+  }
+  
+  .section-title {
+    font-size: 1.3rem;
+  }
+  
+  .sinopsis {
+    font-size: 0.9rem;
+    padding: 0;
+    margin: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+  
+  .sinopsis-section {
+    width: 100%;
+    min-width: 0;
+  }
 }
