@@ -17,6 +17,96 @@ async function incrementarVisitas(nombreManga) {
     console.error("Error incrementando visitas:", error);
   }
 }
+import { remove } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
+
+// Funciones para manejar la lista visual
+async function obtenerListaDelManga(usuarioUID, nombreManga) {
+  const listas = ['favoritos', 'leyendo', 'pendientes', 'terminados'];
+  for (const lista of listas) {
+    const snap = await get(ref(db, `usuarios/${usuarioUID}/listas/${lista}/${nombreManga}`));
+    if (snap.exists()) return lista;
+  }
+  return null;
+}
+
+async function eliminarDeLista(usuarioUID, nombreManga, lista) {
+  await remove(ref(db, `usuarios/${usuarioUID}/listas/${lista}/${nombreManga}`));
+  alert(`Manga eliminado de la lista "${lista}".`);
+}
+
+function mostrarDropdownAgregar() {
+  const dropdown = document.getElementById("dropdown-listas");
+
+  if (!dropdown) return;
+
+  dropdown.innerHTML = `
+    <button class="btn btn-outline-light dropdown-toggle" type="button" data-bs-toggle="dropdown" style="width: 100%;">
+      <i class="bi bi-plus-circle me-1"></i> Agregar a mi lista
+    </button>
+    <ul class="dropdown-menu">
+      <li><a class="dropdown-item" href="#" data-lista="favoritos"><i class="bi bi-heart me-2 text-danger"></i>Favoritos</a></li>
+      <li><a class="dropdown-item" href="#" data-lista="leyendo"><i class="bi bi-book me-2 text-success"></i>Leyendo</a></li>
+      <li><a class="dropdown-item" href="#" data-lista="pendientes"><i class="bi bi-bookmark me-2 text-warning"></i>Pendiente</a></li>
+      <li><a class="dropdown-item" href="#" data-lista="terminados"><i class="bi bi-check-circle me-2 text-info"></i>Terminado</a></li>
+    </ul>
+  `;
+
+  const items = dropdown.querySelectorAll(".dropdown-item");
+  items.forEach(item => {
+    item.addEventListener("click", (e) => {
+      e.preventDefault();
+      const lista = item.getAttribute("data-lista");
+      if (lista) {
+        agregarMangaALista(lista);
+        setTimeout(() => controlarListaVisual(), 500);
+      }
+    });
+  });
+}
+
+function mostrarListaActual(nombreLista, userUID, nombreManga) {
+  const dropdown = document.getElementById("dropdown-listas");
+
+  if (!dropdown) return;
+
+  const nombreFormateado = nombreLista.charAt(0).toUpperCase() + nombreLista.slice(1);
+
+  dropdown.innerHTML = `
+    <div style="display: flex; justify-content: space-between; align-items: center; background-color: #343a40; color: white; border-radius: 5px; padding: 8px 12px; width: 100%;">
+      <span style="font-size: 0.9rem;">En lista: <strong>${nombreFormateado}</strong></span>
+      <button id="btn-eliminar-lista" class="btn btn-sm btn-danger">Eliminar</button>
+    </div>
+  `;
+
+  const btnEliminar = document.getElementById("btn-eliminar-lista");
+  btnEliminar.addEventListener("click", async () => {
+    if (confirm(`¿Eliminar de la lista "${nombreFormateado}"?`)) {
+      await eliminarDeLista(userUID, nombreManga, nombreLista);
+      mostrarDropdownAgregar();
+    }
+  });
+}
+
+function controlarListaVisual() {
+  const auth = getAuth();
+  const nombreManga = obtenerNombreMangaDesdeURL();
+  if (!nombreManga) return;
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      mostrarDropdownAgregar();
+      return;
+    }
+
+    const lista = await obtenerListaDelManga(user.uid, nombreManga);
+    if (lista) {
+      mostrarListaActual(lista, user.uid, nombreManga);
+    } else {
+      mostrarDropdownAgregar();
+    }
+  });
+}
+
 function agregarMangaALista(lista) {
   const auth = getAuth();
   const nombreManga = obtenerNombreMangaDesdeURL();
@@ -136,6 +226,7 @@ async function cargarInfoManga() {
         }
       }
       await incrementarVisitas(nombreManga);
+      controlarListaVisual();
 
     } else {
       alert("Manga no encontrado.");
