@@ -44,8 +44,8 @@ async function cargarDatosUsuario(uid) {
       
       // Contar favoritos (excluyendo el campo 'inicializado')
       const favoritosData = userData.favoritos || {};
-      const favoritosCount = Object.keys(favoritosData).filter(key => key !== 'inicializado').length;
-      document.getElementById('favoritos-count').textContent = favoritosCount;
+      const favoritosCountValue = Object.keys(favoritosData).filter(key => key !== 'inicializado').length;
+      favoritosCount.textContent = favoritosCountValue;
       
       // Actualizar estadísticas
       comentariosCount.textContent = userData.comentarios || 0;
@@ -73,7 +73,7 @@ async function cargarDatosUsuario(uid) {
         profileBanner.style.backgroundImage = `url('${userData.bannerURL}')`;
       }
       
-      // Cargar las listas de mangas
+      // Cargar las listas de mangas (cards visuales)
       cargarListasMangas(userData);
       
       // Mostrar el perfil y ocultar el loading
@@ -81,7 +81,6 @@ async function cargarDatosUsuario(uid) {
       perfilContainer.style.display = 'block';
     } else {
       console.log('❌ No hay datos para este usuario en la base de datos.');
-      // Redirigir al usuario a la página de inicio si no hay datos
       alert('No se encontraron datos del perfil. Redirigiendo...');
       window.location.href = '../index.html';
     }
@@ -114,42 +113,52 @@ function cargarListasMangas(userData) {
   cargarMangasEnGrid('terminados', listas.terminados || {});
 }
 
-/* Función para cargar mangas en una grid específica */
+/* Función para cargar mangas en una grid específica con cards visuales */
 function cargarMangasEnGrid(tipo, mangas) {
   const grid = document.getElementById(`${tipo}-grid`);
   const total = document.getElementById(`${tipo}-total`);
   
+  // Limpiar el grid antes de rellenar
+  grid.innerHTML = '';
+
   // Filtrar mangas válidos (excluir 'inicializado')
-  const mangasValidos = Object.keys(mangas).filter(key => key !== 'inicializado');
+  const mangasValidos = Object.entries(mangas).filter(([key]) => key !== 'inicializado');
   
   // Actualizar contador
   total.textContent = `${mangasValidos.length} manga${mangasValidos.length !== 1 ? 's' : ''}`;
   
   if (mangasValidos.length === 0) {
-    // Mostrar estado vacío
+    // Mostrar estado vacío si existe
+    const emptyState = grid.querySelector('.empty-state');
+    if (emptyState) emptyState.style.display = 'block';
     return;
   }
   
-  // Limpiar grid y ocultar estado vacío
+  // Ocultar estado vacío si existe
   const emptyState = grid.querySelector('.empty-state');
-  if (emptyState) {
-    emptyState.style.display = 'none';
-  }
-  
-  // Crear cards de manga (por ahora solo mostraremos los nombres)
-  mangasValidos.forEach(mangaKey => {
+  if (emptyState) emptyState.style.display = 'none';
+
+  mangasValidos.forEach(([key, manga]) => {
+    const titulo = manga.titulo || key;
+    const portada = manga.portada || `https://via.placeholder.com/160x220/495057/ffffff?text=${encodeURIComponent(titulo)}`;
+
+    // Crear card
     const mangaCard = document.createElement('div');
-    mangaCard.className = 'manga-card';
+    mangaCard.className = 'manga-card card m-2 shadow-sm';
+    mangaCard.style.width = '160px';
+    mangaCard.style.cursor = 'pointer';
+
     mangaCard.innerHTML = `
-      <img src="https://via.placeholder.com/160x220/495057/ffffff?text=${encodeURIComponent(mangaKey)}" alt="${mangaKey}" />
-      <span>${mangaKey}</span>
+      <img src="${portada}" class="card-img-top" alt="${titulo}" style="height:220px; object-fit: cover;">
+      <div class="card-body p-2">
+        <h6 class="card-title text-truncate" title="${titulo}">${titulo}</h6>
+      </div>
     `;
-    
-    // Agregar click handler
+
     mangaCard.addEventListener('click', () => {
-      window.location.href = `../html/infoMangas.html?manga=${encodeURIComponent(mangaKey)}`;
+      window.location.href = `../html/infoMangas.html?manga=${encodeURIComponent(titulo)}`;
     });
-    
+
     grid.appendChild(mangaCard);
   });
 }
@@ -219,7 +228,6 @@ function initScrollBlurEffect() {
   
   function updateBlur() {
     const scrolled = window.pageYOffset;
-    const rate = scrolled * -0.5;
     
     if (scrolled > 50) {
       profileBanner.classList.add('blurred');
@@ -296,8 +304,7 @@ async function guardarImagen() {
     if (imageUrlInput.value.trim()) {
       imageUrl = imageUrlInput.value.trim();
     } else if (imageFileInput.files[0]) {
-      // Para archivos, usaremos un servicio de subida de imágenes gratuito como imgur
-      // o en este caso, convertiremos a base64 (nota: no recomendado para producción)
+      // Para archivos, convertiremos a base64 (no recomendado para producción)
       const file = imageFileInput.files[0];
       imageUrl = await convertirArchivoABase64(file);
     } else {
@@ -308,14 +315,12 @@ async function guardarImagen() {
     // Aplicar la imagen
     if (currentImageType === 'avatar') {
       document.getElementById('user-avatar').src = imageUrl;
-      // Guardar en Firebase
       if (auth.currentUser) {
         const userRef = ref(db, `usuarios/${auth.currentUser.uid}`);
         await update(userRef, { avatarURL: imageUrl });
       }
     } else if (currentImageType === 'banner') {
       document.getElementById('profile-banner').style.backgroundImage = `url('${imageUrl}')`;
-      // Guardar en Firebase
       if (auth.currentUser) {
         const userRef = ref(db, `usuarios/${auth.currentUser.uid}`);
         await update(userRef, { bannerURL: imageUrl });
@@ -376,6 +381,8 @@ editProfileBtn.onclick = () => {
   const currentAvatar = document.getElementById('user-avatar').src;
   if (!currentAvatar.includes('ui-avatars.com')) {
     editAvatarInput.value = currentAvatar;
+  } else {
+    editAvatarInput.value = '';
   }
   editProfileModal.show();
 };
