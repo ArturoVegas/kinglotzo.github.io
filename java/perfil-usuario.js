@@ -42,14 +42,23 @@ async function cargarDatosUsuario(uid) {
       userNameElem.textContent = userData.nombre || 'Usuario';
       userEmailElem.textContent = userData.email || 'Sin email';
       
-      // Contar favoritos (excluyendo el campo 'inicializado')
-      const favoritosData = userData.favoritos || {};
-      const favoritosCountValue = Object.keys(favoritosData).filter(key => key !== 'inicializado').length;
-      favoritosCount.textContent = favoritosCountValue;
-      
-      // Actualizar estadísticas
-      comentariosCount.textContent = userData.comentarios || 0;
-      capitulosCount.textContent = userData.capitulosLeidos || 0;
+     const listas = userData.listas || {};
+const favoritosLista = listas.favoritos || {};
+const favoritosCountValue = Object.keys(favoritosLista).length;
+favoritosCount.textContent = favoritosCountValue;
+
+// Contar capítulos leídos desde "visto"
+let capitulosLeidos = 0;
+const vistos = userData.visto || {};
+
+for (const manga in vistos) {
+  if (vistos.hasOwnProperty(manga)) {
+    capitulosLeidos += Object.keys(vistos[manga]).length;
+  }
+}
+capitulosCount.textContent = capitulosLeidos;
+comentariosCount.textContent = userData.comentarios || 0;
+
       
       // Fecha de registro
       if (userData.creadoEn) {

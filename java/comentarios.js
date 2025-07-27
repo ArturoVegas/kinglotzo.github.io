@@ -1,10 +1,11 @@
-// scripts_comentarios.js
-
 import {
   getDatabase,
   ref,
   push,
-  onValue
+  onValue,
+  get,
+  update,
+  remove
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
 import {
   getAuth,
@@ -35,6 +36,10 @@ if (!getApps().length) {
 const db = getDatabase(app);
 const auth = getAuth(app);
 
+// Cambia este UID por el UID real del admin
+const ADMIN_UID = "Cqh5y2MlsObi4ox90jlbAiRGu4D2";
+
+// Obtener parámetros manga y capítulo de la URL
 function getParams() {
   const url = new URLSearchParams(window.location.search);
   return {
@@ -43,6 +48,7 @@ function getParams() {
   };
 }
 
+// Formatea fechas como "hace X minutos/hours/días"
 function formatoFechaRelativa(fechaISO) {
   const fecha = new Date(fechaISO);
   const ahora = new Date();
@@ -59,87 +65,39 @@ function formatoFechaRelativa(fechaISO) {
   return "hace unos segundos";
 }
 
-function cargarComentarios() {
-  const { manga, cap } = getParams();
-  if (!manga || !cap) return;
+// Elementos DOM
+const btnIniciar = document.getElementById("btn-iniciar-sesion");
+const btnLogout = document.getElementById("btn-logout");
+const formComentario = document.getElementById("comment-form");
+const listaComentarios = document.getElementById("lista-comentarios");
+const contadorComentarios = document.querySelector(".comment-count-custom");
+const inputComentario = document.getElementById("input-comentario");
+const userAvatar = document.getElementById("user-avatar");
 
-  const comentariosRef = ref(db, `comentarios/${manga}/${cap}`);
+let usuarioActual = null;
 
-  onValue(comentariosRef, (snapshot) => {
-    const contenedor = document.getElementById("lista-comentarios");
-    const contador = document.querySelector(".comment-count-custom");
-    if (!contenedor || !contador) return;
+onAuthStateChanged(auth, (user) => {
+  usuarioActual = user;
+  actualizarUI(user);
+  cargarComentarios();
+});
 
-    contenedor.innerHTML = "";
+btnIniciar?.addEventListener("click", () => {
+  window.location.href = "../html/auth.html";
+});
 
-    if (!snapshot.exists()) {
-      contador.textContent = "0 Comentarios";
-      contenedor.innerHTML = "<p class='text-light'>Sin comentarios aún.</p>";
-      return;
-    }
+btnLogout?.addEventListener("click", async () => {
+  await signOut(auth);
+  localStorage.removeItem('rememberUser');
+  localStorage.removeItem('userEmail');
+  alert("Sesión cerrada.");
+  location.reload();
+});
 
-    const comentarios = snapshot.val();
-    const arrayComentarios = Object.values(comentarios).sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+document.getElementById("btn-publicar-comentario")?.addEventListener("click", publicarComentario);
 
-    contador.textContent = `${arrayComentarios.length} Comentario${arrayComentarios.length > 1 ? "s" : ""}`;
-
-    arrayComentarios.forEach(com => {
-      const div = document.createElement("div");
-      div.className = "comentario-box";
-
-      div.innerHTML = `
-        <strong>${com.usuario}</strong>
-        <p class="mb-1">${com.texto}</p>
-        <small class="fecha-comentario">${formatoFechaRelativa(com.fecha)}</small>
-
-      `;
-      contenedor.appendChild(div);
-    });
-  });
-}
-
-async function publicarComentario() {
-  const { manga, cap } = getParams();
-  if (!manga || !cap) return alert("No se especificó manga o capítulo.");
-
-  const texto = document.getElementById("input-comentario")?.value.trim();
-  const user = auth.currentUser;
-
-  if (!user) {
-    alert("Debes iniciar sesión para comentar.");
-    return;
-  }
-
-  if (!texto) {
-    alert("Escribe un comentario antes de publicar.");
-    return;
-  }
-
-  const nick = user.displayName?.trim() || user.email?.split("@")[0] || "Anónimo";
-
-
-const comentario = {
-  usuario: nick && nick !== "" ? nick : "Anónimo",
-  uid: user.uid,
-  texto,
-  fecha: new Date().toISOString()
-};
-
-
-  const comentariosRef = ref(db, `comentarios/${manga}/${cap}`);
-  await push(comentariosRef, comentario);
-
-  if (document.getElementById("input-comentario")) {
-    document.getElementById("input-comentario").value = "";
-  }
-}
-
+// Actualiza la UI según si está logueado o no
 function actualizarUI(user) {
-  const btnIniciar = document.getElementById("btn-iniciar-sesion");
-  const btnLogout = document.getElementById("btn-logout");
-  const formComentario = document.getElementById("comment-form");
-  const userAvatar = document.getElementById("user-avatar");
-
   if (user) {
     if (btnIniciar) btnIniciar.style.display = "none";
     if (btnLogout) btnLogout.style.display = "inline-block";
@@ -155,25 +113,184 @@ function actualizarUI(user) {
   }
 }
 
-function redirigirLogin() {
-  window.location.href = "../html/auth.html";
+async function publicarComentario() {
+  const { manga, cap } = getParams();
+  if (!manga || !cap) return alert("No se especificó manga o capítulo.");
+
+  if (!usuarioActual) {
+    alert("Debes iniciar sesión para comentar.");
+    return;
+  }
+
+  const texto = inputComentario?.value.trim();
+  if (!texto) {
+    alert("Escribe un comentario antes de publicar.");
+    return;
+  }
+
+  const nick = usuarioActual.displayName?.trim() || usuarioActual.email?.split("@")[0] || "Anónimo";
+
+  const comentario = {
+    usuario: nick && nick !== "" ? nick : "Anónimo",
+    uid: usuarioActual.uid,
+    texto,
+    fecha: new Date().toISOString(),
+    manga,
+    capitulo: cap
+  };
+
+  const comentariosRef = ref(db, `comentarios/${manga}/${cap}`);
+
+  try {
+    await push(comentariosRef, comentario);
+    inputComentario.value = "";
+
+    // Actualizar contador en usuario
+    const userRef = ref(db, `usuarios/${usuarioActual.uid}`);
+    const snapshot = await get(userRef);
+    const currentComentarios = snapshot.exists() ? snapshot.val().comentarios || 0 : 0;
+    await update(userRef, { comentarios: currentComentarios + 1 });
+
+    cargarComentarios();
+  } catch (error) {
+    console.error("Error al publicar comentario:", error);
+    alert("No se pudo publicar el comentario.");
+  }
 }
 
-async function logout() {
-  await signOut(auth);
-  // Limpiar datos del checkbox "recordarme"
-  localStorage.removeItem('rememberUser');
-  localStorage.removeItem('userEmail');
-  alert("Sesión cerrada.");
+function cargarComentarios() {
+  const { manga, cap } = getParams();
+  if (!manga || !cap) return;
+
+  const comentariosRef = ref(db, `comentarios/${manga}/${cap}`);
+
+  onValue(comentariosRef, (snapshot) => {
+    listaComentarios.innerHTML = "";
+    if (!snapshot.exists()) {
+      contadorComentarios.textContent = "0 Comentarios";
+      listaComentarios.innerHTML = "<p class='text-light'>Sin comentarios aún.</p>";
+      return;
+    }
+
+    const comentarios = snapshot.val();
+    const arrayComentarios = Object.entries(comentarios).sort(
+      (a, b) => new Date(b[1].fecha) - new Date(a[1].fecha)
+    );
+
+    contadorComentarios.textContent = `${arrayComentarios.length} Comentario${arrayComentarios.length !== 1 ? "s" : ""}`;
+
+    const { manga, cap } = getParams();
+
+    arrayComentarios.forEach(([key, com]) => {
+      const div = document.createElement("div");
+      div.className = "comentario-box";
+
+      const header = document.createElement("div");
+      header.className = "d-flex justify-content-between align-items-center";
+
+      const usuarioElem = document.createElement("strong");
+      usuarioElem.textContent = com.usuario;
+
+      const fechaElem = document.createElement("small");
+      fechaElem.className = "fecha-comentario";
+      fechaElem.textContent = formatoFechaRelativa(com.fecha);
+
+      header.appendChild(usuarioElem);
+      header.appendChild(fechaElem);
+
+      const textoElem = document.createElement("p");
+      textoElem.className = "mb-1";
+      textoElem.textContent = com.texto;
+
+      div.appendChild(header);
+      div.appendChild(textoElem);
+
+      if (com.editado) {
+        const editadoSpan = document.createElement("small");
+        editadoSpan.className = "text-muted";
+        editadoSpan.textContent = " (editado)";
+        usuarioElem.appendChild(editadoSpan);
+      }
+
+      // Mostrar botones solo para comentarios propios o admin
+      if (
+        usuarioActual &&
+        (com.uid === usuarioActual.uid || usuarioActual.uid === ADMIN_UID)
+      ) {
+        const acciones = document.createElement("div");
+        acciones.className = "mt-2";
+
+        const btnEditar = document.createElement("button");
+        btnEditar.className = "btn btn-sm btn-outline-primary me-2";
+        btnEditar.textContent = "Editar";
+        btnEditar.onclick = () => editarComentario(key, com, manga, cap);
+
+        const btnEliminar = document.createElement("button");
+        btnEliminar.className = "btn btn-sm btn-outline-danger";
+        btnEliminar.textContent = "Eliminar";
+        btnEliminar.onclick = () => eliminarComentario(key, com.uid, manga, cap);
+
+        acciones.appendChild(btnEditar);
+        acciones.appendChild(btnEliminar);
+        div.appendChild(acciones);
+      }
+
+      listaComentarios.appendChild(div);
+    });
+  });
 }
 
-// Eventos botones
-document.getElementById("btn-publicar-comentario")?.addEventListener("click", publicarComentario);
-document.getElementById("btn-iniciar-sesion")?.addEventListener("click", redirigirLogin);
-document.getElementById("btn-logout")?.addEventListener("click", logout);
+function editarComentario(key, comentario, manga, cap) {
+  const nuevoTexto = prompt("Edita tu comentario:", comentario.texto);
+  if (!nuevoTexto || nuevoTexto.trim() === "" || nuevoTexto === comentario.texto) return;
 
-// Carga inicial y escucha estado autenticación
-onAuthStateChanged(auth, (user) => {
-  actualizarUI(user);
-  cargarComentarios();
-});
+  if (!usuarioActual) return alert("Debes iniciar sesión para editar.");
+  if (
+    usuarioActual.uid !== comentario.uid &&
+    usuarioActual.uid !== ADMIN_UID
+  ) {
+    return alert("No tienes permiso para editar este comentario.");
+  }
+
+  const comentarioRef = ref(db, `comentarios/${manga}/${cap}/${key}`);
+
+  update(comentarioRef, {
+    texto: nuevoTexto,
+    editado: true,
+    fechaEdicion: new Date().toISOString()
+  })
+    .then(() => {
+      cargarComentarios();
+    })
+    .catch((err) => {
+      console.error("Error editando comentario:", err);
+      alert("Error al editar el comentario.");
+    });
+}
+
+function eliminarComentario(key, uid, manga, cap) {
+  if (!confirm("¿Estás seguro de eliminar este comentario?")) return;
+
+  if (!usuarioActual) return alert("Debes iniciar sesión para eliminar.");
+  if (
+    usuarioActual.uid !== uid &&
+    usuarioActual.uid !== ADMIN_UID
+  ) {
+    return alert("No tienes permiso para eliminar este comentario.");
+  }
+
+  const comentarioRef = ref(db, `comentarios/${manga}/${cap}/${key}`);
+  remove(comentarioRef)
+    .then(async () => {
+      // Reducir contador de comentarios del usuario
+      const userRef = ref(db, `usuarios/${uid}`);
+      const snapshot = await get(userRef);
+      const currentComentarios = snapshot.exists() ? snapshot.val().comentarios || 1 : 1;
+      await update(userRef, { comentarios: Math.max(0, currentComentarios - 1) });
+      cargarComentarios();
+    })
+    .catch((err) => {
+      console.error("Error al eliminar comentario:", err);
+      alert("No se pudo eliminar el comentario.");
+    });
+}
