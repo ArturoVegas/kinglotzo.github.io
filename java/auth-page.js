@@ -63,20 +63,33 @@ onAuthStateChanged(auth, async (user) => {
       const snapshot = await get(userRef);
 
       if (!snapshot.exists()) {
+        // Si no existe, guarda perfil sin rol (o con rol 'usuario' por defecto)
         await guardarPerfilUsuario({
           uid: user.uid,
           email: user.email,
-          displayName: user.displayName
+          displayName: user.displayName,
+          rol: 'usuario'  // asignar rol por defecto
         });
+        window.location.href = "../index.html";
+        return;
       }
 
-      window.location.href = user.uid === adminUID ? "admin.html" : "../index.html";
+      const userData = snapshot.val();
+
+      if (userData.rol === "admin") {
+        window.location.href = "admin.html";
+      } else {
+        window.location.href = "../index.html";
+      }
 
     } catch (error) {
       console.error("❌ Error verificando/guardando perfil:", error);
+      alert("Error en la verificación de permisos.");
+      await auth.signOut();
     }
   }
 });
+
 
 function showRegister() {
   registerTab.classList.add('active');
@@ -173,12 +186,14 @@ async function guardarPerfilUsuario(user) {
     comentarios: 0,
     fechaRegistro: new Date().toISOString(),
     creadoEn: Date.now(),
-    activo: true
+    activo: true,
+    rol: user.rol || 'usuario'  // asigna rol por defecto si no viene
   };
 
   await set(userRef, perfilUsuario);
   console.log("✅ Perfil guardado en Firebase Realtime Database");
 }
+
 
 // LOGIN
 loginFormElement.addEventListener('submit', async (e) => {

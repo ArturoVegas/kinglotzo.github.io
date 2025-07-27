@@ -83,19 +83,47 @@ if (!path.includes("admin.html")) {
   // ==============================
   // AUTENTICACIÓN DE ADMIN
   // ==============================
-  onAuthStateChanged(auth, async (user) => {
-    if (!user || user.uid !== adminUID) {
-      alert("No autorizado. Redirigiendo a inicio de sesión.");
+  // ==============================
+// AUTENTICACIÓN DE ADMIN POR ROL
+// ==============================
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    alert("No autorizado. Redirigiendo a inicio de sesión.");
+    window.location.href = "auth.html";
+    return;
+  }
+
+  try {
+    const userSnapshot = await get(ref(db, `usuarios/${user.uid}`));
+    if (!userSnapshot.exists()) {
+      alert("Usuario no registrado. Acceso denegado.");
+      await signOut(auth);
       window.location.href = "auth.html";
       return;
     }
 
+    const userData = userSnapshot.val();
+    if (userData.rol !== "admin") {
+      alert("No tienes permisos de administrador.");
+      await signOut(auth);
+      window.location.href = "auth.html";
+      return;
+    }
+
+    // Usuario admin autorizado
     mostrarSeccion("nuevoMangaSection");
     await inicializarNodosVacios();
     cargarMangasEnDatalist();
     cargarNoticias();
     cargarCarrusel();
-  });
+
+  } catch (error) {
+    console.error("Error verificando rol de usuario:", error);
+    alert("Error en la verificación de permisos.");
+    await signOut(auth);
+    window.location.href = "auth.html";
+  }
+});
 
   // ==============================
   // NAVEGACIÓN ENTRE SECCIONES
