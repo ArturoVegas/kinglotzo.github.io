@@ -112,3 +112,4 @@ export function getCurrentUser() {
 export function logout() {
   return signOut(auth);
 }
+//prueba
