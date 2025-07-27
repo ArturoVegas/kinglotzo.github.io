@@ -95,22 +95,41 @@ function renderizarPaginacion() {
 }
 
 function filtrarMangas() {
-  listaFiltrada = listaMangas.filter(([nombre, data]) => {
-    if (estadoSeleccionado && data.estado !== estadoSeleccionado) return false;
-    if (frecuenciaSeleccionada && data.frecuencia !== frecuenciaSeleccionada) return false;
-    if (generosSeleccionados.size > 0) {
-      if (!data.generos || !Array.isArray(data.generos)) return false;
-      for (const gen of generosSeleccionados) {
-        if (!data.generos.includes(gen)) return false;
+  if (
+    !estadoSeleccionado &&
+    !frecuenciaSeleccionada &&
+    generosSeleccionados.size === 0
+  ) {
+    listaFiltrada = listaMangas;
+  } else {
+    listaFiltrada = listaMangas.filter(([_, data]) => {
+      const coincideEstado = estadoSeleccionado
+        ? data.estado === estadoSeleccionado
+        : false;
+
+      const coincideFrecuencia = frecuenciaSeleccionada
+        ? data.frecuencia === frecuenciaSeleccionada
+        : false;
+
+      let coincideGenero = false;
+      if (generosSeleccionados.size > 0 && Array.isArray(data.generos)) {
+        for (const gen of generosSeleccionados) {
+          if (data.generos.includes(gen)) {
+            coincideGenero = true;
+            break;
+          }
+        }
       }
-    }
-    return true;
-  });
+
+      return coincideEstado || coincideFrecuencia || coincideGenero;
+    });
+  }
 
   paginaActual = 1;
   renderizarPagina(paginaActual);
   renderizarPaginacion();
 }
+
 
 function crearCheckboxGenero(genero) {
   const li = document.createElement("li");
