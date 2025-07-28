@@ -37,7 +37,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getDatabase(app);
-const adminUID = "Cqh5y2MlsObi4ox90jlbAiRGu4D2";
 const path = location.pathname;
 
 // ==============================
@@ -79,48 +78,38 @@ if (!path.includes("admin.html")) {
   const tituloCarrusel = document.getElementById("tituloCarrusel");
   const descripcionCarrusel = document.getElementById("descripcionCarrusel");
   const listaCarrusel = document.getElementById("listaCarrusel");
+  
 
   // ==============================
   // AUTENTICACIÓN DE ADMIN
   // ==============================
-  // ==============================
-// AUTENTICACIÓN DE ADMIN POR ROL
-// ==============================
-onAuthStateChanged(auth, async (user) => {
+ onAuthStateChanged(auth, async (user) => {
   if (!user) {
-    alert("No autorizado. Redirigiendo a inicio de sesión.");
+    alert("No autenticado. Redirigiendo a inicio de sesión.");
     window.location.href = "auth.html";
     return;
   }
 
   try {
-    const userSnapshot = await get(ref(db, `usuarios/${user.uid}`));
-    if (!userSnapshot.exists()) {
-      alert("Usuario no registrado. Acceso denegado.");
-      await signOut(auth);
+    // Leer rol desde la base de datos
+    const rolSnap = await get(ref(db, `usuarios/${user.uid}/rol`));
+    const rol = rolSnap.exists() ? rolSnap.val() : null;
+
+    if (rol !== "admin") {
+      alert("Acceso denegado. Solo administradores pueden ingresar.");
       window.location.href = "auth.html";
       return;
     }
 
-    const userData = userSnapshot.val();
-    if (userData.rol !== "admin") {
-      alert("No tienes permisos de administrador.");
-      await signOut(auth);
-      window.location.href = "auth.html";
-      return;
-    }
-
-    // Usuario admin autorizado
+    // Usuario autenticado y es admin → continuar
     mostrarSeccion("nuevoMangaSection");
-    await inicializarNodosVacios();
     cargarMangasEnDatalist();
     cargarNoticias();
     cargarCarrusel();
 
   } catch (error) {
-    console.error("Error verificando rol de usuario:", error);
-    alert("Error en la verificación de permisos.");
-    await signOut(auth);
+    console.error("Error al verificar rol:", error);
+    alert("Error al verificar permisos.");
     window.location.href = "auth.html";
   }
 });
@@ -153,23 +142,6 @@ onAuthStateChanged(auth, async (user) => {
     });
   });
 
-  // ==============================
-  // INICIALIZAR NODOS SI NO EXISTEN
-  // ==============================
-  async function inicializarNodosVacios() {
-    try {
-      const comentariosSnap = await get(ref(db, "comentarios"));
-      if (!comentariosSnap.exists()) await set(ref(db, "comentarios"), { initialized: true });
-
-      const noticiasSnap = await get(ref(db, "noticias"));
-      if (!noticiasSnap.exists()) await set(ref(db, "noticias"), { initialized: true });
-
-      const carruselSnap = await get(ref(db, "carrusel"));
-      if (!carruselSnap.exists()) await set(ref(db, "carrusel"), { initialized: true });
-    } catch (e) {
-      console.error("Error inicializando nodos:", e);
-    }
-  }
 
   // ==============================
   // FUNCIONES DE MANGAS
@@ -395,8 +367,6 @@ onAuthStateChanged(auth, async (user) => {
       };
 
       await set(ref(db, `mangas/${claveManga}`), mangaData);
-      await update(ref(db, `comentarios/${claveManga}`), { creadoEn: Date.now() });
-
       alert("Manga guardado correctamente.");
       formNuevoManga.reset();
       generosSeleccionados = [];
@@ -503,45 +473,60 @@ onAuthStateChanged(auth, async (user) => {
     }
   });
 
-  async function cargarNoticias() {
-    try {
-      const snapshot = await get(ref(db, "noticias"));
-      listaNoticias.innerHTML = "";
-      if (!snapshot.exists()) return;
-      const noticias = snapshot.val();
+async function cargarNoticias() {
+  try {
+    const snapshot = await get(ref(db, "noticias"));
+    const noticias = snapshot.exists() ? snapshot.val() : {};
 
-      if (noticias.initialized) delete noticias.initialized;
+    listaNoticias.innerHTML = "";
 
-      Object.entries(noticias).forEach(([key, noticia]) => {
-        const div = document.createElement("div");
-        div.classList.add("noticia", "mb-3", "p-2", "border", "rounded", "position-relative");
-        div.innerHTML = `
-          <h5>${noticia.titulo || "Sin título"}</h5>
-          <p>${noticia.texto || ""}</p>
-          ${noticia.imagen ? `<img src="${noticia.imagen}" alt="Imagen noticia" style="max-width: 200px;">` : ""}
-          <button class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2 btn-eliminar-noticia" data-id="${key}" title="Eliminar noticia">×</button>
-        `;
-        listaNoticias.appendChild(div);
-      });
+    Object.entries(noticias).forEach(([id, noticia]) => {
+      const li = document.createElement("li");
+      li.classList.add("list-group-item", "bg-dark", "text-light", "d-flex", "justify-content-between", "align-items-center");
 
-      document.querySelectorAll(".btn-eliminar-noticia").forEach(btn => {
-        btn.addEventListener("click", async () => {
-          const id = btn.getAttribute("data-id");
-          if (confirm("¿Seguro que quieres eliminar esta noticia?")) {
-            try {
-              await remove(ref(db, `noticias/${id}`));
-              alert("Noticia eliminada");
-              cargarNoticias();
-            } catch (err) {
-              alert("Error al eliminar noticia: " + err.message);
-            }
+      const contenido = document.createElement("div");
+
+      // Texto noticia
+      const texto = document.createElement("p");
+      texto.textContent = noticia.texto || "Sin texto";
+      contenido.appendChild(texto);
+
+      // Imagen noticia (si existe)
+      if (noticia.imagen) {
+        const img = document.createElement("img");
+        img.src = noticia.imagen;
+        img.alt = "Imagen noticia";
+        img.style.maxWidth = "150px";
+        img.style.marginTop = "5px";
+        contenido.appendChild(img);
+      }
+
+      li.appendChild(contenido);
+
+      // Botón eliminar
+      const btnEliminar = document.createElement("button");
+      btnEliminar.classList.add("btn", "btn-sm", "btn-danger");
+      btnEliminar.textContent = "Eliminar";
+      btnEliminar.onclick = async () => {
+        if (confirm("¿Seguro que quieres eliminar esta noticia?")) {
+          try {
+            await remove(ref(db, `noticias/${id}`));
+            cargarNoticias();
+          } catch (error) {
+            console.error("Error eliminando noticia:", error);
           }
-        });
-      });
-    } catch (error) {
-      console.error("Error al cargar noticias:", error);
-    }
+        }
+      };
+
+      li.appendChild(btnEliminar);
+
+      listaNoticias.appendChild(li);
+    });
+  } catch (error) {
+    console.error("Error al cargar noticias:", error);
   }
+}
+
 
   // ==============================
   // GESTIÓN DE CARRUSEL
@@ -575,44 +560,65 @@ onAuthStateChanged(auth, async (user) => {
   });
 
   async function cargarCarrusel() {
-    try {
-      const snapshot = await get(ref(db, "carrusel"));
-      listaCarrusel.innerHTML = "";
-      if (!snapshot.exists()) return;
-      const carrusel = snapshot.val();
+  try {
+    const snapshot = await get(ref(db, "carrusel"));
+    const carrusel = snapshot.exists() ? snapshot.val() : {};
 
-      if (carrusel.initialized) delete carrusel.initialized;
+    listaCarrusel.innerHTML = "";
 
-      Object.entries(carrusel).forEach(([key, item]) => {
-        const div = document.createElement("div");
-        div.classList.add("carrusel-item", "mb-3", "p-2", "border", "rounded", "position-relative");
-        div.innerHTML = `
-          <h5>${item.titulo || "Sin título"}</h5>
-          <p>${item.descripcion || ""}</p>
-          ${item.imagen ? `<img src="${item.imagen}" alt="Imagen carrusel" style="max-width: 200px;">` : ""}
-          <button class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2 btn-eliminar-carrusel" data-id="${key}" title="Eliminar carrusel">×</button>
-        `;
-        listaCarrusel.appendChild(div);
-      });
+    Object.entries(carrusel).forEach(([id, item]) => {
+      const li = document.createElement("li");
+      li.classList.add("list-group-item", "bg-dark", "text-light", "d-flex", "justify-content-between", "align-items-center");
 
-      document.querySelectorAll(".btn-eliminar-carrusel").forEach(btn => {
-        btn.addEventListener("click", async () => {
-          const id = btn.getAttribute("data-id");
-          if (confirm("¿Seguro que quieres eliminar este elemento del carrusel?")) {
-            try {
-              await remove(ref(db, `carrusel/${id}`));
-              alert("Elemento del carrusel eliminado");
-              cargarCarrusel();
-            } catch (err) {
-              alert("Error al eliminar carrusel: " + err.message);
-            }
+      const contenido = document.createElement("div");
+
+      // Título y descripción
+      const titulo = document.createElement("strong");
+      titulo.textContent = item.titulo || "Sin título";
+      contenido.appendChild(titulo);
+
+      if (item.descripcion) {
+        const desc = document.createElement("p");
+        desc.textContent = item.descripcion;
+        contenido.appendChild(desc);
+      }
+
+      // Imagen carrusel (si existe)
+      if (item.imagen) {
+        const img = document.createElement("img");
+        img.src = item.imagen;
+        img.alt = "Imagen carrusel";
+        img.style.maxWidth = "150px";
+        img.style.marginTop = "5px";
+        contenido.appendChild(img);
+      }
+
+      li.appendChild(contenido);
+
+      // Botón eliminar
+      const btnEliminar = document.createElement("button");
+      btnEliminar.classList.add("btn", "btn-sm", "btn-danger");
+      btnEliminar.textContent = "Eliminar";
+      btnEliminar.onclick = async () => {
+        if (confirm("¿Seguro que quieres eliminar esta imagen del carrusel?")) {
+          try {
+            await remove(ref(db, `carrusel/${id}`));
+            cargarCarrusel();
+          } catch (error) {
+            console.error("Error eliminando carrusel:", error);
           }
-        });
-      });
-    } catch (error) {
-      console.error("Error al cargar carrusel:", error);
-    }
+        }
+      };
+
+      li.appendChild(btnEliminar);
+
+      listaCarrusel.appendChild(li);
+    });
+  } catch (error) {
+    console.error("Error al cargar carrusel:", error);
   }
+}
+
 
   // ==============================
   // FUNCIONALIDAD ACTUALIZAR MANGA
