@@ -65,16 +65,6 @@ export async function optimizeImage(file, options = {}) {
           console.log(`Tamaño optimizado: ${sizeKB.toFixed(2)} KB`);
           console.log(`Ahorro: ${savings}%`);
           
-          // Mostrar notificación si el ahorro es significativo (>30%)
-          if (savings > 30 && window.optimizationNotifications) {
-            setTimeout(() => {
-              window.optimizationNotifications.showImageOptimization(
-                originalSizeKB.toFixed(0),
-                sizeKB.toFixed(0),
-                savings
-              );
-            }, 1000);
-          }
           
           // Si aún es muy grande, reducir calidad
           if (sizeKB > config.maxSizeKB && config.quality > 0.3) {

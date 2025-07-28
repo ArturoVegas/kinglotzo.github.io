@@ -43,6 +43,23 @@ class MobileOptimizer {
     return isLowEndSpecs || isVeryOldMobile;
   }
 
+  shouldDisableBackground() {
+    const memory = navigator.deviceMemory || 4;
+    
+    // Desactivar fondo si:
+    // - Es móvil
+    // - Tiene menos de 6GB de RAM
+    const shouldDisable = this.isMobile || memory < 6;
+    
+    console.log('🎨 Evaluación del fondo de partículas:', {
+      isMobile: this.isMobile,
+      memory: memory + 'GB',
+      shouldDisableBackground: shouldDisable
+    });
+    
+    return shouldDisable;
+  }
+
   detectConnection() {
     if ('connection' in navigator) {
       const conn = navigator.connection;
@@ -124,16 +141,16 @@ class MobileOptimizer {
       optimizationsApplied.push('Calidad de imagen ajustada');
     }
 
-    // Mostrar notificación de optimización móvil
-    setTimeout(() => {
-      if (window.optimizationNotifications) {
-        if (this.isLowEndDevice) {
-          window.optimizationNotifications.showLowEndDevice();
-        } else {
-          window.optimizationNotifications.showMobileOptimization(optimizationsApplied);
-        }
-      }
-    }, 2000); // Esperar 2 segundos para que la página cargue
+    // 6. Optimizar cards populares específicamente
+    this.optimizePopularCards();
+    optimizationsApplied.push('Cards optimizadas');
+
+    // 7. Desactivar fondo de partículas si es necesario
+    if (this.shouldDisableBackground()) {
+      this.disableParticleBackground();
+      optimizationsApplied.push('Fondo de partículas desactivado');
+    }
+
   }
 
   reduceCSSEffects() {
@@ -175,15 +192,29 @@ class MobileOptimizer {
         }
       }
       
-      /* Dispositivos de muy baja gama */
+      /* Dispositivos de muy baja gama - optimizaciones específicas */
       @media (max-width: 480px) {
         .row-personalizada {
           background: rgba(5, 66, 131, 0.95) !important;
         }
         
-        * {
+        /* Pausar solo animaciones pesadas, no las de las cards */
+        body::before, body::after,
+        .navbar-nav .nav-link,
+        .carousel-item,
+        .btn:not(.card .btn),
+        .dropdown-menu {
           transition: none !important;
           animation: none !important;
+        }
+        
+        /* Mantener optimización ligera para cards populares */
+        #carrusel-populares .card {
+          transition: transform 0.1s ease !important;
+        }
+        
+        #carrusel-populares .card:hover {
+          transform: scale(1.02) !important;
         }
       }
     `;
@@ -299,8 +330,154 @@ class MobileOptimizer {
           maxSizeKB: 200  // Reducido de 500
         };
       }
-      console.log('📷 Calidad de procesamiento de imágenes reducida');
+    console.log('📷 Calidad de procesamiento de imágenes reducida');
     }
+  }
+
+  optimizePopularCards() {
+    console.log('🎴 Optimizando cards populares para móviles...');
+    
+    // Optimizaciones específicas para el carrusel de populares
+    const popularCardsStyle = document.createElement('style');
+    popularCardsStyle.id = 'popular-cards-mobile-optimization';
+    popularCardsStyle.textContent = `
+      /* Optimizaciones específicas para cards populares en móviles */
+      @media (max-width: 768px) {
+        #carrusel-populares {
+          /* Mejorar scroll performance */
+          -webkit-overflow-scrolling: touch;
+          overflow-x: auto;
+          scroll-behavior: smooth;
+          will-change: scroll-position;
+        }
+        
+        #carrusel-populares .card {
+          /* Optimizar rendering */
+          will-change: transform;
+          backface-visibility: hidden;
+          -webkit-backface-visibility: hidden;
+          transform: translateZ(0); /* Forzar aceleración GPU */
+          
+          /* Mantener transición suave pero rápida */
+          transition: transform 0.15s ease-out !important;
+        }
+        
+        #carrusel-populares .card:hover {
+          transform: translateZ(0) scale(1.03) !important;
+        }
+        
+        #carrusel-populares .card-img-top {
+          /* Optimizar carga de imágenes */
+          loading: lazy;
+          will-change: auto;
+          backface-visibility: hidden;
+        }
+        
+        .popular-card-wrapper {
+          /* Asegurar visibilidad y flexibilidad */
+          display: flex !important;
+          flex-shrink: 0 !important;
+          opacity: 1 !important;
+          visibility: visible !important;
+        }
+      }
+      
+      /* Para dispositivos muy lentos */
+      @media (max-width: 480px) {
+        #carrusel-populares .card {
+          /* Reducir efectos pero mantener funcionalidad */
+          transition: opacity 0.1s ease !important;
+        }
+        
+        #carrusel-populares .card:hover {
+          transform: translateZ(0) scale(1.01) !important;
+        }
+        
+        /* Optimizar imágenes para pantallas pequeñas */
+        #carrusel-populares .card-img-top {
+          height: 180px !important;
+          object-fit: cover;
+          image-rendering: optimizeSpeed;
+        }
+      }
+    `;
+    
+    document.head.appendChild(popularCardsStyle);
+    
+    // Aplicar lazy loading inteligente a las imágenes de cards
+    this.setupCardImageOptimization();
+    
+    console.log('✅ Cards populares optimizadas para móviles');
+  }
+
+  disableParticleBackground() {
+    console.log('🎨 Desactivando fondo de partículas para mejor rendimiento...');
+    
+    // Crear estilo para desactivar el fondo de partículas
+    const disableBackgroundStyle = document.createElement('style');
+    disableBackgroundStyle.id = 'disable-particle-background';
+    disableBackgroundStyle.textContent = `
+      /* Desactivar fondo de partículas en móviles y dispositivos con poca RAM */
+      body::before {
+        display: none !important;
+        animation: none !important;
+      }
+      
+      /* Mejorar el fondo base para compensar */
+      body {
+        background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f0f23 100%) !important;
+        background-attachment: fixed !important;
+      }
+      
+      /* Asegurar que no se active con scroll */
+      body.scrolling-active::before {
+        display: none !important;
+        animation: none !important;
+      }
+    `;
+    
+    document.head.appendChild(disableBackgroundStyle);
+    console.log('✅ Fondo de partículas desactivado exitosamente');
+  }
+  
+  setupCardImageOptimization() {
+    // Esperar a que las cards se carguen
+    setTimeout(() => {
+      const cardImages = document.querySelectorAll('#carrusel-populares .card-img-top');
+      
+      cardImages.forEach((img, index) => {
+        // Solo cargar las primeras 3 imágenes inmediatamente en móviles
+        if (this.isMobile && index > 2) {
+          // Usar intersection observer para las demás
+          const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+              if (entry.isIntersecting) {
+                const image = entry.target;
+                if (image.dataset.src) {
+                  image.src = image.dataset.src;
+                  image.removeAttribute('data-src');
+                }
+                observer.unobserve(image);
+              }
+            });
+          }, {
+            rootMargin: '50px'
+          });
+          
+          observer.observe(img);
+        }
+        
+        // Optimizar cada imagen
+        img.style.willChange = 'auto';
+        img.style.backfaceVisibility = 'hidden';
+        
+        // Manejar errores de carga
+        img.addEventListener('error', () => {
+          img.style.backgroundColor = '#f0f0f0';
+          img.alt = 'Imagen no disponible';
+        });
+      });
+    }, 1000);
   }
 
   applySlowConnectionOptimizations() {
@@ -319,24 +496,28 @@ class MobileOptimizer {
     });
 
     console.log('⚡ Optimizaciones para conexión lenta aplicadas');
-    
-    // Mostrar notificación de conexión lenta
-    setTimeout(() => {
-      if (window.optimizationNotifications) {
-        window.optimizationNotifications.showSlowConnection();
-      }
-    }, 1500);
   }
 
   applyBatterySavingMode() {
     console.log('🔋 Modo ahorro de batería activado...');
 
-    // Pausar todas las animaciones
+    // Pausar animaciones pesadas pero mantener las esenciales
     const style = document.createElement('style');
     style.textContent = `
-      *, *::before, *::after {
+      /* Pausar animaciones pesadas pero mantener cards funcionales */
+      body::before, body::after,
+      .carousel-item,
+      .navbar-nav .nav-link,
+      .btn:not(.card .btn):not(#carrusel-populares .btn),
+      .dropdown-menu {
         animation: none !important;
         transition: none !important;
+      }
+      
+      /* Mantener animación mínima para cards */
+      #carrusel-populares .card,
+      #ultimas-actualizaciones .card {
+        transition: transform 0.1s ease !important;
       }
     `;
     document.head.appendChild(style);
@@ -347,13 +528,6 @@ class MobileOptimizer {
     }
 
     console.log('🔋 Modo ahorro de batería aplicado');
-    
-    // Mostrar notificación de ahorro de batería
-    setTimeout(() => {
-      if (window.optimizationNotifications) {
-        window.optimizationNotifications.showBatterySaving();
-      }
-    }, 1000);
   }
 
   setupPerformanceMonitoring() {
@@ -413,9 +587,15 @@ class MobileOptimizer {
       // Aplicar optimizaciones más agresivas
       console.log('🚨 Aplicando optimizaciones de emergencia para móviles');
       
-      // Desactivar más efectos
-      document.querySelectorAll('*').forEach(el => {
+      // Desactivar efectos pesados pero mantener cards
+      document.querySelectorAll('.navbar-nav .nav-link, .carousel-item, .dropdown-menu').forEach(el => {
         el.style.transition = 'none';
+        el.style.animation = 'none';
+      });
+      
+      // Mantener funcionalidad mínima en cards
+      document.querySelectorAll('#carrusel-populares .card, #ultimas-actualizaciones .card').forEach(el => {
+        el.style.transition = 'transform 0.1s ease';
       });
     }
   }
@@ -425,23 +605,32 @@ class MobileOptimizer {
       this.emergencyModeActive = true;
       console.log('🚨 Modo emergencia activado por FPS bajo');
       
-      // Desactivar todos los efectos visuales
+      // Desactivar efectos visuales pesados pero mantener funcionalidad esencial
       const emergencyStyle = document.createElement('style');
       emergencyStyle.textContent = `
-        * { 
+        /* Modo emergencia - mantener solo lo esencial */
+        body::before, body::after,
+        .carousel-item:not(.active),
+        .navbar-nav .nav-link,
+        .dropdown-menu {
           animation: none !important;
           transition: none !important; 
           transform: none !important;
           filter: none !important;
           backdrop-filter: none !important;
         }
+        
+        /* Mantener cards visibles con mínima animación */
+        #carrusel-populares .card,
+        #ultimas-actualizaciones .card {
+          transition: opacity 0.1s ease !important;
+        }
+        
+        #carrusel-populares .card:hover {
+          transform: none !important;
+        }
       `;
       document.head.appendChild(emergencyStyle);
-      
-      // Mostrar notificación de modo emergencia
-      if (window.optimizationNotifications) {
-        window.optimizationNotifications.showEmergencyMode();
-      }
     }
   }
 
@@ -457,16 +646,10 @@ class MobileOptimizer {
 // Auto-inicializar cuando se carga el DOM
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => {
-    // Cargar sistema de notificaciones primero
-    import('./optimization-notifications.js').then(() => {
-      window.mobileOptimizer = MobileOptimizer.getInstance();
-    });
-  });
-} else {
-  // Cargar sistema de notificaciones primero
-  import('./optimization-notifications.js').then(() => {
     window.mobileOptimizer = MobileOptimizer.getInstance();
   });
+} else {
+  window.mobileOptimizer = MobileOptimizer.getInstance();
 }
 
 export default MobileOptimizer;

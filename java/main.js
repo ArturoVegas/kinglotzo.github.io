@@ -134,6 +134,204 @@ if (page === "" || page === "index.html") {
 
   
 
+  // Sistema de activación de animaciones durante el scroll
+  let scrollTimeout;
+  let isScrolling = false;
+  
+  function activarAnimacionesScroll() {
+    // Si no está ya scrolleando, activar animaciones
+    if (!isScrolling) {
+      isScrolling = true;
+      
+      // IMPORTANTE: Los elementos de carga NO están en esta lista
+      // porque deben mantenerse siempre activos
+      const elementosAnimados = [
+        'body::before', // Partículas de fondo
+        '.status-dot',  // Indicadores de estado
+        '.card-overlay i', // Íconos de cards
+        '.skeleton-card', // Loaders skeleton
+        '.skeleton-img',
+        '.skeleton-title', 
+        '.skeleton-text'
+        // REMOVIDO: '.spinner-inner', '.loader-text', '.loading::after'
+        // Estos elementos de carga se mantienen siempre activos
+      ];
+      
+      // Añadir clase para activar animaciones
+      document.body.classList.add('scrolling-active');
+    }
+    
+    // Limpiar timeout anterior
+    clearTimeout(scrollTimeout);
+    
+    // Pausar animaciones después de 800ms sin scroll
+    scrollTimeout = setTimeout(() => {
+      isScrolling = false;
+      document.body.classList.remove('scrolling-active');
+    }, 800);
+  }
+  
+  // Usar passive listener para mejor rendimiento
+  window.addEventListener('scroll', activarAnimacionesScroll, { passive: true });
+
+  // === SISTEMA DE VERSIÓN ESTÁNDAR ===
+  let performanceWarningShown = false;
+  let standardVersion = localStorage.getItem('standardVersion') === 'true';
+  
+  // Aplicar versión estándar al cargar si está guardada
+  if (standardVersion) {
+    document.body.classList.add('standard-version');
+  }
+  
+  // Crear botón de advertencia de rendimiento
+  function createPerformanceWarning() {
+    if (document.querySelector('.performance-warning')) return;
+    
+    const warningBtn = document.createElement('button');
+    warningBtn.className = 'performance-warning';
+    warningBtn.innerHTML = `
+      <i class="bi bi-exclamation-triangle"></i>
+      ¿Problemas de rendimiento? Prueba la versión estándar
+    `;
+    
+    warningBtn.addEventListener('click', toggleStandardVersion);
+    document.body.appendChild(warningBtn);
+    
+    // Mostrar el botón con animación
+    setTimeout(() => {
+      warningBtn.style.display = 'block';
+    }, 100);
+  }
+  
+  // Alternar entre versión completa y estándar
+  function toggleStandardVersion() {
+    standardVersion = !standardVersion;
+    
+    if (standardVersion) {
+      document.body.classList.add('standard-version');
+      localStorage.setItem('standardVersion', 'true');
+      showVersionNotification('Versión estándar activada - Animaciones reducidas');
+    } else {
+      document.body.classList.remove('standard-version');
+      localStorage.setItem('standardVersion', 'false');
+      showVersionNotification('Versión completa activada - Todas las animaciones');
+    }
+    
+    // Ocultar el botón de advertencia
+    const warningBtn = document.querySelector('.performance-warning');
+    if (warningBtn) {
+      warningBtn.style.display = 'none';
+    }
+  }
+  
+  // Mostrar notificación de cambio de versión
+  function showVersionNotification(message) {
+    // Remover notificación existente
+    const existingNotification = document.querySelector('.version-notification');
+    if (existingNotification) {
+      existingNotification.remove();
+    }
+    
+    const notification = document.createElement('div');
+    notification.className = 'version-notification';
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    // Mostrar notificación
+    setTimeout(() => {
+      notification.style.display = 'block';
+    }, 100);
+    
+    // Ocultar después de 4 segundos
+    setTimeout(() => {
+      notification.style.display = 'none';
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.remove();
+        }
+      }, 300);
+    }, 4000);
+  }
+  
+  // Detectar posibles problemas de rendimiento
+  function detectPerformanceIssues() {
+    if (performanceWarningShown || standardVersion) return;
+    
+    let lagCount = 0;
+    let lastTime = performance.now();
+    
+    function checkFrameRate() {
+      const currentTime = performance.now();
+      const deltaTime = currentTime - lastTime;
+      
+      // Si el frame tarda más de 20ms (menos de 50 FPS)
+      if (deltaTime > 20) {
+        lagCount++;
+        
+        // Si detectamos lag en 10 frames seguidos
+        if (lagCount >= 10 && !performanceWarningShown) {
+          performanceWarningShown = true;
+          createPerformanceWarning();
+          return; // Detener el monitoreo
+        }
+      } else {
+        lagCount = Math.max(0, lagCount - 1);
+      }
+      
+      lastTime = currentTime;
+      requestAnimationFrame(checkFrameRate);
+    }
+    
+    // Comenzar monitoreo después de 3 segundos
+    setTimeout(() => {
+      requestAnimationFrame(checkFrameRate);
+    }, 3000);
+  }
+  
+  // Iniciar detección de rendimiento
+  detectPerformanceIssues();
+  
+  // === BOTÓN DE ALTERNANCIA EN EL HEADER ===
+  const versionToggleBtn = document.getElementById('version-toggle-btn');
+  const versionIcon = document.getElementById('version-icon');
+  const versionText = document.getElementById('version-text');
+  
+  // Función para actualizar el botón del header
+  function updateHeaderButton() {
+    if (!versionToggleBtn) return;
+    
+    if (standardVersion) {
+      // En versión estándar - mostrar opción para activar completa
+      versionIcon.className = 'bi bi-stars me-1';
+      versionText.textContent = 'Completa';
+      versionToggleBtn.className = 'btn btn-outline-primary me-2 d-none d-md-inline-flex';
+      versionToggleBtn.title = 'Cambiar a versión completa con todas las animaciones';
+    } else {
+      // En versión completa - mostrar opción para activar estándar
+      versionIcon.className = 'bi bi-lightning me-1';
+      versionText.textContent = 'Estándar';
+      versionToggleBtn.className = 'btn btn-outline-warning me-2 d-none d-md-inline-flex';
+      versionToggleBtn.title = 'Cambiar a versión estándar con animaciones reducidas';
+    }
+  }
+  
+  // Event listener para el botón del header
+  if (versionToggleBtn) {
+    versionToggleBtn.addEventListener('click', () => {
+      toggleStandardVersion();
+    });
+    
+    // Actualizar botón al cargar
+    updateHeaderButton();
+  }
+  
+  // Sobrescribir la función toggleStandardVersion para incluir actualización del botón
+  const originalToggle = toggleStandardVersion;
+  toggleStandardVersion = function() {
+    originalToggle();
+    updateHeaderButton();
+  };
+
   // Buscador (para todas las páginas que tengan el formulario)
   cargarNombresMangas().then(() => {
     inicializarBuscadorConAutocomplete();

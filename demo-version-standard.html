@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Demo - Sistema de Versión Estándar</title>
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+  
+  <!-- CSS personalizado -->
+  <link rel="stylesheet" href="styles/home.css" />
+  
+  <style>
+    .demo-section {
+      margin: 2rem 0;
+      padding: 2rem;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .demo-title {
+      color: #667eea;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    
+    .demo-description {
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+    
+    .performance-simulator {
+      background: rgba(220, 53, 69, 0.1);
+      border: 1px solid rgba(220, 53, 69, 0.3);
+      border-radius: 10px;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main-wrapper">
+    <!-- Header con blur effect -->
+    <nav class="navbar navbar-expand-lg row-personalizada px-4">
+      <div class="container-fluid">
+        <div class="logo-container">
+          <a class="navbar-brand d-flex align-items-center" href="#">
+            <span style="font-size: 1.5rem; font-weight: bold;">⚡ Demo Sistema</span>
+          </a>
+        </div>
+
+        <!-- Indicador de conexión con animación -->
+        <div class="connection-status d-none d-md-block">
+          <div class="status-indicator" style="display: flex;">
+            <div class="status-dot" id="connection-dot"></div>
+            <span class="status-text">Conectado</span>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="container mt-4">
+      <div class="demo-section">
+        <h1 class="demo-title">
+          <i class="bi bi-speedometer2"></i>
+          Sistema de Optimización de Rendimiento
+        </h1>
+        <p class="demo-description">
+          Este sistema detecta automáticamente problemas de rendimiento y ofrece una versión estándar 
+          del sitio con animaciones reducidas. Las animaciones de carga siempre permanecen activas.
+        </p>
+        
+        <div class="performance-simulator">
+          <h4><i class="bi bi-cpu"></i> Simulador de Rendimiento</h4>
+          <p>Haz clic en el botón para simular lag y activar la advertencia de rendimiento:</p>
+          <button id="simulate-lag" class="btn btn-warning">
+            <i class="bi bi-exclamation-triangle"></i>
+            Simular Lag de Rendimiento
+          </button>
+        </div>
+      </div>
+
+      <!-- Sección con animaciones que se pausan/activan con scroll -->
+      <div class="demo-section">
+        <h2 class="demo-title">Animaciones Controladas por Scroll</h2>
+        <p class="demo-description">
+          Estas animaciones solo se activan cuando haces scroll, ahorrando recursos:
+        </p>
+        
+        <div class="row">
+          <!-- Cards con animaciones -->
+          <div class="col-md-4 mb-3">
+            <div class="card">
+              <div class="card-image-container">
+                <img src="https://via.placeholder.com/300x200/667eea/ffffff?text=Card+1" class="card-img-top" alt="Demo">
+                <div class="card-overlay">
+                  <i class="bi bi-play-circle"></i>
+                  <span>Ver Más</span>
+                </div>
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Card con Overlay Animado</h5>
+                <p class="card-text">El ícono del overlay se anima solo durante el scroll.</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4 mb-3">
+            <div class="card">
+              <div class="skeleton-img"></div>
+              <div class="card-body">
+                <div class="skeleton-title mb-2"></div>
+                <div class="skeleton-text"></div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-md-4 mb-3">
+            <div class="card">
+              <div class="skeleton-img"></div>
+              <div class="card-body">
+                <div class="skeleton-title mb-2"></div>
+                <div class="skeleton-text"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sección con animaciones de carga que NUNCA se pausan -->
+      <div class="demo-section">
+        <h2 class="demo-title">Animaciones de Carga (Siempre Activas)</h2>
+        <p class="demo-description">
+          Estas animaciones nunca se pausan, incluso en la versión estándar:
+        </p>
+        
+        <div class="row">
+          <div class="col-md-4 text-center">
+            <h5>Spinner Bootstrap</h5>
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+          </div>
+          
+          <div class="col-md-4 text-center">
+            <h5>Spinner Personalizado</h5>
+            <div class="loader-spinner">
+              <div class="spinner-inner"></div>
+              <div class="spinner-inner"></div>
+              <div class="spinner-inner"></div>
+            </div>
+          </div>
+          
+          <div class="col-md-4 text-center">
+            <h5>Texto de Carga</h5>
+            <p class="loader-text">Cargando contenido...</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controles de versión -->
+      <div class="demo-section">
+        <h2 class="demo-title">Controles de Versión</h2>
+        <p class="demo-description">
+          Puedes alternar manualmente entre las versiones:
+        </p>
+        
+        <div class="d-flex gap-3">
+          <button id="enable-standard" class="btn btn-outline-warning">
+            <i class="bi bi-lightning"></i>
+            Activar Versión Estándar
+          </button>
+          <button id="enable-full" class="btn btn-outline-primary">
+            <i class="bi bi-stars"></i>
+            Activar Versión Completa
+          </button>
+        </div>
+        
+        <div class="mt-3">
+          <small class="text-muted">
+            Estado actual: <span id="current-version" class="fw-bold">Versión Completa</span>
+          </small>
+        </div>
+      </div>
+
+      <!-- Instrucciones -->
+      <div class="demo-section">
+        <h2 class="demo-title">Cómo Funciona</h2>
+        <div class="demo-description">
+          <ol>
+            <li><strong>Detección Automática:</strong> El sistema monitorea el frame rate y detecta lag.</li>
+            <li><strong>Botón de Advertencia:</strong> Aparece un botón flotante cuando se detectan problemas.</li>
+            <li><strong>Versión Estándar:</strong> Desactiva animaciones no esenciales pero mantiene las de carga.</li>
+            <li><strong>Persistencia:</strong> La preferencia se guarda en localStorage.</li>
+            <li><strong>Notificaciones:</strong> Se muestran notificaciones al cambiar de versión.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    // Simular el sistema de main.js de forma simplificada
+    let performanceWarningShown = false;
+    let standardVersion = localStorage.getItem('standardVersion') === 'true';
+    
+    // Aplicar versión estándar al cargar si está guardada
+    if (standardVersion) {
+      document.body.classList.add('standard-version');
+      updateVersionDisplay();
+    }
+    
+    // Sistema de activación de animaciones durante el scroll
+    let scrollTimeout;
+    let isScrolling = false;
+    
+    function activarAnimacionesScroll() {
+      if (!isScrolling) {
+        isScrolling = true;
+        document.body.classList.add('scrolling-active');
+      }
+      
+      clearTimeout(scrollTimeout);
+      
+      scrollTimeout = setTimeout(() => {
+        isScrolling = false;
+        document.body.classList.remove('scrolling-active');
+      }, 800);
+    }
+    
+    window.addEventListener('scroll', activarAnimacionesScroll, { passive: true });
+    
+    // Crear botón de advertencia de rendimiento
+    function createPerformanceWarning() {
+      if (document.querySelector('.performance-warning')) return;
+      
+      const warningBtn = document.createElement('button');
+      warningBtn.className = 'performance-warning';
+      warningBtn.innerHTML = `
+        <i class="bi bi-exclamation-triangle"></i>
+        ¿Problemas de rendimiento? Prueba la versión estándar
+      `;
+      
+      warningBtn.addEventListener('click', toggleStandardVersion);
+      document.body.appendChild(warningBtn);
+      
+      setTimeout(() => {
+        warningBtn.style.display = 'block';
+      }, 100);
+    }
+    
+    // Alternar entre versión completa y estándar
+    function toggleStandardVersion() {
+      standardVersion = !standardVersion;
+      
+      if (standardVersion) {
+        document.body.classList.add('standard-version');
+        localStorage.setItem('standardVersion', 'true');
+        showVersionNotification('Versión estándar activada - Animaciones reducidas');
+      } else {
+        document.body.classList.remove('standard-version');
+        localStorage.setItem('standardVersion', 'false');
+        showVersionNotification('Versión completa activada - Todas las animaciones');
+      }
+      
+      updateVersionDisplay();
+      
+      const warningBtn = document.querySelector('.performance-warning');
+      if (warningBtn) {
+        warningBtn.style.display = 'none';
+      }
+    }
+    
+    // Mostrar notificación de cambio de versión
+    function showVersionNotification(message) {
+      const existingNotification = document.querySelector('.version-notification');
+      if (existingNotification) {
+        existingNotification.remove();
+      }
+      
+      const notification = document.createElement('div');
+      notification.className = 'version-notification';
+      notification.textContent = message;
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.style.display = 'block';
+      }, 100);
+      
+      setTimeout(() => {
+        notification.style.display = 'none';
+        setTimeout(() => {
+          if (notification.parentNode) {
+            notification.remove();
+          }
+        }, 300);
+      }, 4000);
+    }
+    
+    // Actualizar display de versión actual
+    function updateVersionDisplay() {
+      const versionSpan = document.getElementById('current-version');
+      if (versionSpan) {
+        versionSpan.textContent = standardVersion ? 'Versión Estándar' : 'Versión Completa';
+        versionSpan.className = standardVersion ? 'fw-bold text-warning' : 'fw-bold text-primary';
+      }
+    }
+    
+    // Event listeners para botones de control
+    document.getElementById('simulate-lag').addEventListener('click', () => {
+      if (!performanceWarningShown) {
+        performanceWarningShown = true;
+        createPerformanceWarning();
+        showVersionNotification('Lag detectado - Botón de versión estándar activado');
+      }
+    });
+    
+    document.getElementById('enable-standard').addEventListener('click', () => {
+      if (!standardVersion) {
+        standardVersion = true;
+        document.body.classList.add('standard-version');
+        localStorage.setItem('standardVersion', 'true');
+        showVersionNotification('Versión estándar activada manualmente');
+        updateVersionDisplay();
+      }
+    });
+    
+    document.getElementById('enable-full').addEventListener('click', () => {
+      if (standardVersion) {
+        standardVersion = false;
+        document.body.classList.remove('standard-version');
+        localStorage.setItem('standardVersion', 'false');
+        showVersionNotification('Versión completa activada manualmente');
+        updateVersionDisplay();
+      }
+    });
+    
+    // Inicializar display
+    updateVersionDisplay();
+  </script>
+</body>
+</html>
