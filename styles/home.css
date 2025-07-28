@@ -25,7 +25,7 @@ body {
   flex: 1;
 }
 
-/* Efecto de partículas de fondo */
+/* Efecto de partículas de fondo - Se activa solo durante el scroll */
 body::before {
   content: '';
   position: fixed;
@@ -40,6 +40,12 @@ body::before {
   pointer-events: none;
   z-index: -1;
   animation: particleFloat 20s ease-in-out infinite;
+  animation-play-state: paused;
+}
+
+/* Activar animaciones durante el scroll */
+body.scrolling-active::before {
+  animation-play-state: running;
 }
 
 @keyframes particleFloat {
@@ -137,7 +143,8 @@ body::before {
 /* Formulario de búsqueda */
 #form-buscar {
   position: relative;
-  margin-right: 70px;
+  /* Reducir margin-right para que no interfiera con las clases Bootstrap ms-3 me-3 */
+  margin-right: 0px;
 }
 
 /* ESTILOS FORZADOS PARA BRAVE BROWSER */
@@ -308,7 +315,12 @@ input#input-buscar {
   border-radius: 50%;
   background: #4ade80;
   animation: statusPulse 2s infinite;
+  animation-play-state: paused;
   box-shadow: 0 0 8px rgba(74, 222, 128, 0.5);
+}
+
+body.scrolling-active .status-dot {
+  animation-play-state: running;
 }
 
 .status-dot.offline {
@@ -1648,7 +1660,6 @@ input#input-buscar {
   margin-top: 8px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
   display: none;
-  animation: fadeInUp 0.3s ease-out;
   /* Scroll personalizado para Firefox */
   scrollbar-width: thin;
   scrollbar-color: rgba(120, 119, 198, 0.6) rgba(255, 255, 255, 0.1);
@@ -2049,7 +2060,10 @@ html {
   border-top-color: #ffffff;
   border-radius: 50%;
   animation: spin 1s linear infinite;
+  /* Las animaciones de carga NUNCA se pausan */
 }
+
+/* Removido el control de scroll para animaciones de carga */
 
 @keyframes spin {
   to {
@@ -2096,7 +2110,10 @@ html {
   border-radius: 50%;
   margin: 0 8px;
   animation: loaderPulse 1.4s infinite ease-in-out;
+  /* Las animaciones de carga NUNCA se pausan */
 }
+
+/* Spinner de carga siempre activo - NO controlado por scroll */
 
 .spinner-inner:nth-child(1) {
   animation-delay: -0.32s;
@@ -2127,7 +2144,10 @@ html {
   margin: 0;
   opacity: 0.8;
   animation: textFade 2s infinite ease-in-out;
+  /* Las animaciones de carga NUNCA se pausan */
 }
+
+/* Texto de carga siempre activo - NO controlado por scroll */
 
 @keyframes textFade {
   0%, 100% {
@@ -2138,10 +2158,138 @@ html {
   }
 }
 
+/* === BOTÓN VERSIÓN ESTÁNDAR === */
+.performance-warning {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%);
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: 25px;
+  box-shadow: 0 8px 20px rgba(220, 53, 69, 0.4);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: none;
+  display: none;
+  animation: pulseWarning 2s infinite;
+  backdrop-filter: blur(10px);
+}
+
+.performance-warning:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(220, 53, 69, 0.6);
+}
+
+.performance-warning i {
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+@keyframes pulseWarning {
+  0%, 100% {
+    box-shadow: 0 8px 20px rgba(220, 53, 69, 0.4);
+  }
+  50% {
+    box-shadow: 0 8px 30px rgba(220, 53, 69, 0.8);
+  }
+}
+
+/* === VERSIÓN ESTÁNDAR - ANIMACIONES DESHABILITADAS === */
+body.standard-version {
+  /* Deshabilitar animaciones de partículas de fondo */
+}
+
+body.standard-version::before {
+  animation-play-state: paused !important;
+}
+
+/* Deshabilitar animaciones de cards en versión estándar */
+body.standard-version .card-overlay i {
+  animation: none !important;
+}
+
+/* Deshabilitar animaciones de skeleton en versión estándar */
+body.standard-version .skeleton-card,
+body.standard-version .skeleton-img,
+body.standard-version .skeleton-title,
+body.standard-version .skeleton-text {
+  animation: none !important;
+}
+
+/* Deshabilitar animaciones de indicadores en versión estándar */
+body.standard-version .status-dot {
+  animation: none !important;
+}
+
+/* MANTENER las animaciones de carga incluso en versión estándar */
+body.standard-version .loading::after,
+body.standard-version .spinner-inner,
+body.standard-version .loader-text,
+body.standard-version .spinner-border {
+  animation-play-state: running !important;
+}
+
+/* === SPINNER DE BOOTSTRAP === */
+/* Asegurar que el spinner-border de Bootstrap siempre esté activo */
+.spinner-border {
+  animation: spinner-border .75s linear infinite !important;
+}
+
+/* Nunca pausar las animaciones de carga, incluso con scroll */
+.loading-container .spinner-border,
+.page-loader .spinner-border,
+#loading-container .spinner-border {
+  animation-play-state: running !important;
+}
+
+/* Keyframes para spinner-border si no están definidos */
+@keyframes spinner-border {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* === NOTIFICACIÓN DE CAMBIO DE VERSIÓN === */
+.version-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1001;
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: #ffffff;
+  padding: 15px 25px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(40, 167, 69, 0.4);
+  font-size: 14px;
+  font-weight: 600;
+  display: none;
+  animation: slideInRight 0.5s ease-out;
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
 /* === SKELETON LOADERS === */
 .skeleton-card {
   background: rgba(255, 255, 255, 0.05) !important;
   animation: skeletonPulse 1.5s ease-in-out infinite;
+  animation-play-state: paused;
+}
+
+body.scrolling-active .skeleton-card {
+  animation-play-state: running;
 }
 
 .skeleton-img {
@@ -2149,7 +2297,12 @@ html {
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 25%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.1) 75%);
   background-size: 200% 100%;
   animation: skeletonShimmer 1.5s infinite;
+  animation-play-state: paused;
   border-radius: 20px 20px 0 0;
+}
+
+body.scrolling-active .skeleton-img {
+  animation-play-state: running;
 }
 
 .skeleton-title {
@@ -2157,8 +2310,13 @@ html {
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 25%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.1) 75%);
   background-size: 200% 100%;
   animation: skeletonShimmer 1.5s infinite;
+  animation-play-state: paused;
   border-radius: 10px;
   width: 80%;
+}
+
+body.scrolling-active .skeleton-title {
+  animation-play-state: running;
 }
 
 .skeleton-text {
@@ -2166,8 +2324,13 @@ html {
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.1) 25%, rgba(255, 255, 255, 0.2) 50%, rgba(255, 255, 255, 0.1) 75%);
   background-size: 200% 100%;
   animation: skeletonShimmer 1.5s infinite;
+  animation-play-state: paused;
   border-radius: 8px;
   width: 60%;
+}
+
+body.scrolling-active .skeleton-text {
+  animation-play-state: running;
 }
 
 @keyframes skeletonPulse {
@@ -2216,6 +2379,11 @@ html {
   font-size: 2rem;
   margin-bottom: 0.5rem;
   animation: bounceIcon 2s infinite;
+  animation-play-state: paused;
+}
+
+body.scrolling-active .card-overlay i {
+  animation-play-state: running;
 }
 
 .card-overlay span {
