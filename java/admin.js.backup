@@ -17,9 +17,6 @@ import {
   push
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
 
-// OPTIMIZADOR AUTOMÁTICO DE IMÁGENES
-import { subirImagenOptimizada, showOptimizedPreview } from './image-optimizer.js';
-
 // ==============================
 // CONFIGURACIÓN DE FIREBASE
 // ==============================
@@ -209,11 +206,9 @@ if (!path.includes("admin.html")) {
   });
 
   // ==============================
-  // FUNCIONES DE CLOUDINARY CON OPTIMIZACIÓN MÓVIL
+  // FUNCIONES DE CLOUDINARY
   // ==============================
-  
-  // FUNCIÓN ORIGINAL MANTENIDA COMO FALLBACK
-  async function subirImagenCloudinaryOriginal(file, folder) {
+  async function subirImagenCloudinary(file, folder) {
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", "para subir mangas");
@@ -226,18 +221,6 @@ if (!path.includes("admin.html")) {
     const data = await resp.json();
     if (!resp.ok) throw new Error(data.error?.message || "Error al subir imagen");
     return data.secure_url;
-  }
-
-  // NUEVA FUNCIÓN CON OPTIMIZACIÓN AUTOMÁTICA
-  async function subirImagenCloudinary(file, folder) {
-    try {
-      // Usar optimizador automático móvil-friendly
-      return await subirImagenOptimizada(file, folder);
-    } catch (error) {
-      console.warn('Error en optimización, usando método original:', error);
-      // Fallback a método original si falla
-      return await subirImagenCloudinaryOriginal(file, folder);
-    }
   }
 
   // ==============================
