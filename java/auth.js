@@ -6,6 +6,7 @@ import {
   onAuthStateChanged,
   signOut
 } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyArUObX1yvBE1F7JOotiFVBVp_FuFGtLks",
@@ -26,6 +27,19 @@ if (!getApps().length) {
 }
 
 const auth = getAuth(app);
+const db = getDatabase(app);
+
+// Función para cargar datos del perfil del usuario
+async function loadUserProfileData(uid) {
+  try {
+    const userRef = ref(db, `usuarios/${uid}`);
+    const snapshot = await get(userRef);
+    return snapshot.exists() ? snapshot.val() : null;
+  } catch (error) {
+    console.error('Error cargando datos del usuario:', error);
+    return null;
+  }
+}
 
 // Función para actualizar la interfaz según el estado del usuario
 function updateAuthUI(user) {
@@ -34,33 +48,52 @@ function updateAuthUI(user) {
 
   if (user && authDropdown && dropdownMenu) {
     const displayName = user.displayName || user.email.split('@')[0];
+    
+    // Cargar datos del usuario para obtener el avatar
+    loadUserProfileData(user.uid).then(userData => {
+      const avatarUrl = userData?.avatarURL || `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=0d6efd&color=fff&size=32`;
+      
+      // Mostrar avatar + nombre en el dropdown button
+      authDropdown.innerHTML = `
+        <img src="${avatarUrl}" alt="Avatar" class="user-avatar-small me-2" style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover;">
+        <span class="d-none d-md-inline">${displayName}</span>
+      `;
+      
+      // Menú con opción "Mi perfil" y "Cerrar sesión"
+      const currentPath = window.location.pathname;
+      const isInSubfolder = currentPath.includes('/html/');
+      const perfilPath = isInSubfolder ? 'perfilUsuario.html' : './html/perfilUsuario.html';
 
-    // Mostrar nombre + ícono en el dropdown button (no es enlace)
-    authDropdown.innerHTML = `<i class="bi bi-person-circle me-1"></i>${displayName}`;
-
-    // Menú con opción "Mi perfil" y "Cerrar sesión"
-    const currentPath = window.location.pathname;
-const isInSubfolder = currentPath.includes('/html/');
-const perfilPath = isInSubfolder ? 'perfilUsuario.html' : './html/perfilUsuario.html';
-
-dropdownMenu.innerHTML = `
-  <li><a class="dropdown-item" href="${perfilPath}"><i class="bi bi-person me-2"></i>Mi perfil</a></li>
-  <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión</a></li>
-`;
-;
-
-    // Evento logout
-    document.getElementById('logoutBtn').addEventListener('click', (e) => {
-      e.preventDefault();
-      signOut(auth).then(() => {
-        localStorage.removeItem('rememberUser');
-        localStorage.removeItem('userEmail');
-        window.location.reload();
-      }).catch((error) => {
-        console.error('Error al cerrar sesión:', error);
-      });
+      dropdownMenu.innerHTML = `
+        <li>
+          <div class="dropdown-header d-flex align-items-center py-2">
+            <img src="${avatarUrl}" alt="Avatar" class="me-2" style="width: 32px; height: 32px; border-radius: 50%; object-fit: cover;">
+            <div>
+              <div class="fw-bold">${displayName}</div>
+              <small class="text-muted">${user.email}</small>
+            </div>
+          </div>
+        </li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="${perfilPath}"><i class="bi bi-person me-2"></i>Mi perfil</a></li>
+        <li><a class="dropdown-item" href="#" id="logoutBtn"><i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión</a></li>
+      `;
+      
+      // Evento logout (debe estar dentro del then para que el elemento exista)
+      const logoutBtn = document.getElementById('logoutBtn');
+      if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          signOut(auth).then(() => {
+            localStorage.removeItem('rememberUser');
+            localStorage.removeItem('userEmail');
+            window.location.reload();
+          }).catch((error) => {
+            console.error('Error al cerrar sesión:', error);
+          });
+        });
+      }
     });
-
   } else if (!user && authDropdown && dropdownMenu) {
     authDropdown.innerHTML = `<i class="bi bi-person-circle me-1"></i>Cuenta`;
 

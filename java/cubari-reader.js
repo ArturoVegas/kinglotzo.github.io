@@ -55,6 +55,15 @@ onAuthStateChanged(auth, (user) => {
     this.navBackManga = document.getElementById('nav-back-manga');
     this.navNextPage = document.getElementById('nav-next-page');
     this.navNextChapter = document.getElementById('nav-next-chapter');
+    
+    // Debug: verificar si los elementos de navegación existen
+    console.log('Navigation elements found:', {
+      navPrevChapter: !!this.navPrevChapter,
+      navPrevPage: !!this.navPrevPage,
+      navBackManga: !!this.navBackManga,
+      navNextPage: !!this.navNextPage,
+      navNextChapter: !!this.navNextChapter
+    });
   }
 
   setupEventListeners() {
@@ -94,6 +103,9 @@ onAuthStateChanged(auth, (user) => {
     if (this.navPrevPage) this.navPrevPage.addEventListener('click', () => this.previousPage());
     if (this.navNextPage) this.navNextPage.addEventListener('click', () => this.nextPage());
     if (this.navNextChapter) this.navNextChapter.addEventListener('click', () => this.nextChapter());
+
+    // Configurar botón "regresar al manga" con event listener directo
+    this.setupBackButton();
 
     // Setup overlay click zones
     this.setupClickOverlay();
@@ -366,14 +378,82 @@ onAuthStateChanged(auth, (user) => {
     window.location.href = url.toString();
   }
 
+  setupBackButton() {
+    const configureBackButton = () => {
+      const backButton = document.getElementById('nav-back-manga');
+      if (backButton && this.currentManga) {
+        // Determinar la ruta correcta basada en la ubicación actual
+        const currentPath = window.location.pathname;
+        let infoMangasPath;
+        
+        if (currentPath.includes('/html/')) {
+          // Si estamos en el directorio html/, usar ruta relativa
+          infoMangasPath = 'infoMangas.html';
+        } else {
+          // Si estamos en la raíz, usar ruta hacia html/
+          infoMangasPath = 'html/infoMangas.html';
+        }
+        
+        const targetUrl = `${infoMangasPath}?manga=${encodeURIComponent(this.currentManga)}`;
+        backButton.href = targetUrl;
+        
+        // Remover cualquier event listener previo
+        backButton.replaceWith(backButton.cloneNode(true));
+        const freshBackButton = document.getElementById('nav-back-manga');
+        
+        // Agregar event listener con navegación forzada
+        freshBackButton.addEventListener('click', (e) => {
+          console.log('Back button clicked! Event details:', {
+            target: e.target,
+            currentTarget: e.currentTarget,
+            defaultPrevented: e.defaultPrevented,
+            href: freshBackButton.href,
+            targetUrl: targetUrl
+          });
+          
+          // Prevenir el comportamiento por defecto y forzar navegación
+          e.preventDefault();
+          e.stopPropagation();
+          
+          console.log('Forcing navigation to:', targetUrl);
+          
+          // Usar un pequeño delay para asegurar que otros event listeners no interfieran
+          setTimeout(() => {
+            window.location.href = targetUrl;
+          }, 50);
+        });
+        
+        console.log('Back button configured successfully:', {
+          element: backButton,
+          href: backButton.href,
+          currentPath: currentPath,
+          manga: this.currentManga
+        });
+        
+        return true;
+      }
+      return false;
+    };
+    
+    // Intentar configurar inmediatamente
+    if (!configureBackButton()) {
+      // Si falla, reintentar después de un breve delay
+      setTimeout(() => {
+        if (!configureBackButton()) {
+          console.error('Failed to configure back button after retry');
+        }
+      }, 100);
+    }
+  }
+
   setupNavigation() {
     const currentIndex = this.availableChapters.indexOf(this.currentChapter);
 
     if (this.navPrevChapter) this.navPrevChapter.disabled = currentIndex <= 0;
     if (this.navNextChapter) this.navNextChapter.disabled = currentIndex >= this.availableChapters.length - 1;
 
-    if (this.navBackManga)
-      this.navBackManga.href = `infoMangas.html?manga=${encodeURIComponent(this.currentManga)}`;
+    // Re-configurar el botón de regreso cuando se configura la navegación
+    this.setupBackButton();
   }
 
   updateChapterInfo() {

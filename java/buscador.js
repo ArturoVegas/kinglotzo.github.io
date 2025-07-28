@@ -1,21 +1,30 @@
 import { ref, get } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-database.js";
 import { db } from "./firebaseInit.js";
 
-let listaNombresMangas = [];
+let listaMangasCompleta = []; // Cambio: ahora guardamos objetos completos
 
 async function cargarNombresMangas() {
+  console.log("🔍 Iniciando carga de nombres de mangas...");
   try {
     const snapshot = await get(ref(db, 'mangas'));
     if (snapshot.exists()) {
-      listaNombresMangas = Object.keys(snapshot.val());
-      console.log("Lista de mangas cargada:", listaNombresMangas);
+      const mangasData = snapshot.val();
+      listaMangasCompleta = Object.keys(mangasData).map(key => ({
+        nombre: key,
+        titulo: mangasData[key].titulo || key.replaceAll("_", " "),
+        portada: mangasData[key].portada || '',
+        estado: mangasData[key].estado || 'ongoing',
+        generos: mangasData[key].generos || []
+      }));
+      console.log("✅ Lista de mangas cargada:", listaMangasCompleta.length, "mangas");
+      console.log("📋 Primeros 3 mangas:", listaMangasCompleta.slice(0, 3));
     } else {
-      listaNombresMangas = [];
-      console.log("No existen mangas en la BD");
+      listaMangasCompleta = [];
+      console.log("⚠️ No existen mangas en la BD");
     }
   } catch (error) {
-    console.error("Error cargando nombres de mangas para autocompletado:", error);
-    listaNombresMangas = [];
+    console.error("❌ Error cargando nombres de mangas para autocompletado:", error);
+    listaMangasCompleta = [];
   }
 }
 
@@ -36,23 +45,19 @@ function getRutaInfoMangas() {
 
 
 function inicializarBuscadorConAutocomplete() {
+  console.log("🔍 Inicializando buscador con autocomplete...");
   const formBuscar = document.getElementById('form-buscar');
   const inputBuscar = document.getElementById('input-buscar');
-  if (!formBuscar || !inputBuscar) return;
+  
+  if (!formBuscar || !inputBuscar) {
+    console.log("⚠️ No se encontraron elementos del buscador");
+    return;
+  }
+  
+  console.log("✅ Elementos del buscador encontrados");
+  console.log("📊 Mangas cargados para autocompletado:", listaMangasCompleta.length);
 
   const contenedorSugerencias = document.createElement('ul');
-  contenedorSugerencias.style.position = 'absolute';
-  contenedorSugerencias.style.zIndex = '9999';
-  contenedorSugerencias.style.backgroundColor = 'white';
-  contenedorSugerencias.style.listStyle = 'none';
-  contenedorSugerencias.style.margin = '0';
-  contenedorSugerencias.style.padding = '0';
-  contenedorSugerencias.style.width = inputBuscar.offsetWidth + 'px';
-  contenedorSugerencias.style.border = '1px solid #ccc';
-  contenedorSugerencias.style.maxHeight = '200px';
-  contenedorSugerencias.style.overflowY = 'auto';
-  contenedorSugerencias.style.cursor = 'pointer';
-
   contenedorSugerencias.classList.add('autocomplete-list');
 
   inputBuscar.parentNode.style.position = 'relative';
@@ -63,37 +68,66 @@ function inicializarBuscadorConAutocomplete() {
   inputBuscar.addEventListener('input', () => {
     const valor = inputBuscar.value.trim().toLowerCase();
     contenedorSugerencias.innerHTML = '';
-
+    
     if (!valor) {
       contenedorSugerencias.classList.remove('show');
       return;
     }
-
-    const filtrados = listaNombresMangas.filter(nombre =>
-      nombre.toLowerCase().includes(valor)
+    
+    const filtrados = listaMangasCompleta.filter(manga =>
+      manga.titulo.toLowerCase().includes(valor)
     ).slice(0, 10);
-
+    
     if (filtrados.length === 0) {
-      contenedorSugerencias.classList.remove('show');
-      return;
-    }
-
-    filtrados.forEach(nombre => {
-      const li = document.createElement('li');
-      li.textContent = nombre.replaceAll("_", " ");
-      li.style.padding = '5px 10px';
-
-      li.addEventListener('mousedown', (e) => {
-        e.preventDefault();
-        clickEnSugerencia = true;
-
-        const rutaInfo = getRutaInfoMangas();
-        window.location.href = `${rutaInfo}?manga=${encodeURIComponent(nombre)}`;
+      const noResultados = document.createElement('li');
+      noResultados.classList.add('autocomplete-no-results');
+      noResultados.textContent = 'No se encontraron resultados';
+      contenedorSugerencias.appendChild(noResultados);
+    } else {
+      filtrados.forEach(manga => {
+        const li = document.createElement('li');
+        li.classList.add('autocomplete-item');
+        
+        // Imagen por defecto si no hay portada
+        const imagenSrc = manga.portada || 'https://via.placeholder.com/50x70/333/fff?text=Manga';
+        
+        // Formatear estado para mostrar
+        const estadoTexto = {
+          'ongoing': 'En Emisión',
+          'completed': 'Completado',
+          'paused': 'Pausado',
+          'dropped': 'Abandonado'
+        }[manga.estado] || manga.estado;
+        
+        // Manejar géneros vacíos
+        const generosTexto = manga.generos.length > 0 
+          ? manga.generos.slice(0, 3).join(', ') 
+          : 'Sin géneros';
+        
+        li.innerHTML = `
+          <img src="${imagenSrc}" alt="${manga.titulo}" class="autocomplete-item-image" 
+               onerror="this.src='https://via.placeholder.com/50x70/333/fff?text=Manga'" />
+          <div class="autocomplete-item-content">
+            <span class="autocomplete-item-title" title="${manga.titulo}">${manga.titulo}</span>
+            <div class="autocomplete-item-details">
+              <span class="autocomplete-item-status status-${manga.estado}">${estadoTexto}</span>
+              <span title="${generosTexto}">${generosTexto}</span>
+            </div>
+          </div>
+        `;
+        
+        li.addEventListener('mousedown', (e) => {
+          e.preventDefault();
+          clickEnSugerencia = true;
+          
+          const rutaInfo = getRutaInfoMangas();
+          window.location.href = `${rutaInfo}?manga=${encodeURIComponent(manga.nombre)}`;
+        });
+        
+        contenedorSugerencias.appendChild(li);
       });
-
-      contenedorSugerencias.appendChild(li);
-    });
-
+    }
+    
     contenedorSugerencias.classList.add('show');
   });
 

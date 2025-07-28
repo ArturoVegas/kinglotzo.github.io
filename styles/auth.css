@@ -264,6 +264,17 @@ body {
   width: 100%;
 }
 
+/* Hacer el email del usuario blanco en el dropdown */
+.dropdown-menu .text-muted {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+
+/* Mejorar contraste específicamente en el dropdown header */
+.dropdown-header .text-muted {
+  color: rgba(255, 255, 255, 0.85) !important;
+  font-weight: 400;
+}
+
 /* Responsividad */
 @media (max-width: 576px) {
   .auth-container {
