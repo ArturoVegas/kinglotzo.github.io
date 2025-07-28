@@ -37,23 +37,96 @@ function renderizarPagina(pagina) {
     return;
   }
 
-  mangasAMostrar.forEach(([nombre, data]) => {
+  mangasAMostrar.forEach(([nombre, data], index) => {
     const tarjeta = document.createElement("div");
-    tarjeta.className = "col";  // Solo 'col'
+    tarjeta.className = "col manga-card-wrapper";
+    
+    // Añadir animación escalonada
+    tarjeta.style.opacity = '0';
+    tarjeta.style.transform = 'translateY(30px)';
+    tarjeta.style.transition = 'all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+    
+    // Formatear información
+    const tituloFormateado = nombre.replaceAll("_", " ");
+    const imagenSrc = data.portada || '../Recursos/imagenes/placeholder-manga.jpg';
+    
+    // Formatear estado
+    const estadoTexto = {
+      'En emisión': 'En Emisión',
+      'Finalizado': 'Completado',
+      'Pausado': 'Pausado',
+      'ongoing': 'En Emisión',
+      'completed': 'Completado',
+      'paused': 'Pausado'
+    }[data.estado] || data.estado || 'Sin estado';
+    
+    // Formatear géneros (máximo 3)
+    const generosTexto = data.generos && data.generos.length > 0 
+      ? data.generos.slice(0, 3).join(', ')
+      : 'Sin géneros';
+    
+    // Obtener último capítulo
+    let ultimoCapitulo = 'N/A';
+    if (data.capitulos && typeof data.capitulos === 'object') {
+      const capitulos = Object.keys(data.capitulos);
+      if (capitulos.length > 0) {
+        // Ordenar capítulos numéricamente
+        const capitulosOrdenados = capitulos.sort((a, b) => {
+          const numA = parseFloat(a) || 0;
+          const numB = parseFloat(b) || 0;
+          return numB - numA;
+        });
+        ultimoCapitulo = capitulosOrdenados[0];
+      }
+    }
 
     tarjeta.innerHTML = `
-      <a href="../html/infoMangas.html?manga=${encodeURIComponent(nombre)}" class="text-decoration-none text-reset">
-        <div class="card h-100">
-          <img src="${data.portada}" class="card-img-top" alt="${nombre}" />
-          <div class="card-body text-center">
-            <h5 class="card-title">${nombre.replaceAll("_", " ")}</h5>
-            <p class="card-text">Haz clic para ver más</p>
+      <a href="../html/infoMangas.html?manga=${encodeURIComponent(nombre)}" class="text-decoration-none text-reset manga-link">
+        <div class="card h-100 manga-card">
+          <div class="card-image-container">
+            <img src="${imagenSrc}" 
+                 class="card-img-top manga-img" 
+                 alt="${tituloFormateado}"
+                 loading="lazy"
+                 onerror="this.src='../Recursos/imagenes/placeholder-manga.jpg'; this.alt='Imagen no disponible';" />
+            <div class="card-overlay">
+              <i class="bi bi-eye-fill"></i>
+              <span>Ver Detalles</span>
+            </div>
+            <div class="manga-status-badge status-${data.estado?.toLowerCase() || 'unknown'}">
+              ${estadoTexto}
+            </div>
+          </div>
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title manga-title" title="${tituloFormateado}">${tituloFormateado}</h5>
+            <div class="manga-info flex-grow-1">
+              <div class="manga-genres" title="${generosTexto}">
+                <i class="bi bi-tags-fill me-1"></i>
+                <span>${generosTexto}</span>
+              </div>
+              <div class="manga-chapter">
+                <i class="bi bi-bookmark-fill me-1"></i>
+                <span>Cap. ${ultimoCapitulo}</span>
+              </div>
+            </div>
+            <div class="manga-footer mt-auto">
+              <div class="manga-status">
+                <span class="status-indicator status-${data.estado?.toLowerCase() || 'unknown'}"></span>
+                ${estadoTexto}
+              </div>
+            </div>
           </div>
         </div>
       </a>
     `;
 
     contenedor.appendChild(tarjeta);
+    
+    // Aplicar animación escalonada
+    setTimeout(() => {
+      tarjeta.style.opacity = '1';
+      tarjeta.style.transform = 'translateY(0)';
+    }, index * 100);
   });
 }
 

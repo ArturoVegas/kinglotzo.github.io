@@ -1,7 +1,7 @@
 /* Container principal */
 .manga-info-container {
-  max-width: 1200px;
-  margin: 40px auto;
+  max-width: 1700px;
+  margin: 20px auto;
   background: linear-gradient(135deg, #2c2c2c 0%, #383838 100%);
   border-radius: 20px;
   padding: 0;
@@ -19,6 +19,8 @@
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   background-size: cover;
   background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
   position: relative;
   transition: filter 0.3s ease;
 }
@@ -194,6 +196,156 @@
 }
 
 /* Responsive design */
+/* iPad Pro y tablets similares */
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .manga-info-container {
+    margin: 25px;
+    max-width: 95%;
+  }
+
+  .manga-banner {
+    height: 280px;
+  }
+
+  .manga-header {
+    flex-direction: row;
+    align-items: flex-end;
+    gap: 25px;
+    padding: 60px 35px 25px;
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+
+  .manga-cover {
+    width: 170px;
+    height: 240px;
+  }
+
+  .manga-title {
+    font-size: 2.1rem;
+    text-align: left;
+  }
+
+  .manga-content {
+    grid-template-columns: 1fr 1fr;
+    gap: 35px;
+    padding: 35px;
+  }
+
+  .manga-details {
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+  }
+
+  .section-title {
+    font-size: 1.4rem;
+  }
+
+  .sinopsis {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .lista-scroll {
+    max-height: 350px;
+  }
+}
+
+/* iPad Pro 12.9" landscape */
+@media only screen and (min-width: 1024px) and (max-width: 1366px) and (orientation: landscape) {
+  .manga-info-container {
+    margin: 30px auto;
+    max-width: 1100px;
+  }
+
+  .manga-header {
+    padding: 65px 45px 35px;
+    gap: 35px;
+  }
+
+  .manga-cover {
+    width: 190px;
+    height: 270px;
+  }
+
+  .manga-title {
+    font-size: 2.4rem;
+  }
+
+  .manga-content {
+    grid-template-columns: 1fr 1fr;
+    gap: 45px;
+    padding: 45px;
+  }
+}
+
+/* iPad Pro portrait específico */
+@media only screen and (min-width: 768px) and (max-width: 834px) and (orientation: portrait) {
+  .manga-info-container {
+    margin: 20px;
+  }
+
+  .manga-header {
+    flex-direction: row;
+    align-items: flex-end;
+    text-align: left;
+    gap: 20px;
+    padding: 55px 30px 25px;
+  }
+
+  .manga-cover {
+    width: 160px;
+    height: 230px;
+  }
+
+  .manga-title {
+    font-size: 1.9rem;
+    text-align: left;
+  }
+
+  .manga-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 30px;
+  }
+
+  .manga-details {
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  }
+}
+
+@media (max-width: 1024px) {
+  .manga-info-container {
+    margin: 30px;
+  }
+
+  .manga-header {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 70px 40px 30px;
+  }
+
+  .manga-cover {
+    width: 180px;
+    height: 260px;
+  }
+
+  .manga-title {
+    font-size: 2.2rem;
+    text-align: left;
+  }
+
+  .manga-content {
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    padding: 40px;
+  }
+
+  .manga-details {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+}
+
 @media (max-width: 768px) {
   .manga-info-container {
     margin: 20px;
@@ -237,6 +389,12 @@
 }
 
 @media (max-width: 576px) {
+  /* Desactivar background fixed en móviles para mejor rendimiento */
+  .manga-banner {
+    background-attachment: scroll;
+    height: 250px;
+  }
+  
   .manga-header {
     padding: 40px 15px 20px;
   }
@@ -260,5 +418,12 @@
   .sinopsis-section {
     width: 100%;
     min-width: 0;
+  }
+}
+
+/* Optimización para dispositivos táctiles */
+@media (max-width: 768px) {
+  .manga-banner {
+    background-attachment: scroll;
   }
 }

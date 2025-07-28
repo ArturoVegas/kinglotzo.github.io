@@ -3,6 +3,55 @@ import { set, remove, ref, get, runTransaction } from "https://www.gstatic.com/f
 import { db } from "./firebaseInit.js";
 import { tiempoDesde } from "./utils.js";
 
+// Sistema de notificaciones moderno
+function mostrarNotificacion(mensaje, tipo = 'info') {
+  const toastContainer = document.getElementById('toast-container') || crearContainerToast();
+  
+  const iconos = {
+    success: 'check-circle-fill',
+    error: 'exclamation-triangle-fill',
+    warning: 'exclamation-triangle-fill',
+    info: 'info-circle-fill'
+  };
+  
+  const colores = {
+    success: 'success',
+    error: 'danger',
+    warning: 'warning',
+    info: 'info'
+  };
+  
+  const toast = document.createElement('div');
+  toast.className = `toast-notification toast-${tipo} show`;
+  toast.innerHTML = `
+    <div class="toast-content">
+      <i class="bi bi-${iconos[tipo]} me-2"></i>
+      <span>${mensaje}</span>
+    </div>
+    <button class="toast-close" onclick="this.parentElement.remove()">
+      <i class="bi bi-x"></i>
+    </button>
+  `;
+  
+  toastContainer.appendChild(toast);
+  
+  // Auto-remover después de 4 segundos
+  setTimeout(() => {
+    if (toast.parentElement) {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 300);
+    }
+  }, 4000);
+}
+
+function crearContainerToast() {
+  const container = document.createElement('div');
+  container.id = 'toast-container';
+  container.className = 'toast-container';
+  document.body.appendChild(container);
+  return container;
+}
+
 async function incrementarVisitas(nombreManga) {
   if (!nombreManga) return;
 
@@ -105,46 +154,62 @@ function controlarListaVisual() {
   });
 }
 
-function agregarMangaALista(lista) {
+async function agregarMangaALista(lista) {
   const auth = getAuth();
   const nombreManga = obtenerNombreMangaDesdeURL();
 
   if (!nombreManga) {
-    alert("No se pudo obtener el nombre del manga.");
+    mostrarNotificacion("No se pudo obtener el nombre del manga.", "error");
     return;
   }
 
-  onAuthStateChanged(auth, async (user) => {
-    if (!user) {
-      alert("Debes iniciar sesión para usar esta función.");
+  const user = auth.currentUser;
+  if (!user) {
+    mostrarNotificacion("Debes iniciar sesión para usar esta función.", "warning");
+    return;
+  }
+
+  // Mostrar estado de carga
+  const dropdown = document.getElementById("dropdown-listas");
+  const originalContent = dropdown.innerHTML;
+  dropdown.innerHTML = `
+    <button class="btn btn-outline-light" disabled style="width: 100%;">
+      <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+      Agregando...
+    </button>
+  `;
+
+  try {
+    // Obtener datos actuales del manga desde /mangas
+    const mangaSnap = await get(ref(db, `mangas/${nombreManga}`));
+    if (!mangaSnap.exists()) {
+      mostrarNotificacion("El manga no existe en la base de datos.", "error");
+      dropdown.innerHTML = originalContent;
       return;
     }
 
-    try {
-      // Obtener datos actuales del manga desde /mangas
-      const mangaSnap = await get(ref(db, `mangas/${nombreManga}`));
-      if (!mangaSnap.exists()) {
-        alert("El manga no existe en la base de datos.");
-        return;
-      }
+    const manga = mangaSnap.val();
+    const mangaData = {
+      titulo: decodeURIComponent(nombreManga).replaceAll("_", " "),
+      portada: manga.portada || "",
+      timestamp: Date.now()
+    };
 
-      const manga = mangaSnap.val();
-      const mangaData = {
-        titulo: decodeURIComponent(nombreManga).replaceAll("_", " "),
-        portada: manga.portada || "",
-        timestamp: Date.now()
-      };
+    // Guardar dentro de listas, incluso si es 'favoritos'
+    const ruta = `usuarios/${user.uid}/listas/${lista}/${nombreManga}`;
+    await set(ref(db, ruta), mangaData);
 
-      // Guardar dentro de listas, incluso si es 'favoritos'
-      const ruta = `usuarios/${user.uid}/listas/${lista}/${nombreManga}`;
-      await set(ref(db, ruta), mangaData);
-
-      alert(`Agregado a tu lista de "${lista}".`);
-    } catch (error) {
-      console.error("Error al agregar a la lista:", error);
-      alert("Ocurrió un error al guardar el manga.");
-    }
-  });
+    const nombreFormateado = lista.charAt(0).toUpperCase() + lista.slice(1);
+    mostrarNotificacion(`✅ Agregado a tu lista de "${nombreFormateado}".`, "success");
+    
+    // Actualizar inmediatamente el botón
+    mostrarListaActual(lista, user.uid, nombreManga);
+    
+  } catch (error) {
+    console.error("Error al agregar a la lista:", error);
+    mostrarNotificacion("Ocurrió un error al guardar el manga.", "error");
+    dropdown.innerHTML = originalContent;
+  }
 }
 
 function obtenerNombreMangaDesdeURL() {

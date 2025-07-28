@@ -3,54 +3,88 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>White Pearl Translation</title>
+  <meta name="description" content="White Pearl Translation - Los mejores mangas traducidos al español con la más alta calidad">
+  <meta name="keywords" content="manga, traducción, español, White Pearl, mangas populares">
+  <meta name="author" content="White Pearl Translation">
+  <title>White Pearl Translation - Mangas en Español</title>
 
+  <!-- Preconnect para optimización -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
   <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
 
   <!-- Estilos personalizados -->
-  <link rel="stylesheet" href="./styles/reset.css" />
-  <link rel="stylesheet" href="./styles/navbar.css" />
-  <link rel="stylesheet" href="./styles/carruseles.css" />
-  <link rel="stylesheet" href="./styles/botones.css" />
-  <link rel="stylesheet" href="./styles/titulos.css" />
-  <link rel="stylesheet" href="./styles/footer.css" />
-  <link rel="stylesheet" href="./styles/cards.css" />
-  <link rel="stylesheet" href="./styles/buscador.css" />
-    <link rel="stylesheet" href="./styles/index.css" />
+  <link rel="stylesheet" href="./styles/home.css">
+  
+  <!-- Prefetch para recursos importantes -->
+  <link rel="prefetch" href="./html/mangas.html">
+  <link rel="prefetch" href="./html/auth.html">
 
 </head>
 <body>
-  <div class="container-fluid p-0 overflow-hidden">
-    <!-- Encabezado -->
-    <nav class="navbar navbar-expand-md row-personalizada px-3">
+  <!-- Loader moderno -->
+  <div id="page-loader" class="page-loader">
+    <div class="loader-content">
+      <div class="loader-spinner">
+        <div class="spinner-inner"></div>
+        <div class="spinner-inner"></div>
+        <div class="spinner-inner"></div>
+      </div>
+      <p class="loader-text">Cargando White Pearl Translation...</p>
+    </div>
+  </div>
+  
+  <!-- Contenedor principal con flexbox -->
+  <div class="main-wrapper">
+    <div class="container-fluid p-0 overflow-hidden main-content">
+    <!-- Encabezado Mejorado -->
+    <nav class="navbar navbar-expand-lg row-personalizada px-3">
       <div class="container-fluid">
-        <a class="navbar-brand d-flex align-items-center" href="index.html">
-          <img src="./Recursos/imagenes/imagen al principio.png" alt="Logo" class="img-fluid logo-img me-2" />
-          <img src="./Recursos/imagenes/whitePearltranslation.png" alt="Nombre Scan" class="img-fluid nombre-img" />
+        <!-- Logo con efecto hover mejorado -->
+        <a class="navbar-brand d-flex align-items-center" href="index.html" title="White Pearl Translation - Inicio">
+          <div class="logo-container">
+            <img src="./Recursos/imagenes/imagen al principio.png" alt="White Pearl Translation Logo" class="img-fluid logo-img me-2" />
+            <img src="./Recursos/imagenes/whitePearltranslation.png" alt="White Pearl Translation" class="img-fluid nombre-img" />
+          </div>
         </a>
+        
+        <!-- Indicador de estado de conexión -->
+        <div class="connection-status d-none d-md-flex align-items-center me-3">
+          <div class="status-indicator" id="connection-indicator">
+            <div class="status-dot"></div>
+            <span class="status-text"></span>
+          </div>
+        </div>
+        
         <button
-          class="navbar-toggler ms-auto"
+          class="navbar-toggler ms-auto custom-toggler"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarContent"
           aria-controls="navbarContent"
           aria-expanded="false"
-          aria-label="Toggle navigation"
+          aria-label="Menú de navegación"
         >
-          <span class="navbar-toggler-icon"></span>
+          <span class="toggler-line"></span>
+          <span class="toggler-line"></span>
+          <span class="toggler-line"></span>
         </button>
-        <div class="collapse navbar-collapse mt-2 mt-md-0" id="navbarContent">
-          <ul
-            class="navbar-nav flex-column flex-md-row w-100 justify-content-center align-items-center"
-            role="menu"
-          >
+        
+        <div class="collapse navbar-collapse mt-2 mt-lg-0" id="navbarContent">
+          <!-- Menú de navegación mejorado -->
+          <ul class="navbar-nav flex-column flex-lg-row w-100 justify-content-center align-items-center" role="menu">
             <li class="nav-item" role="none">
-              <a class="nav-link text-white" href="index.html" role="menuitem">Inicio</a>
-            </li>
-            <li class="nav-item" role="none">
-              <a class="nav-link text-white" href="./html/mangas.html" role="menuitem">Nuestros mangas</a>
+              <a class="nav-link" href="./html/mangas.html" role="menuitem">
+                <i class="bi bi-book me-2"></i>
+                <span>Nuestros mangas</span>
+              </a>
             </li>
           </ul>
           <form
@@ -59,13 +93,17 @@
             role="search"
             aria-label="Formulario de búsqueda"
           >
-            <input
-              id="input-buscar"
-              class="form-control border-dark"
-              type="search"
-              placeholder="🔍 Buscar..."
-              aria-label="Buscar"
-            />
+            <div class="position-relative flex-grow-1">
+              <input
+                id="input-buscar"
+                class="form-control border-dark"
+                type="search"
+                placeholder="🔍 Buscar manga..."
+                aria-label="Buscar manga"
+                autocomplete="off"
+              />
+              <ul class="autocomplete-list" id="autocomplete-list"></ul>
+            </div>
             <div class="dropdown ms-2">
               <button
                 class="btn btn-outline-light dropdown-toggle"
@@ -200,11 +238,11 @@
         </div>
       </div>
     </div>
-  </div>
-  <!-- Fin container-fluid -->
+    </div>
+    <!-- Fin main-content -->
 
-  <!-- Footer (ya fuera del container-fluid) -->
-  <footer class="footer-redes py-0 mb-5">
+    <!-- Footer (ya fuera del container-fluid) -->
+    <footer class="footer-redes">
     <div class="container text-center">
       <h5 class="mb-3 text-light">Síguenos en nuestras redes</h5>
       <div class="d-flex justify-content-center gap-4">
@@ -226,7 +264,9 @@
         ></a>
       </div>
     </div>
-  </footer>
+    </footer>
+  </div>
+  <!-- Fin main-wrapper -->
 
   <!-- Scripts -->
   <script type="module" src="./java/main.js"></script>
