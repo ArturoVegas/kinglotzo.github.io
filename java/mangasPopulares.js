@@ -34,6 +34,9 @@ export async function cargarMangasPopulares() {
       // Crear contenedor de cada tarjeta con clase para estilos responsive
       const envoltorio = document.createElement("div");
       envoltorio.classList.add("popular-card-wrapper");
+      
+      // Aplicar estado inicial INMEDIATAMENTE para evitar parpadeos
+      envoltorio.setAttribute('style', 'opacity: 0 !important; transform: translateY(30px) !important; display: flex !important; flex-shrink: 0 !important;');
 
       // Crear la tarjeta con clases Bootstrap
       const tarjeta = document.createElement("div");

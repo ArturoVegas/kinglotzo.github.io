@@ -25,7 +25,7 @@ body {
   flex: 1;
 }
 
-/* Efecto de partículas de fondo - Siempre activo por defecto */
+/* Efecto de partículas de fondo - Corregido para móviles */
 body::before {
   content: '';
   position: fixed;
@@ -40,6 +40,57 @@ body::before {
   pointer-events: none;
   z-index: -1;
   animation: particleFloat 20s ease-in-out infinite;
+}
+
+/* Solución definitiva para móviles - deshabilitar partículas y usar fondo estático optimizado */
+@media (max-width: 768px), (pointer: coarse) {
+  body::before {
+    display: none !important;
+  }
+  
+  /* Fondo estático optimizado para móviles con múltiples capas para evitar blancos */
+  body {
+    background: 
+      /* Capa base sólida */
+      #0f0f23,
+      /* Degradado principal */
+      linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f0f23 100%),
+      /* Degradado de respaldo */
+      linear-gradient(180deg, #0f0f23 0%, #1a1a2e 50%, #0f0f23 100%)
+    !important;
+    /* Usar scroll en lugar de fixed para evitar problemas en móviles */
+    background-attachment: scroll !important;
+    background-repeat: no-repeat !important;
+    background-size: 100% 100% !important;
+    background-position: center center !important;
+    /* Prevenir parpadeos blancos con altura mínima */
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+    min-height: -webkit-fill-available !important;
+    /* Evitar overflow horizontal */
+    overflow-x: hidden !important;
+  }
+  
+  /* Asegurar que html también tenga fondo */
+  html {
+    background: #0f0f23 !important;
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+    overflow-x: hidden !important;
+  }
+  
+  /* Wrapper principal con fondo de respaldo */
+  .main-wrapper {
+    background: linear-gradient(135deg, #0f0f23 0%, #1a1a2e 25%, #16213e 50%, #0f0f23 100%) !important;
+    min-height: 100vh !important;
+    min-height: 100dvh !important;
+  }
+}
+
+/* Animación más suave para móviles */
+@keyframes particleFloatMobile {
+  0%, 100% { transform: translateZ(0) translateY(0px) rotate(0deg); }
+  50% { transform: translateZ(0) translateY(-10px) rotate(90deg); }
 }
 
 @keyframes particleFloat {
@@ -1164,11 +1215,13 @@ input#input-buscar {
 }
 
 .popular-card-wrapper {
-  flex: 0 0 280px;
-  min-width: 280px;
-  animation: cardSlideIn 0.6s ease-out forwards;
+  flex: 0 0 280px !important;
+  min-width: 280px !important;
+  max-width: 280px !important;
+  /* Estado inicial - sin animación automática */
   opacity: 0;
   transform: translateY(30px);
+  /* La animación será controlada por JavaScript */
 }
 
 .popular-card-wrapper:nth-child(1) { animation-delay: 0.1s; }
@@ -1177,6 +1230,7 @@ input#input-buscar {
 .popular-card-wrapper:nth-child(4) { animation-delay: 0.4s; }
 .popular-card-wrapper:nth-child(5) { animation-delay: 0.5s; }
 
+/* Animación que se ejecuta solo una vez */
 @keyframes cardSlideIn {
   to {
     opacity: 1;
@@ -1184,11 +1238,76 @@ input#input-buscar {
   }
 }
 
+/* Evitar que las animaciones se reactiven con scroll */
+.popular-card-wrapper.animated {
+  animation: none !important;
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* FORZAR estado inicial de las cards antes de animación */
+.popular-card-wrapper:not(.animated) {
+  opacity: 0 !important;
+  transform: translateY(30px) !important;
+  visibility: visible !important;
+  display: flex !important;
+  flex-shrink: 0 !important;
+}
+
+/* Sobrescribir cualquier optimización que interfiera */
+@media (max-width: 768px) {
+  .popular-card-wrapper:not(.animated) {
+    opacity: 0 !important;
+    transform: translateY(30px) !important;
+  }
+  
+  .popular-card-wrapper.animated {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+  }
+}
+
+/* REGLAS ABSOLUTAS - MÁXIMA ESPECIFICIDAD */
+#carrusel-populares .popular-card-wrapper:not(.animated)[data-animation-processed] {
+  opacity: 0 !important;
+  transform: translateY(30px) !important;
+  visibility: visible !important;
+  display: flex !important;
+}
+
+#carrusel-populares .popular-card-wrapper.animated[data-animation-processed="true"] {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+  visibility: visible !important;
+  display: flex !important;
+}
+
+/* Prevenir cualquier script que trate de modificar las cards animadas */
+body #carrusel-populares .popular-card-wrapper.animated {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+/* Especificidad máxima para dispositivos móviles y de baja gama */
+@media (max-width: 1024px), (pointer: coarse) {
+  body #carrusel-populares .popular-card-wrapper.animated[data-animation-processed="true"] {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    animation: none !important;
+  }
+  
+  body #carrusel-populares .popular-card-wrapper:not(.animated) {
+    opacity: 0 !important;
+    transform: translateY(30px) !important;
+  }
+}
+
 /* Mejorar responsividad del carrusel */
 @media (max-width: 1200px) {
   .popular-card-wrapper {
-    flex: 0 0 260px;
-    min-width: 260px;
+    flex: 0 0 260px !important;
+    min-width: 260px !important;
+    max-width: 260px !important;
   }
   
   #carrusel-populares {
@@ -1198,8 +1317,9 @@ input#input-buscar {
 
 @media (max-width: 992px) {
   .popular-card-wrapper {
-    flex: 0 0 240px;
-    min-width: 240px;
+    flex: 0 0 240px !important;
+    min-width: 240px !important;
+    max-width: 240px !important;
   }
   
   #carrusel-populares {
@@ -1210,8 +1330,9 @@ input#input-buscar {
 
 @media (max-width: 768px) {
   .popular-card-wrapper {
-    flex: 0 0 220px;
-    min-width: 220px;
+    flex: 0 0 220px !important;
+    min-width: 220px !important;
+    max-width: 220px !important;
   }
   
   #carrusel-populares {
@@ -1222,8 +1343,9 @@ input#input-buscar {
 
 @media (max-width: 576px) {
   .popular-card-wrapper {
-    flex: 0 0 180px;
-    min-width: 180px;
+    flex: 0 0 200px !important;
+    min-width: 200px !important;
+    max-width: 200px !important;
   }
   
   #carrusel-populares {
@@ -1234,8 +1356,9 @@ input#input-buscar {
 
 @media (max-width: 480px) {
   .popular-card-wrapper {
-    flex: 0 0 160px;
-    min-width: 160px;
+    flex: 0 0 180px !important;
+    min-width: 180px !important;
+    max-width: 180px !important;
   }
   
   #carrusel-populares {
@@ -1246,8 +1369,9 @@ input#input-buscar {
 
 @media (max-width: 400px) {
   .popular-card-wrapper {
-    flex: 0 0 140px;
-    min-width: 140px;
+    flex: 0 0 160px !important;
+    min-width: 160px !important;
+    max-width: 160px !important;
   }
   
   #carrusel-populares {
@@ -2140,15 +2264,15 @@ input#input-buscar {
   }
 }
 
-/* Aplicar animaciones a las secciones */
+/* Animaciones de entrada eliminadas - las secciones aparecen directamente */
 .col-md-6 {
-  animation: fadeInLeft 0.8s ease-out;
+  /* Animación eliminada para evitar que se active constantemente con scroll */
+  opacity: 1;
 }
 
 .col-md-4 {
-  animation: fadeInRight 0.8s ease-out;
-  animation-delay: 0.2s;
-  animation-fill-mode: both;
+  /* Animación eliminada para evitar que se active constantemente con scroll */
+  opacity: 1;
 }
 
 /* === SCROLL SUAVE === */
@@ -3153,7 +3277,68 @@ body.standard-version .page-loader .loader-text {
   }
   
   .toast-notification {
-    padding: 0.75rem;
+  padding: 0.75rem;
     font-size: 0.9rem;
   }
+}
+
+/* === FORZAR ESTANDARIZACIÓN CARRUSEL - MÁXIMA ESPECIFICIDAD === */
+body #carrusel-populares .popular-card-wrapper .card.h-100 {
+  height: 320px !important;
+  min-height: 320px !important;
+  max-height: 320px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 100% !important;
+  flex: 1 1 100% !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+body #carrusel-populares .popular-card-wrapper .h-100 {
+  height: 320px !important;
+  min-height: 320px !important;
+  max-height: 320px !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 100% !important;
+  flex: 1 1 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* FORZAR ANCHO COMPLETO PARA TODAS LAS CARDS */
+body #carrusel-populares .popular-card-wrapper.animated .card {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 100% !important;
+  flex: 1 1 100% !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+body #carrusel-populares .popular-card-wrapper.animated .card.h-100 {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 100% !important;
+  flex: 1 1 100% !important;
+  height: 320px !important;
+  min-height: 320px !important;
+  max-height: 320px !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* FORZAR WRAPPER CON ANCHO FIJO */
+body #carrusel-populares .popular-card-wrapper {
+  flex: 0 0 280px !important;
+  min-width: 280px !important;
+  max-width: 280px !important;
+  width: 280px !important;
+  flex-shrink: 0 !important;
+  flex-grow: 0 !important;
+  display: flex !important;
+  flex-direction: column !important;
 }

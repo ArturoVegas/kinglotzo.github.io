@@ -138,45 +138,117 @@ if (page === "" || page === "index.html") {
 
   
 
-  // Sistema de activación de animaciones durante el scroll
-  let scrollTimeout;
-  let isScrolling = false;
+  // Sistema de animaciones de entrada - Solo una vez al cargar
+  let animacionesInicialesEjecutadas = false;
   
-  function activarAnimacionesScroll() {
-    // Si no está ya scrolleando, activar animaciones
-    if (!isScrolling) {
-      isScrolling = true;
-      
-      // IMPORTANTE: Los elementos de carga NO están en esta lista
-      // porque deben mantenerse siempre activos
-      const elementosAnimados = [
-        'body::before', // Partículas de fondo
-        '.status-dot',  // Indicadores de estado
-        '.card-overlay i', // Íconos de cards
-        '.skeleton-card', // Loaders skeleton
-        '.skeleton-img',
-        '.skeleton-title', 
-        '.skeleton-text'
-        // REMOVIDO: '.spinner-inner', '.loader-text', '.loading::after'
-        // Estos elementos de carga se mantienen siempre activos
-      ];
-      
-      // Añadir clase para activar animaciones
-      document.body.classList.add('scrolling-active');
-    }
+  function ejecutarAnimacionesIniciales() {
+    if (animacionesInicialesEjecutadas) return;
     
-    // Limpiar timeout anterior
-    clearTimeout(scrollTimeout);
+    animacionesInicialesEjecutadas = true;
     
-    // Pausar animaciones después de 800ms sin scroll
-    scrollTimeout = setTimeout(() => {
-      isScrolling = false;
-      document.body.classList.remove('scrolling-active');
-    }, 800);
+    // Aplicar animaciones iniciales directamente a las cards existentes
+    const popularCards = document.querySelectorAll('.popular-card-wrapper');
+    popularCards.forEach((card, index) => {
+      // Marcar inmediatamente como procesada para evitar reactivación
+      card.setAttribute('data-animation-processed', 'true');
+      
+      // Resetear estado inicial con !important via atributo de estilo
+      card.setAttribute('style', 'opacity: 0 !important; transform: translateY(30px) !important; transition: opacity 0.6s ease-out, transform 0.6s ease-out !important;');
+      
+      // Aplicar animación con delay
+      setTimeout(() => {
+        // Estado final con !important para que no sea sobrescrito
+        card.setAttribute('style', 'opacity: 1 !important; transform: translateY(0) !important; transition: opacity 0.6s ease-out, transform 0.6s ease-out !important;');
+        
+        // Marcar como animada después de la transición
+        setTimeout(() => {
+          card.classList.add('animated');
+          // Estado final permanente sin transición
+          card.setAttribute('style', 'opacity: 1 !important; transform: translateY(0) !important;');
+        }, 600);
+      }, (index + 1) * 100);
+    });
+    
+    // También aplicar a otras secciones si existen
+    const sections = document.querySelectorAll('.col-md-6, .col-md-4');
+    sections.forEach((section, index) => {
+      section.style.opacity = '1';
+      section.style.transform = 'translateX(0)';
+      section.setAttribute('data-animation-processed', 'true');
+    });
+    
+    console.log('✅ Animaciones iniciales ejecutadas una sola vez');
   }
   
-  // Usar passive listener para mejor rendimiento
-  window.addEventListener('scroll', activarAnimacionesScroll, { passive: true });
+  // Ejecutar animaciones iniciales después del contenido cargado
+  // Esperar tanto el DOM como el contenido dinámico Y el mobile optimizer
+  function esperarYEjecutarAnimaciones() {
+    // Verificar si hay contenido cargado
+    const checkContent = () => {
+      const popularCards = document.querySelectorAll('.popular-card-wrapper');
+      if (popularCards.length > 0) {
+        // Asegurar que las cards estén en estado inicial correcto
+        popularCards.forEach(card => {
+          if (!card.classList.contains('animated')) {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+          }
+        });
+        ejecutarAnimacionesIniciales();
+      } else {
+        // Reintentar después de un breve delay
+        setTimeout(checkContent, 300);
+      }
+    };
+    
+    // Esperar más tiempo para que mobile optimizer termine
+    setTimeout(checkContent, 1500);
+  }
+  
+  esperarYEjecutarAnimaciones();
+  
+  // Sistema de protección para evitar que las animaciones se reactiven
+  function protegerAnimacionesCards() {
+    // Observer para proteger las cards animadas de modificaciones externas
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+          const target = mutation.target;
+          
+          // Solo proteger cards que ya han sido animadas
+          if (target.classList.contains('popular-card-wrapper') && 
+              target.classList.contains('animated') &&
+              target.getAttribute('data-animation-processed') === 'true') {
+            
+            // Verificar si el estilo fue modificado por código externo
+            const currentStyle = target.getAttribute('style') || '';
+            
+            // Si no tiene el estado final correcto, restaurarlo
+            if (!currentStyle.includes('opacity: 1 !important') || 
+                !currentStyle.includes('translateY(0)')) {
+              
+              console.log('🛡️ Protegiendo card de modificación externa');
+              target.setAttribute('style', 'opacity: 1 !important; transform: translateY(0) !important;');
+            }
+          }
+        }
+      });
+    });
+    
+    // Observar cambios en el documento
+    observer.observe(document.body, {
+      attributes: true,
+      subtree: true,
+      attributeFilter: ['style', 'class']
+    });
+    
+    console.log('🛡️ Sistema de protección de animaciones activado');
+  }
+  
+  // Activar protección después de las animaciones iniciales
+  setTimeout(() => {
+    protegerAnimacionesCards();
+  }, 3000);
 
   // === SISTEMA DE VERSIÓN ESTÁNDAR ===
   let performanceWarningShown = false;
