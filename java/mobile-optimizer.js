@@ -24,35 +24,38 @@ class MobileOptimizer {
 
   detectLowEndDevice() {
     // Detectar dispositivos de gama baja por memoria/CPU
-    const memory = navigator.deviceMemory || 4; // Default 4GB
-    const cores = navigator.hardwareConcurrency || 4; // Default 4 cores
+    const memory = navigator.deviceMemory || 8; // Default más alto para no penalizar móviles modernos
+    const cores = navigator.hardwareConcurrency || 8; // Default más alto
     
     // Solo considerar gama baja si:
-    // - Memoria RAM <= 2GB Y cores <= 2 (ambas condiciones)
-    // - O es un móvil/tablet con especificaciones muy bajas
-    const isLowEndSpecs = memory <= 2 && cores <= 2;
-    const isVeryOldMobile = this.isMobile && memory <= 1;
+    // - Memoria RAM < 2GB (estrictamente menor)
+    // - O menos de 2 cores Y menos de 3GB de RAM (ambas condiciones)
+    const isLowMemory = memory < 2;
+    const isLowEndSpecs = cores < 2 && memory < 3;
     
     console.log('🔍 Detección de dispositivo:', {
       memory: memory + 'GB',
       cores: cores,
       isMobile: this.isMobile,
-      isLowEnd: isLowEndSpecs || isVeryOldMobile
+      isLowMemory: isLowMemory,
+      isLowEndSpecs: isLowEndSpecs,
+      isLowEnd: isLowMemory || isLowEndSpecs
     });
     
-    return isLowEndSpecs || isVeryOldMobile;
+    return isLowMemory || isLowEndSpecs;
   }
 
   shouldDisableBackground() {
     const memory = navigator.deviceMemory || 4;
     
-    // Desactivar fondo si:
-    // - Es móvil
-    // - Tiene menos de 6GB de RAM
-    const shouldDisable = this.isMobile || memory < 6;
+    // Solo desactivar fondo en casos extremos:
+    // - Dispositivos de muy baja gama (≤2GB RAM Y ≤2 cores)
+    // - O móviles con RAM ≤1GB
+    const shouldDisable = this.isLowEndDevice;
     
     console.log('🎨 Evaluación del fondo de partículas:', {
       isMobile: this.isMobile,
+      isLowEndDevice: this.isLowEndDevice,
       memory: memory + 'GB',
       shouldDisableBackground: shouldDisable
     });
@@ -154,10 +157,16 @@ class MobileOptimizer {
   }
 
   reduceCSSEffects() {
+    // Solo aplicar estas optimizaciones en dispositivos de muy baja gama
+    if (!this.isLowEndDevice) {
+      console.log('📱 Dispositivo móvil normal detectado - manteniendo efectos visuales');
+      return; // No aplicar optimizaciones agresivas
+    }
+    
     const style = document.createElement('style');
     style.id = 'mobile-optimizations';
     style.textContent = `
-      /* OPTIMIZACIONES MÓVILES - Reducir efectos pesados */
+      /* OPTIMIZACIONES SOLO PARA DISPOSITIVOS DE MUY BAJA GAMA */
       @media (max-width: 768px), (pointer: coarse) {
         .row-personalizada {
           backdrop-filter: none !important;

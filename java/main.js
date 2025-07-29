@@ -61,10 +61,14 @@ function initScrollBlurEffect() {
   function updateBlur() {
     const scrolled = window.pageYOffset;
     
-    if (scrolled > 50) {
-      mangaBanner.classList.add('blurred');
-    } else {
-      mangaBanner.classList.remove('blurred');
+// Remove blur effect in standard version mode
+    const standardMode = document.body.classList.contains('standard-version');
+    if (!standardMode) {
+      if (scrolled > 50) {
+        mangaBanner.classList.add('blurred');
+      } else {
+        mangaBanner.classList.remove('blurred');
+      }
     }
     
     ticking = false;
@@ -185,22 +189,16 @@ if (page === "" || page === "index.html") {
   
   // Crear botón de advertencia de rendimiento
   function createPerformanceWarning() {
-    if (document.querySelector('.performance-warning')) return;
-    
-    const warningBtn = document.createElement('button');
-    warningBtn.className = 'performance-warning';
-    warningBtn.innerHTML = `
-      <i class="bi bi-exclamation-triangle"></i>
-      ¿Problemas de rendimiento? Prueba la versión estándar
-    `;
-    
-    warningBtn.addEventListener('click', toggleStandardVersion);
-    document.body.appendChild(warningBtn);
-    
-    // Mostrar el botón con animación
-    setTimeout(() => {
-      warningBtn.style.display = 'block';
-    }, 100);
+    const warningBtn = document.getElementById('performance-warning-btn');
+    if (!warningBtn) return;
+
+    // Show button
+    warningBtn.style.display = 'block';
+
+    warningBtn.addEventListener('click', () => {
+      toggleStandardVersion();
+      warningBtn.style.display = 'none';
+    });
   }
   
   // Alternar entre versión completa y estándar
@@ -288,6 +286,24 @@ if (page === "" || page === "index.html") {
     }, 3000);
   }
   
+  // Mostrar botón de advertencia durante la carga inicial (solo si no está en modo estándar)
+  if (!standardVersion) {
+    createPerformanceWarning();
+    
+    // Ocultar el botón después de 10 segundos si no se usa
+    setTimeout(() => {
+      const warningBtn = document.querySelector('.performance-warning');
+      if (warningBtn && warningBtn.style.display === 'block') {
+        warningBtn.style.opacity = '0.7';
+        setTimeout(() => {
+          if (warningBtn && warningBtn.style.display === 'block') {
+            warningBtn.style.display = 'none';
+          }
+        }, 2000);
+      }
+    }, 10000);
+  }
+  
   // Iniciar detección de rendimiento
   detectPerformanceIssues();
   
@@ -295,6 +311,11 @@ if (page === "" || page === "index.html") {
   const versionToggleBtn = document.getElementById('version-toggle-btn');
   const versionIcon = document.getElementById('version-icon');
   const versionText = document.getElementById('version-text');
+  
+  // Elementos del botón móvil
+  const versionToggleBtnMobile = document.getElementById('version-toggle-btn-mobile');
+  const versionIconMobile = document.getElementById('version-icon-mobile');
+  const versionTextMobile = document.getElementById('version-text-mobile');
   
   // Función para actualizar el botón del header
   function updateHeaderButton() {
@@ -304,15 +325,28 @@ if (page === "" || page === "index.html") {
       // En versión estándar - mostrar opción para activar completa
       versionIcon.className = 'bi bi-stars me-1';
       versionText.textContent = 'Completa';
-      versionToggleBtn.className = 'btn btn-outline-primary me-2 d-none d-md-inline-flex';
+      versionToggleBtn.className = 'btn btn-outline-primary ms-3 d-none d-lg-inline-flex';
       versionToggleBtn.title = 'Cambiar a versión completa con todas las animaciones';
+      // Actualizar botón móvil si existe
+      if (versionIconMobile && versionTextMobile) {
+        versionIconMobile.className = 'bi bi-stars me-2';
+        versionTextMobile.textContent = 'Cambiar a Completa';
+      }
     } else {
       // En versión completa - mostrar opción para activar estándar
       versionIcon.className = 'bi bi-lightning me-1';
       versionText.textContent = 'Estándar';
-      versionToggleBtn.className = 'btn btn-outline-warning me-2 d-none d-md-inline-flex';
+      versionToggleBtn.className = 'btn btn-outline-warning ms-3 d-none d-lg-inline-flex';
       versionToggleBtn.title = 'Cambiar a versión estándar con animaciones reducidas';
+      // Actualizar botón móvil si existe
+      if (versionIconMobile && versionTextMobile) {
+        versionIconMobile.className = 'bi bi-lightning me-2';
+        versionTextMobile.textContent = 'Cambiar a Estándar';
+      }
     }
+    // Las clases de Bootstrap se encargan de la visibilidad
+    // d-none d-lg-inline-flex: oculto por defecto, visible solo en lg y superior
+    // d-lg-none: visible por defecto, oculto en lg y superior
   }
   
   // Event listener para el botón del header
@@ -323,6 +357,15 @@ if (page === "" || page === "index.html") {
     
     // Actualizar botón al cargar
     updateHeaderButton();
+    // Actualizar botón al ajustar tamaño
+    window.addEventListener('resize', updateHeaderButton);
+  }
+  
+  // Event listener para el botón móvil si existe
+  if (versionToggleBtnMobile) {
+    versionToggleBtnMobile.addEventListener('click', () => {
+      toggleStandardVersion();
+    });
   }
   
   // Sobrescribir la función toggleStandardVersion para incluir actualización del botón

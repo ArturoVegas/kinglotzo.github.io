@@ -30,6 +30,7 @@ onAuthStateChanged(auth, (user) => {
 
     this.initializeElements();
     this.setupEventListeners();
+    this.loadUserSettings();
     this.loadChapterFromURL();
   }
 
@@ -186,6 +187,26 @@ onAuthStateChanged(auth, (user) => {
     }
   }
 
+  loadUserSettings() {
+    const settings = JSON.parse(localStorage.getItem('readerSettings')) || {};
+    this.readingMode = settings.readingMode || 'vertical';
+    this.fitMode = settings.fitMode || 'fit-width';
+    this.spacing = settings.spacing || 10;
+    this.renderImages();
+    this.adjustLayout();
+    console.log('Configuración cargada:', settings);
+  }
+
+  saveUserSettings() {
+    const settings = {
+      readingMode: this.readingMode,
+      fitMode: this.fitMode,
+      spacing: this.spacing,
+    };
+    localStorage.setItem('readerSettings', JSON.stringify(settings));
+    console.log('Configuración guardada:', settings);
+  }
+
   async loadAvailableChapters() {
     try {
       const mangaRef = ref(db, `mangas/${this.currentManga}/capitulos`);
@@ -315,6 +336,7 @@ onAuthStateChanged(auth, (user) => {
 
     this.renderImages();
     this.adjustLayout();
+    this.saveUserSettings();
   }
 
   changeFitMode(fit) {
@@ -329,6 +351,7 @@ onAuthStateChanged(auth, (user) => {
     });
 
     this.adjustLayout();
+    this.saveUserSettings();
   }
 
   changeSpacing(value) {
@@ -373,9 +396,15 @@ onAuthStateChanged(auth, (user) => {
   }
 
   navigateToChapter(chapter) {
-    const url = new URL(window.location);
-    url.searchParams.set('cap', chapter);
-    window.location.href = url.toString();
+    // Mostrar loading antes de navegar
+    this.showLoading();
+    
+    // Pequeño delay para que se vea el loading
+    setTimeout(() => {
+      const url = new URL(window.location);
+      url.searchParams.set('cap', chapter);
+      window.location.href = url.toString();
+    }, 100);
   }
 
   setupBackButton() {

@@ -31,14 +31,18 @@
 <body>
   <!-- Loader moderno -->
   <div id="page-loader" class="page-loader">
-    <div class="loader-content">
-      <div class="loader-spinner">
-        <div class="spinner-inner"></div>
-        <div class="spinner-inner"></div>
-        <div class="spinner-inner"></div>
+<div class="loader-content">
+        <div class="loader-spinner">
+          <div class="spinner-inner"></div>
+          <div class="spinner-inner"></div>
+          <div class="spinner-inner"></div>
+        </div>
+        <p class="loader-text">Cargando White Pearl Translation...</p>
+        <button id="performance-warning-btn" class="performance-warning" style="display: none;">
+          <i class="bi bi-exclamation-triangle"></i>
+          ¿Problemas de rendimiento? Prueba la versión estándar
+        </button>
       </div>
-      <p class="loader-text">Cargando White Pearl Translation...</p>
-    </div>
   </div>
   
   <!-- Contenedor principal con flexbox -->
@@ -54,6 +58,13 @@
             <img src="./Recursos/imagenes/whitePearltranslation.png" alt="White Pearl Translation" class="img-fluid nombre-img" loading="lazy" />
           </div>
         </a>
+        
+        <!-- Botón de alternancia de versión junto al logo (solo desktop) -->
+        <button id="version-toggle-btn" class="btn btn-outline-warning ms-3 d-none d-lg-inline-flex" 
+                style="height: 38px; font-size: 0.8rem;" title="Alternar versión del sitio">
+          <i id="version-icon" class="bi bi-lightning me-1"></i>
+          <span id="version-text">Estándar</span>
+        </button>
         
         <!-- Indicador de estado de conexión -->
         <div class="connection-status d-none d-md-flex align-items-center me-3">
@@ -86,6 +97,14 @@
                 <span>Nuestros mangas</span>
               </a>
             </li>
+            <!-- Botón de versión solo para móviles -->
+            <li class="nav-item d-lg-none" role="none">
+              <button id="version-toggle-btn-mobile" class="btn btn-outline-warning w-100 mt-2" 
+                      style="font-size: 0.85rem;" title="Alternar versión del sitio">
+                <i id="version-icon-mobile" class="bi bi-lightning me-2"></i>
+                <span id="version-text-mobile">Cambiar a Estándar</span>
+              </button>
+            </li>
           </ul>
           <form
             id="form-buscar"
@@ -104,12 +123,6 @@
               />
               <ul class="autocomplete-list" id="autocomplete-list"></ul>
             </div>
-            <!-- Botón de alternancia de versión -->
-            <button id="version-toggle-btn" class="btn btn-outline-warning ms-3 me-3 d-none d-md-inline-flex" 
-                    style="height: 38px; font-size: 0.8rem;" title="Alternar versión del sitio">
-              <i id="version-icon" class="bi bi-lightning me-1"></i>
-              <span id="version-text">Estándar</span>
-            </button>
             
             <div class="dropdown ms-2">
               <button
