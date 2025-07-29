@@ -48,16 +48,16 @@ class MobileOptimizer {
   shouldDisableBackground() {
     const memory = navigator.deviceMemory || 4;
     
-    // Solo desactivar fondo en casos extremos:
-    // - Dispositivos de muy baja gama (≤2GB RAM Y ≤2 cores)
-    // - O móviles con RAM ≤1GB
-    const shouldDisable = this.isLowEndDevice;
+    // DESHABILITADO: No desactivar fondo automáticamente
+    // El usuario prefiere mantener la versión estándar siempre
+    const shouldDisable = false;
     
     console.log('🎨 Evaluación del fondo de partículas:', {
       isMobile: this.isMobile,
       isLowEndDevice: this.isLowEndDevice,
       memory: memory + 'GB',
-      shouldDisableBackground: shouldDisable
+      shouldDisableBackground: shouldDisable,
+      note: 'Desactivación automática deshabilitada por preferencia del usuario'
     });
     
     return shouldDisable;
@@ -344,35 +344,20 @@ class MobileOptimizer {
   }
 
   optimizePopularCards() {
-    console.log('🎴 Optimizando cards populares para móviles...');
+    console.log('🃴 Optimizando cards populares para móviles...');
     
-    // Optimizaciones específicas para el carrusel de populares
+    // NO APLICAR optimizaciones que interfieran con las animaciones controladas por main.js
+    // Solo aplicar optimizaciones de rendimiento básico
     const popularCardsStyle = document.createElement('style');
     popularCardsStyle.id = 'popular-cards-mobile-optimization';
     popularCardsStyle.textContent = `
-      /* Optimizaciones específicas para cards populares en móviles */
+      /* Optimizaciones NO INTRUSIVAS para cards populares en móviles */
       @media (max-width: 768px) {
         #carrusel-populares {
           /* Mejorar scroll performance */
           -webkit-overflow-scrolling: touch;
-          overflow-x: auto;
           scroll-behavior: smooth;
           will-change: scroll-position;
-        }
-        
-        #carrusel-populares .card {
-          /* Optimizar rendering */
-          will-change: transform;
-          backface-visibility: hidden;
-          -webkit-backface-visibility: hidden;
-          transform: translateZ(0); /* Forzar aceleración GPU */
-          
-          /* Mantener transición suave pero rápida */
-          transition: transform 0.15s ease-out !important;
-        }
-        
-        #carrusel-populares .card:hover {
-          transform: translateZ(0) scale(1.03) !important;
         }
         
         #carrusel-populares .card-img-top {
@@ -381,22 +366,10 @@ class MobileOptimizer {
           will-change: auto;
           backface-visibility: hidden;
         }
-        
-        .popular-card-wrapper {
-          /* Asegurar visibilidad y flexibilidad */
-          display: flex !important;
-          flex-shrink: 0 !important;
-          opacity: 1 !important;
-          visibility: visible !important;
-        }
       }
       
-      /* Para dispositivos muy lentos */
-      @media (max-width: 480px) {
-        #carrusel-populares .card {
-          /* Reducir efectos pero mantener funcionalidad */
-          transition: opacity 0.1s ease !important;
-        }
+      /* NO interferir con las animaciones de entrada de las cards */
+      /* Estas serán manejadas por main.js */
         
         #carrusel-populares .card:hover {
           transform: translateZ(0) scale(1.01) !important;
