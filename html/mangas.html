@@ -41,6 +41,13 @@
             <img src="../Recursos/imagenes/whitePearltranslation.png" alt="Nombre Scan White Pearl Translation" class="img-fluid nombre-img" />
           </a>
         </div>
+        
+        <!-- Botón de alternancia de versión junto al logo (solo desktop) -->
+        <button id="version-toggle-btn" class="btn btn-outline-warning ms-3 d-none d-lg-inline-flex" 
+                style="height: 38px; font-size: 0.8rem;" title="Alternar versión del sitio">
+          <i id="version-icon" class="bi bi-lightning me-1"></i>
+          <span id="version-text">Estándar</span>
+        </button>
 
         <!-- Indicador de conexión -->
         <div class="connection-status d-none d-md-block">
@@ -67,47 +74,65 @@
 
         <!-- Menú colapsable -->
         <div class="collapse navbar-collapse" id="navbarContent">
-          <ul class="navbar-nav mx-auto">
-            <li class="nav-item">
-              <a class="nav-link active" href="../html/mangas.html">
-                <i class="bi bi-book me-2"></i>Nuestros mangas
+          <ul class="navbar-nav flex-column flex-lg-row w-100 justify-content-center align-items-center" role="menu">
+            <li class="nav-item" role="none">
+              <a class="nav-link active" href="../html/mangas.html" role="menuitem">
+                <i class="bi bi-book me-2"></i>
+                <span>Nuestros mangas</span>
               </a>
             </li>
+            <!-- Botón de versión solo para móviles -->
+            <li class="nav-item d-lg-none" role="none">
+              <button id="version-toggle-btn-mobile" class="btn btn-outline-warning w-100 mt-2" 
+                      style="font-size: 0.85rem;" title="Alternar versión del sitio">
+                <i id="version-icon-mobile" class="bi bi-lightning me-2"></i>
+                <span id="version-text-mobile">Cambiar a Estándar</span>
+              </button>
+            </li>
           </ul>
-
-          <!-- Buscador mejorado -->
-          <form id="form-buscar" class="d-flex me-3" role="search" aria-label="Formulario de búsqueda">
-            <div class="position-relative">
+          <form
+            id="form-buscar"
+            class="d-flex mt-3 mt-md-0 ms-md-auto w-100 w-md-50 align-items-center"
+            role="search"
+            aria-label="Formulario de búsqueda"
+          >
+            <div class="position-relative flex-grow-1">
               <input
                 id="input-buscar"
-                class="form-control"
+                class="form-control border-dark"
                 type="search"
-                placeholder="Buscar manga..."
-                aria-label="Buscar"
+                placeholder="🔍 Buscar manga..."
+                aria-label="Buscar manga"
                 autocomplete="off"
               />
-              <div id="autocomplete-list" class="autocomplete-list"></div>
+              <ul class="autocomplete-list" id="autocomplete-list"></ul>
+            </div>
+            
+            <div class="dropdown ms-2">
+              <button
+                class="btn btn-outline-light dropdown-toggle"
+                type="button"
+                id="authDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                style="height: 38px; font-size: 0.8rem;"
+              >
+                <i class="bi bi-person-circle me-1"></i>Cuenta
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="authDropdown" role="menu">
+                <li role="none">
+                  <a class="dropdown-item" href="../html/auth.html" role="menuitem">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar sesión
+                  </a>
+                </li>
+                <li role="none">
+                  <a class="dropdown-item" href="../html/auth.html" role="menuitem">
+                    <i class="bi bi-person-plus me-2"></i>Registrarse
+                  </a>
+                </li>
+              </ul>
             </div>
           </form>
-
-          <!-- Menú de cuenta -->
-          <div class="dropdown">
-            <button
-              class="btn dropdown-toggle"
-              type="button"
-              id="authDropdown"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-              aria-label="Menú de cuenta"
-            >
-              <i class="bi bi-person-circle me-1"></i>
-              <span class="d-none d-lg-inline">Cuenta</span>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="authDropdown">
-              <li><a class="dropdown-item" href="../html/auth.html"><i class="bi bi-box-arrow-in-right me-2"></i>Iniciar sesión</a></li>
-              <li><a class="dropdown-item" href="../html/auth.html"><i class="bi bi-person-plus me-2"></i>Registrarse</a></li>
-            </ul>
-          </div>
         </div>
       </div>
     </nav>

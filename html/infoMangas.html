@@ -36,6 +36,14 @@
         <img src="../Recursos/imagenes/imagen al principio.png" alt="Logo" class="img-fluid logo-img me-2" />
         <img src="../Recursos/imagenes/whitePearltranslation.png" alt="Nombre Scan" class="img-fluid nombre-img" />
       </a>
+      
+      <!-- Botón de alternancia de versión junto al logo (solo desktop) -->
+      <button id="version-toggle-btn" class="btn btn-outline-warning ms-3 d-none d-lg-inline-flex" 
+              style="height: 38px; font-size: 0.8rem;" title="Alternar versión del sitio">
+        <i id="version-icon" class="bi bi-lightning me-1"></i>
+        <span id="version-text">Estándar</span>
+      </button>
+      
       <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -44,6 +52,14 @@
         <ul class="navbar-nav flex-column flex-md-row w-100 justify-content-center align-items-center">
           <li class="nav-item"><a class="nav-link text-white" href="../index.html">Inicio</a></li>
           <li class="nav-item"><a class="nav-link text-white" href="../html/mangas.html">Nuestros mangas</a></li>
+          <!-- Botón de versión solo para móviles -->
+          <li class="nav-item d-lg-none">
+            <button id="version-toggle-btn-mobile" class="btn btn-outline-warning w-100 mt-2" 
+                    style="font-size: 0.85rem;" title="Alternar versión del sitio">
+              <i id="version-icon-mobile" class="bi bi-lightning me-2"></i>
+              <span id="version-text-mobile">Cambiar a Estándar</span>
+            </button>
+          </li>
         </ul>
         <form id="form-buscar" class="d-flex mt-3 mt-md-0 ms-md-auto w-100 w-md-50 align-items-center" role="search">
           <input id="input-buscar" class="form-control border-dark" type="search" placeholder="🔍 Buscar..." aria-label="Buscar" />
