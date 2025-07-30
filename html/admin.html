@@ -22,6 +22,12 @@
       <button id="btnSubirCapitulo" class="btn btn-outline-light">Subir Capítulo</button>
       <button id="btnActualizarManga" class="btn btn-outline-info">Actualizar Manga</button>
       <button id="btnGestionNoticias" class="btn btn-outline-warning">Noticias y Carrusel</button>
+      <!-- Botones para Gestión -->
+      <button id="btnEliminarContenido" class="btn btn-outline-danger">Eliminar Manga/Novela</button>
+      <!-- Botones para Novelas -->
+      <button id="btnNuevaNovela" class="btn btn-outline-success">Nueva Novela</button>
+      <button id="btnSubirCapituloNovela" class="btn btn-outline-success">Subir Capítulo Novela</button>
+      <button id="btnSubirVolumenNovela" class="btn btn-outline-success">Subir Volumen Novela</button>
     </div>
 
     <!-- Sección: Nuevo Manga -->
@@ -106,7 +112,9 @@
       <form id="formSubirCapitulo">
         <div class="mb-3">
           <label for="mangaSeleccionado" class="form-label">Nombre del manga</label>
-          <input list="listaMangas" class="form-control" id="mangaSeleccionado" required />
+          <div class="position-relative">
+            <input list="listaMangas" class="form-control" id="mangaSeleccionado" required autocomplete="off" />
+          </div>
           <datalist id="listaMangas"></datalist>
         </div>
 
@@ -142,7 +150,9 @@
       <!-- Selección del manga -->
       <div class="mb-4">
         <label for="mangaActualizar" class="form-label">Seleccionar manga a actualizar</label>
-        <input list="listaMangasActualizar" class="form-control" id="mangaActualizar" placeholder="Escribe el nombre del manga" required />
+        <div class="position-relative">
+          <input list="listaMangasActualizar" class="form-control" id="mangaActualizar" placeholder="Escribe el nombre del manga" required autocomplete="off" />
+        </div>
         <datalist id="listaMangasActualizar"></datalist>
         <div id="mangaSeleccionadoInfo" class="mt-3" style="display: none;">
           <div class="alert alert-info">
@@ -283,6 +293,219 @@
       </form>
 
       <ul id="listaCarrusel" class="list-group"></ul>
+    </div>
+
+    <!-- Sección: Eliminar Contenido -->
+    <div id="eliminarContenidoSection" class="admin-section d-none">
+      <h3>Eliminar Manga o Novela</h3>
+      
+      <div class="alert alert-danger" role="alert">
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        <strong>¡ATENCIÓN!</strong> Esta acción es <strong>irreversible</strong>. Se eliminará completamente el contenido seleccionado junto con todos sus capítulos, comentarios y datos asociados.
+      </div>
+
+      <!-- Selección del tipo de contenido -->
+      <div class="mb-4">
+        <h5>Seleccionar tipo de contenido</h5>
+        <div class="btn-group" role="group">
+          <input type="radio" class="btn-check" name="tipoContenido" id="radioManga" value="manga" autocomplete="off" checked>
+          <label class="btn btn-outline-primary" for="radioManga">Manga</label>
+          
+          <input type="radio" class="btn-check" name="tipoContenido" id="radioNovela" value="novela" autocomplete="off">
+          <label class="btn btn-outline-success" for="radioNovela">Novela</label>
+        </div>
+      </div>
+
+      <!-- Selección del contenido a eliminar -->
+      <div class="mb-4">
+        <label for="contenidoAEliminar" class="form-label">Seleccionar contenido a eliminar</label>
+        <div class="position-relative">
+          <input list="listaContenidoEliminar" class="form-control" id="contenidoAEliminar" placeholder="Escribe el nombre del manga o novela" required autocomplete="off" />
+        </div>
+        <datalist id="listaContenidoEliminar"></datalist>
+        
+        <div id="contenidoSeleccionadoInfo" class="mt-3" style="display: none;">
+          <div class="alert alert-warning">
+            <div class="row">
+              <div class="col-md-8">
+                <strong>Contenido seleccionado:</strong> <span id="nombreContenidoSeleccionado"></span><br>
+                <strong>Tipo:</strong> <span id="tipoContenidoSeleccionado"></span><br>
+                <strong>Capítulos:</strong> <span id="capitulosContenidoSeleccionado">0</span><br>
+                <small class="text-muted">Todos los datos asociados serán eliminados permanentemente.</small>
+              </div>
+              <div class="col-md-4 text-end">
+                <img id="portadaContenidoSeleccionado" src="" alt="Portada" class="img-thumbnail" style="max-width: 100px; display: none;">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confirmación de eliminación -->
+      <div class="mb-4">
+        <div class="form-check mb-3">
+          <input class="form-check-input" type="checkbox" id="confirmarEliminacion">
+          <label class="form-check-label text-warning" for="confirmarEliminacion">
+            <strong>Confirmo que entiendo que esta acción es irreversible</strong>
+          </label>
+        </div>
+        
+        <div class="form-group mb-3">
+          <label for="confirmacionTexto" class="form-label">Para confirmar, escribe <strong>"ELIMINAR"</strong> en el campo:</label>
+          <input type="text" class="form-control" id="confirmacionTexto" placeholder="Escribe ELIMINAR para confirmar">
+        </div>
+      </div>
+
+      <div class="d-flex gap-3">
+        <button type="button" id="btnEliminarContenidoAccion" class="btn btn-danger" disabled>
+          <i class="bi bi-trash-fill"></i> Eliminar Contenido
+        </button>
+        <button type="button" id="btnCancelarEliminacion" class="btn btn-secondary">
+          <i class="bi bi-x-circle"></i> Cancelar
+        </button>
+      </div>
+    </div>
+
+    <!-- Sección: Nueva Novela -->
+    <div id="nuevaNovelaSection" class="admin-section d-none">
+      <h3>Registrar Nueva Novela</h3>
+      <form id="formNuevaNovela">
+        <div class="mb-3">
+          <label for="nombreNovela" class="form-label">Nombre de la novela</label>
+          <input type="text" class="form-control" id="nombreNovela" required />
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="portadaNovela" class="form-label">Portada (imagen a subir)</label>
+              <input type="file" class="form-control" id="portadaNovela" accept="image/*" required />
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="sinopsisNovela" class="form-label">Sinopsis</label>
+          <textarea class="form-control" id="sinopsisNovela" rows="3" required></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="autorNovela" class="form-label">Autor</label>
+          <input type="text" class="form-control" id="autorNovela" required />
+        </div>
+        
+        <label for="inputGenero">Género</label>
+        <div class="d-flex gap-2 mb-2">
+          <input id="inputGenero" type="text" class="form-control" placeholder="Escribe un género" autocomplete="off" />
+        </div>
+        <div id="listaGenerosSeleccionados" class="mb-3"></div>
+
+        <div class="mb-3">
+          <label for="estadoNovela" class="form-label">¿Está en emisión?</label>
+          <select class="form-select" id="estadoNovela" required>
+            <option value="" selected disabled>Selecciona una opción</option>
+            <option value="En emisión">En emisión</option>
+            <option value="Finalizado">Finalizado</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="frecuenciaNovela" class="form-label">Frecuencia de publicación</label>
+          <select class="form-select" id="frecuenciaNovela" required>
+            <option value="" selected disabled>Selecciona una opción</option>
+            <option value="Semanal">Semanal</option>
+            <option value="Mensual">Mensual</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="fechaLanzamientoNovela" class="form-label">Fecha de lanzamiento</label>
+          <input type="date" class="form-control" id="fechaLanzamientoNovela" required />
+        </div>
+
+        <button type="submit" class="btn btn-success">Guardar Novela</button>
+      </form>
+    </div>
+
+    <!-- Sección: Subir Capítulo de Novela -->
+    <div id="subirCapituloNovelaSection" class="admin-section d-none">
+      <h3>Editor de Capítulos de Novela</h3>
+      <div class="alert alert-info">
+        <i class="fas fa-info-circle"></i>
+        <strong>Nuevo Editor Avanzado:</strong> Ahora puedes usar nuestro editor completo estilo Wattpad con herramientas de formato, vista previa y guardado automático.
+      </div>
+      
+      <div class="text-center">
+        <button id="btnAbrirEditor" class="btn btn-success btn-lg">
+          <i class="fas fa-edit"></i> Abrir Editor de Novelas
+        </button>
+      </div>
+      
+      <hr class="my-4">
+      
+      <details>
+        <summary class="btn btn-outline-secondary mb-3">Usar Editor Simple (Clásico)</summary>
+        
+        <form id="formSubirCapituloNovela">
+          <div class="mb-3">
+            <label for="novelaseleccionada" class="form-label">Nombre de la novela</label>
+            <div class="position-relative">
+              <input list="listaNovelasCapitulo" class="form-control" id="novelaseleccionada" required autocomplete="off" />
+            </div>
+            <datalist id="listaNovelasCapitulo"></datalist>
+          </div>
+
+          <div class="mb-3">
+            <label for="numeroCapituloNovela" class="form-label">Número de capítulo</label>
+            <input type="number" class="form-control" id="numeroCapituloNovela" required />
+          </div>
+
+          <div class="mb-3">
+            <label for="editorCapitulo" class="form-label">Contenido del Capítulo</label>
+            <textarea class="form-control" id="editorCapitulo" rows="10"></textarea>
+            <small class="text-muted">Para una mejor experiencia, usa el Editor Avanzado de arriba.</small>
+          </div>
+
+          <div class="mb-3">
+              <label for="previewCapitulo" class="form-label">Preview</label>
+              <div id="previewCapitulo" class="border p-2" style="min-height: 100px;"></div>
+          </div>
+
+          <div class="mb-3">
+              <label for="imagenCapituloNovela" class="form-label">Subir Imagen</label>
+              <input type="file" class="form-control" id="imagenCapituloNovela" accept="image/*" />
+              <input type="text" class="form-control mt-2" id="enlaceImagenGenerado" readonly placeholder="Enlace de la imagen generada"/>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Subir Capítulo de Novela</button>
+        </form>
+      </details>
+    </div>
+
+    <!-- Sección: Subir Volumen de Novela -->
+    <div id="subirVolumenNovelaSection" class="admin-section d-none">
+      <h3>Subir Volumen de Novela</h3>
+      <form id="formSubirVolumenNovela">
+        <div class="mb-3">
+          <label for="novelaseleccionadaVolumen" class="form-label">Nombre de la novela</label>
+          <div class="position-relative">
+            <input list="listaNovelasVolumen" class="form-control" id="novelaseleccionadaVolumen" required autocomplete="off" />
+          </div>
+          <datalist id="listaNovelasVolumen"></datalist>
+        </div>
+
+        <div class="mb-3">
+          <label for="numeroVolumenNovela" class="form-label">Número de volumen</label>
+          <input type="number" class="form-control" id="numeroVolumenNovela" required />
+        </div>
+
+        <div class="mb-3">
+          <label for="enlaceVolumen" class="form-label">Enlace de Mediafire</label>
+          <input type="url" class="form-control" id="enlaceVolumen" placeholder="https://www.mediafire.com/...">
+        </div>
+
+        <button type="submit" class="btn btn-primary">Subir Volumen</button>
+      </form>
     </div>
 
   </div>

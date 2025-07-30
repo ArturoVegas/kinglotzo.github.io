@@ -1,3 +1,5 @@
+
+
 // ==============================
 // IMPORTACIÓN DE MÓDULOS FIREBASE
 // ==============================
@@ -56,11 +58,28 @@ if (!path.includes("admin.html")) {
   const subirCapituloSection = document.getElementById("subirCapituloSection");
   const actualizarMangaSection = document.getElementById("actualizarMangaSection");
   const gestionNoticiasSection = document.getElementById("gestionNoticiasSection");
+  const eliminarContenidoSection = document.getElementById("eliminarContenidoSection");
+  
+  const datalistNovelas = document.getElementById("listaNovelas");
+  const datalistNovelasCapitulo = document.getElementById("listaNovelasCapitulo");
+  const datalistNovelasVolumen = document.getElementById("listaNovelasVolumen");
+
+  // Secciones de novelas
+  const nuevaNovelaSection = document.getElementById("nuevaNovelaSection");
+  const subirCapituloNovelaSection = document.getElementById("subirCapituloNovelaSection");
+  const subirVolumenNovelaSection = document.getElementById("subirVolumenNovelaSection");
 
   const btnNuevoManga = document.getElementById("btnNuevoManga");
   const btnSubirCapitulo = document.getElementById("btnSubirCapitulo");
   const btnActualizarManga = document.getElementById("btnActualizarManga");
   const btnGestionNoticias = document.getElementById("btnGestionNoticias");
+  const btnEliminarContenido = document.getElementById("btnEliminarContenido");
+  
+  // Botones de novelas
+  const btnNuevaNovela = document.getElementById("btnNuevaNovela");
+  const btnSubirCapituloNovela = document.getElementById("btnSubirCapituloNovela");
+  const btnSubirVolumenNovela = document.getElementById("btnSubirVolumenNovela");
+  
   const btnLogout = document.getElementById("btnLogout");
 
   const inputManga = document.getElementById("mangaSeleccionado");
@@ -109,6 +128,7 @@ if (!path.includes("admin.html")) {
     cargarMangasEnDatalist();
     cargarNoticias();
     cargarCarrusel();
+    cargarNovelasEnDatalist();
 
   } catch (error) {
     console.error("Error al verificar rol:", error);
@@ -121,21 +141,43 @@ if (!path.includes("admin.html")) {
   // NAVEGACIÓN ENTRE SECCIONES
   // ==============================
   function mostrarSeccion(nombre) {
+    // Ocultar todas las secciones
     nuevoMangaSection.classList.add("d-none");
     subirCapituloSection.classList.add("d-none");
     actualizarMangaSection.classList.add("d-none");
     gestionNoticiasSection.classList.add("d-none");
+    
+    // Secciones de novelas
+    if (nuevaNovelaSection) nuevaNovelaSection.classList.add("d-none");
+    if (subirCapituloNovelaSection) subirCapituloNovelaSection.classList.add("d-none");
+    if (subirVolumenNovelaSection) subirVolumenNovelaSection.classList.add("d-none");
+    if (eliminarContenidoSection) eliminarContenidoSection.classList.add("d-none");
 
-    if (nombre === "nuevoMangaSection") nuevoMangaSection.classList.remove("d-none");
-    if (nombre === "subirCapituloSection") subirCapituloSection.classList.remove("d-none");
-    if (nombre === "actualizarMangaSection") actualizarMangaSection.classList.remove("d-none");
-    if (nombre === "gestionNoticiasSection") gestionNoticiasSection.classList.remove("d-none");
+    // Mostrar la sección seleccionada
+    const seccionActiva = document.getElementById(nombre);
+    if (seccionActiva) {
+      seccionActiva.classList.remove("d-none");
+    }
   }
 
   btnNuevoManga.addEventListener("click", () => mostrarSeccion("nuevoMangaSection"));
   btnSubirCapitulo.addEventListener("click", () => mostrarSeccion("subirCapituloSection"));
   btnActualizarManga.addEventListener("click", () => mostrarSeccion("actualizarMangaSection"));
   btnGestionNoticias.addEventListener("click", () => mostrarSeccion("gestionNoticiasSection"));
+  if (btnEliminarContenido) btnEliminarContenido.addEventListener("click", () => mostrarSeccion("eliminarContenidoSection"));
+  
+  // Event listeners para botones de novelas
+  if (btnNuevaNovela) btnNuevaNovela.addEventListener("click", () => mostrarSeccion("nuevaNovelaSection"));
+  if (btnSubirCapituloNovela) btnSubirCapituloNovela.addEventListener("click", () => mostrarSeccion("subirCapituloNovelaSection"));
+  if (btnSubirVolumenNovela) btnSubirVolumenNovela.addEventListener("click", () => mostrarSeccion("subirVolumenNovelaSection"));
+
+  // Botón para abrir el editor avanzado de novelas
+  const btnAbrirEditor = document.getElementById("btnAbrirEditor");
+  if (btnAbrirEditor) {
+    btnAbrirEditor.addEventListener("click", () => {
+      window.open("editor-novela.html", "_blank");
+    });
+  }
 
   btnLogout.addEventListener("click", () => {
     signOut(auth).then(() => {
@@ -997,8 +1039,12 @@ async function cargarNoticias() {
   // MODAL PARA PERFIL Y BANNER
   // ==============================
   
-  // Referencias para el modal de imágenes
-  const profileBannerModal = new bootstrap.Modal(document.getElementById('profileBannerModal'));
+  // Referencias para el modal de imágenes (solo si existe el elemento)
+  const profileBannerModalElement = document.getElementById('profileBannerModal');
+  let profileBannerModal = null;
+  if (profileBannerModalElement) {
+    profileBannerModal = new bootstrap.Modal(profileBannerModalElement);
+  }
   const modalTitle = document.getElementById('modalTitle');
   const imageUrlInput = document.getElementById('imageUrl');
   const imageFileInput = document.getElementById('imageFile');
@@ -1010,67 +1056,76 @@ async function cargarNoticias() {
   
   // Función para abrir modal de perfil
   window.openProfileModal = function() {
-    currentImageType = 'profile';
-    modalTitle.textContent = 'Cambiar Imagen de Perfil';
-    resetModal();
-    profileBannerModal.show();
+    if (profileBannerModal && modalTitle) {
+      currentImageType = 'profile';
+      modalTitle.textContent = 'Cambiar Imagen de Perfil';
+      resetModal();
+      profileBannerModal.show();
+    }
   };
   
   // Función para abrir modal de banner
   window.openBannerModal = function() {
-    currentImageType = 'banner';
-    modalTitle.textContent = 'Cambiar Banner';
-    resetModal();
-    profileBannerModal.show();
+    if (profileBannerModal && modalTitle) {
+      currentImageType = 'banner';
+      modalTitle.textContent = 'Cambiar Banner';
+      resetModal();
+      profileBannerModal.show();
+    }
   };
   
   // Función para resetear el modal
   function resetModal() {
-    imageUrlInput.value = '';
-    imageFileInput.value = '';
-    imagePreview.style.display = 'none';
-    previewImage.src = '';
+    if (imageUrlInput) imageUrlInput.value = '';
+    if (imageFileInput) imageFileInput.value = '';
+    if (imagePreview) imagePreview.style.display = 'none';
+    if (previewImage) previewImage.src = '';
   }
   
-  // Preview de imagen desde URL
-  imageUrlInput.addEventListener('input', (e) => {
-    const url = e.target.value.trim();
-    if (url) {
-      previewImage.src = url;
-      imagePreview.style.display = 'block';
-      // Limpiar input de archivo si hay URL
-      imageFileInput.value = '';
-    } else {
-      imagePreview.style.display = 'none';
-    }
-  });
+  // Preview de imagen desde URL (solo si existe el elemento)
+  if (imageUrlInput) {
+    imageUrlInput.addEventListener('input', (e) => {
+      const url = e.target.value.trim();
+      if (url) {
+        if (previewImage) previewImage.src = url;
+        if (imagePreview) imagePreview.style.display = 'block';
+        // Limpiar input de archivo si hay URL
+        if (imageFileInput) imageFileInput.value = '';
+      } else {
+        if (imagePreview) imagePreview.style.display = 'none';
+      }
+    });
+  }
   
-  // Preview de imagen desde archivo
-  imageFileInput.addEventListener('change', (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        previewImage.src = e.target.result;
-        imagePreview.style.display = 'block';
-        // Limpiar input de URL si hay archivo
-        imageUrlInput.value = '';
-      };
-      reader.readAsDataURL(file);
-    } else {
-      imagePreview.style.display = 'none';
-    }
-  });
+  // Preview de imagen desde archivo (solo si existe el elemento)
+  if (imageFileInput) {
+    imageFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          if (previewImage) previewImage.src = e.target.result;
+          if (imagePreview) imagePreview.style.display = 'block';
+          // Limpiar input de URL si hay archivo
+          if (imageUrlInput) imageUrlInput.value = '';
+        };
+        reader.readAsDataURL(file);
+      } else {
+        if (imagePreview) imagePreview.style.display = 'none';
+      }
+    });
+  }
   
-  // Guardar imagen (perfil o banner)
-  saveImageBtn.addEventListener('click', async () => {
+  // Guardar imagen (perfil o banner) - solo si existe el botón
+  if (saveImageBtn) {
+    saveImageBtn.addEventListener('click', async () => {
     try {
       let imageUrl = '';
       
       // Determinar si usar URL o archivo
-      if (imageUrlInput.value.trim()) {
+      if (imageUrlInput && imageUrlInput.value.trim()) {
         imageUrl = imageUrlInput.value.trim();
-      } else if (imageFileInput.files.length > 0) {
+      } else if (imageFileInput && imageFileInput.files.length > 0) {
         // Convertir archivo a base64 para almacenamiento directo
         const file = imageFileInput.files[0];
         imageUrl = await convertToBase64(file);
@@ -1105,7 +1160,8 @@ async function cargarNoticias() {
       console.error('Error al guardar imagen:', error);
       alert('Error al guardar la imagen: ' + error.message);
     }
-  });
+    });
+  }
   
   // Función para convertir archivo a base64
   function convertToBase64(file) {
@@ -1159,9 +1215,17 @@ async function cargarNoticias() {
     }
   }
   
+  // Cargar imágenes del usuario solo si está autenticado y es admin
   onAuthStateChanged(auth, (user) => {
-    if (user && user.uid === adminUID) {
-      loadUserImages();
+    if (user) {
+      // Solo intentar cargar imágenes si el usuario tiene rol de admin
+      get(ref(db, `usuarios/${user.uid}/rol`)).then(rolSnap => {
+        if (rolSnap.exists() && rolSnap.val() === 'admin') {
+          loadUserImages();
+        }
+      }).catch(error => {
+        console.error('Error verificando rol para imágenes:', error);
+      });
     }
   });
   
@@ -1232,5 +1296,514 @@ async function cargarNoticias() {
       alert("Error al subir imagen o guardar manga: " + error.message);
     }
   });
+
+  // ==============================
+  // FUNCIONES DE NOVELAS
+  // ==============================
+
+  async function cargarNovelasEnDatalist() {
+    try {
+      const snapshot = await get(ref(db, 'novelas'));
+      if (datalistNovelas) datalistNovelas.innerHTML = "";
+      if (datalistNovelasCapitulo) datalistNovelasCapitulo.innerHTML = "";
+      if (datalistNovelasVolumen) datalistNovelasVolumen.innerHTML = "";
+      
+      if (snapshot.exists()) {
+        const novelas = snapshot.val();
+        Object.keys(novelas).forEach(nombre => {
+          const option = document.createElement("option");
+          option.value = nombre;
+          if (datalistNovelas) datalistNovelas.appendChild(option.cloneNode(true));
+          if (datalistNovelasCapitulo) datalistNovelasCapitulo.appendChild(option.cloneNode(true));
+          if (datalistNovelasVolumen) datalistNovelasVolumen.appendChild(option.cloneNode(true));
+        });
+      }
+    } catch (err) {
+      console.error("Error al cargar novelas:", err);
+    }
+  }
+  
+  // Formulario para nueva novela
+  const formNuevaNovela = document.getElementById('formNuevaNovela');
+  if (formNuevaNovela) {
+    formNuevaNovela.addEventListener('submit', async (e) => {
+      e.preventDefault();
+  
+      const nombreNovela = document.getElementById('nombreNovela').value.trim();
+      const portadaInput = document.getElementById('portadaNovela');
+      const sinopsis = document.getElementById('sinopsisNovela').value.trim();
+      const autor = document.getElementById('autorNovela').value.trim();
+      const generos = generosSeleccionados; // Reutilizamos la lógica de géneros
+      const estado = document.getElementById('estadoNovela').value;
+      const frecuencia = document.getElementById('frecuenciaNovela').value;
+      const fechaLanzamiento = document.getElementById('fechaLanzamientoNovela').value;
+      
+      if (!nombreNovela || !portadaInput || portadaInput.files.length === 0) {
+        alert('Nombre y portada son obligatorios.');
+        return;
+      }
+  
+      try {
+        const snapshot = await get(ref(db, `novelas/${nombreNovela}`));
+        if (snapshot.exists()) {
+          alert(`La novela "${nombreNovela}" ya existe.`);
+          return;
+        }
+  
+        const urlPortada = await subirImagenCloudinary(portadaInput.files[0], `novelas/${nombreNovela}`);
+  
+        const novelaData = {
+          portada: urlPortada,
+          sinopsis,
+          autor,
+          generos,
+          estado,
+          frecuencia,
+          fechaLanzamiento,
+          capitulos: {},
+          volumenes: {},
+          visitas: 0,
+          tipo: 'novela'
+        };
+  
+        await set(ref(db, `novelas/${nombreNovela}`), novelaData);
+        alert('Novela guardada correctamente.');
+        formNuevaNovela.reset();
+        cargarNovelasEnDatalist();
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Error al subir imagen o guardar novela: ' + error.message);
+      }
+    });
+  }
+  
+  // Formulario para subir capítulo de novela
+  const formSubirCapituloNovela = document.getElementById('formSubirCapituloNovela');
+  if (formSubirCapituloNovela) {
+    const editor = document.getElementById('editorCapitulo');
+    const preview = document.getElementById('previewCapitulo');
+    const imagenCapituloNovela = document.getElementById('imagenCapituloNovela');
+    const enlaceImagenGenerado = document.getElementById('enlaceImagenGenerado');
+  
+    // Actualizar preview
+    if (editor && preview) {
+      editor.addEventListener('input', () => {
+        preview.innerHTML = editor.value;
+      });
+    }
+  
+    // Subir imagen y mostrar enlace
+    if (imagenCapituloNovela && enlaceImagenGenerado) {
+      imagenCapituloNovela.addEventListener('change', async () => {
+        if (imagenCapituloNovela.files.length > 0) {
+          try {
+            const url = await subirImagenCloudinary(imagenCapituloNovela.files[0], 'novelas/capitulos');
+            enlaceImagenGenerado.value = url;
+            alert('Enlace de la imagen copiado al portapapeles.');
+            navigator.clipboard.writeText(url);
+          } catch (error) {
+            alert('Error al subir la imagen.');
+          }
+        }
+      });
+    }
+  
+    formSubirCapituloNovela.addEventListener('submit', async (e) => {
+      e.preventDefault();
+  
+      const nombreNovela = document.getElementById('novelaseleccionada').value.trim();
+      const numeroCapitulo = document.getElementById('numeroCapituloNovela').value.trim();
+      const contenido = editor ? editor.value : '';
+  
+      if (!nombreNovela || !numeroCapitulo || !contenido) {
+        alert('Completa todos los campos.');
+        return;
+      }
+  
+      try {
+        await set(ref(db, `novelas/${nombreNovela}/capitulos/${numeroCapitulo}`), {
+          fecha: new Date().toISOString(),
+          contenido: contenido
+        });
+        alert('Capítulo de novela subido con éxito.');
+        formSubirCapituloNovela.reset();
+        if (preview) preview.innerHTML = '';
+      } catch (error) {
+        alert('Error guardando el capítulo: ' + error.message);
+      }
+    });
+  }
+  
+  // Formulario para subir volumen de novela
+  const formSubirVolumenNovela = document.getElementById('formSubirVolumenNovela');
+  if (formSubirVolumenNovela) {
+    formSubirVolumenNovela.addEventListener('submit', async (e) => {
+      e.preventDefault();
+  
+      const nombreNovela = document.getElementById('novelaseleccionadaVolumen').value.trim();
+      const numeroVolumen = document.getElementById('numeroVolumenNovela').value.trim();
+      const enlaceMediafire = document.getElementById('enlaceVolumen').value.trim();
+  
+      if (!nombreNovela || !numeroVolumen || !enlaceMediafire) {
+        alert('Completa todos los campos.');
+        return;
+      }
+  
+      try {
+        await set(ref(db, `novelas/${nombreNovela}/volumenes/${numeroVolumen}`), {
+          fecha: new Date().toISOString(),
+          enlace: enlaceMediafire
+        });
+        alert('Volumen de novela subido con éxito.');
+        formSubirVolumenNovela.reset();
+      } catch (error) {
+        alert('Error guardando el volumen: ' + error.message);
+      }
+    });
+  }
+
+  // ==============================
+  // FUNCIONALIDAD DE ELIMINACIÓN DE CONTENIDO
+  // ==============================
+  
+  // Referencias DOM para eliminación
+  const radioManga = document.getElementById('radioManga');
+  const radioNovela = document.getElementById('radioNovela');
+  const contenidoAEliminarInput = document.getElementById('contenidoAEliminar');
+  const listaContenidoEliminar = document.getElementById('listaContenidoEliminar');
+  const contenidoSeleccionadoInfo = document.getElementById('contenidoSeleccionadoInfo');
+  const nombreContenidoSeleccionado = document.getElementById('nombreContenidoSeleccionado');
+  const tipoContenidoSeleccionado = document.getElementById('tipoContenidoSeleccionado');
+  const capitulosContenidoSeleccionado = document.getElementById('capitulosContenidoSeleccionado');
+  const portadaContenidoSeleccionado = document.getElementById('portadaContenidoSeleccionado');
+  const confirmarEliminacionCheck = document.getElementById('confirmarEliminacion');
+  const confirmacionTextoInput = document.getElementById('confirmacionTexto');
+  const btnEliminarContenidoAccion = document.getElementById('btnEliminarContenidoAccion');
+  const btnCancelarEliminacion = document.getElementById('btnCancelarEliminacion');
+  
+  let contenidoSeleccionadoData = null;
+  let tipoContenidoActual = 'manga';
+  let listaContenidoCompleta = []; // Para almacenar todos los datos del contenido
+  let contenedorAutocompleteEliminar = null; // Para el autocompletado visual
+  
+  // Cargar contenido según el tipo seleccionado
+  async function cargarContenidoPorTipo(tipo) {
+    try {
+      const snapshot = await get(ref(db, tipo === 'manga' ? 'mangas' : 'novelas'));
+      listaContenidoEliminar.innerHTML = '';
+      listaContenidoCompleta = []; // Limpiar lista anterior
+      
+      if (snapshot.exists()) {
+        const contenido = snapshot.val();
+        
+        // Llenar datalist (para compatibilidad) y lista completa
+        Object.keys(contenido).forEach(nombre => {
+          const option = document.createElement('option');
+          option.value = nombre;
+          listaContenidoEliminar.appendChild(option);
+          
+          // Guardar datos completos para autocompletado visual
+          const datosContenido = contenido[nombre];
+          listaContenidoCompleta.push({
+            nombre: nombre,
+            titulo: datosContenido.titulo || nombre.replaceAll("_", " "),
+            portada: datosContenido.portada || '',
+            estado: datosContenido.estado || 'ongoing',
+            generos: datosContenido.generos || [],
+            tipo: tipo,
+            numCapitulos: datosContenido.capitulos ? Object.keys(datosContenido.capitulos).length : 0
+          });
+        });
+      }
+      
+      console.log(`📚 Cargados ${listaContenidoCompleta.length} ${tipo}s para eliminación`);
+    } catch (error) {
+      console.error(`Error al cargar ${tipo}s:`, error);
+    }
+  }
+  
+  // Eventos de radio buttons para cambiar tipo
+  if (radioManga && radioNovela) {
+    radioManga.addEventListener('change', () => {
+      if (radioManga.checked) {
+        tipoContenidoActual = 'manga';
+        cargarContenidoPorTipo('manga');
+        resetearFormularioEliminacion();
+      }
+    });
+    
+    radioNovela.addEventListener('change', () => {
+      if (radioNovela.checked) {
+        tipoContenidoActual = 'novela';
+        cargarContenidoPorTipo('novela');
+        resetearFormularioEliminacion();
+      }
+    });
+  }
+  
+  // Cargar datos del contenido seleccionado con autocompletado
+  if (contenidoAEliminarInput) {
+    let clickEnSugerencia = false;
+
+    contenidoAEliminarInput.addEventListener('input', () => {
+      const valor = contenidoAEliminarInput.value.trim().toLowerCase();
+      
+      if (!valor) {
+        ocultarSugerenciasEliminar();
+        contenidoSeleccionadoInfo.style.display = 'none';
+        contenidoSeleccionadoData = null;
+        validarFormularioEliminacion();
+        return;
+      }
+
+      const filtrados = listaContenidoCompleta.filter(item =>
+        item.titulo.toLowerCase().includes(valor)
+      ).slice(0, 5); // Mostrar hasta 5 sugerencias
+
+      mostrarSugerenciasEliminar(filtrados);
+    });
+
+    contenidoAEliminarInput.addEventListener('blur', () => {
+      setTimeout(() => {
+        if (!clickEnSugerencia) {
+          ocultarSugerenciasEliminar();
+        }
+        clickEnSugerencia = false;
+      }, 150);
+    });
+
+    // --- Funciones de autocompletado anidadas para compartir el scope ---
+
+    function mostrarSugerenciasEliminar(items) {
+      if (!contenedorAutocompleteEliminar) {
+        contenedorAutocompleteEliminar = document.createElement('ul');
+        contenedorAutocompleteEliminar.classList.add('autocomplete-list');
+        contenidoAEliminarInput.parentNode.style.position = 'relative';
+        contenidoAEliminarInput.parentNode.appendChild(contenedorAutocompleteEliminar);
+      }
+      
+      contenedorAutocompleteEliminar.innerHTML = '';
+      
+      if (items.length === 0) {
+        contenedorAutocompleteEliminar.innerHTML = `<li class="autocomplete-no-results">No se encontraron resultados</li>`;
+      } else {
+        items.forEach(item => {
+          const li = document.createElement('li');
+          li.classList.add('autocomplete-item');
+          
+          const imagenSrc = item.portada || 'https://via.placeholder.com/50x70/333/fff?text=' + item.tipo.toUpperCase();
+          const generosTexto = item.generos.length > 0 ? item.generos.slice(0, 2).join(', ') : 'Sin géneros';
+          
+          li.innerHTML = `
+            <img src="${imagenSrc}" alt="${item.titulo}" class="autocomplete-item-image" onerror="this.src='https://via.placeholder.com/40x55/333/fff?text=${item.tipo.toUpperCase()}'" />
+            <div class="autocomplete-item-content">
+              <span class="autocomplete-item-title" title="${item.titulo}">${item.titulo}</span>
+              <div class="autocomplete-item-details">
+                <span class="badge bg-primary">${item.tipo.toUpperCase()}</span>
+                <span>${item.numCapitulos} caps</span>
+                <span>${generosTexto}</span>
+              </div>
+            </div>
+          `;
+          
+          li.addEventListener('mousedown', (e) => {
+            e.preventDefault();
+            clickEnSugerencia = true;
+            contenidoAEliminarInput.value = item.nombre;
+            cargarDatosContenidoSeleccionado(item);
+            ocultarSugerenciasEliminar();
+          });
+          
+          contenedorAutocompleteEliminar.appendChild(li);
+        });
+      }
+      
+      contenedorAutocompleteEliminar.style.display = 'block';
+    }
+
+    function ocultarSugerenciasEliminar() {
+      if (contenedorAutocompleteEliminar) {
+        contenedorAutocompleteEliminar.style.display = 'none';
+      }
+    }
+
+    async function cargarDatosContenidoSeleccionado(item) {
+      const ruta = item.tipo === 'manga' ? 'mangas' : 'novelas';
+      const snapshot = await get(ref(db, `${ruta}/${item.nombre}`)).catch(err => {
+        console.error('Error al cargar datos del contenido:', err);
+        contenidoSeleccionadoInfo.style.display = 'none';
+        contenidoSeleccionadoData = null;
+        validarFormularioEliminacion();
+      });
+
+      if (snapshot && snapshot.exists()) {
+        contenidoSeleccionadoData = { nombre: item.nombre, tipo: item.tipo, datos: snapshot.val() };
+        nombreContenidoSeleccionado.textContent = item.titulo;
+        tipoContenidoSeleccionado.textContent = item.tipo.toUpperCase();
+        capitulosContenidoSeleccionado.textContent = item.numCapitulos;
+        portadaContenidoSeleccionado.src = item.portada || '';
+        portadaContenidoSeleccionado.style.display = item.portada ? 'block' : 'none';
+        contenidoSeleccionadoInfo.style.display = 'block';
+      } else {
+        contenidoSeleccionadoInfo.style.display = 'none';
+        contenidoSeleccionadoData = null;
+      }
+      validarFormularioEliminacion();
+    }
+
+    document.addEventListener('click', (e) => {
+      if (!contenidoAEliminarInput.contains(e.target) && 
+          (!contenedorAutocompleteEliminar || !contenedorAutocompleteEliminar.contains(e.target))) {
+        ocultarSugerenciasEliminar();
+      }
+    });
+  }
+  
+  // Validar formulario de eliminación
+  function validarFormularioEliminacion() {
+    const tieneContenido = contenidoSeleccionadoData !== null;
+    const checkboxMarcado = confirmarEliminacionCheck?.checked || false;
+    const textoConfirmacion = confirmacionTextoInput?.value.trim().toUpperCase() === 'ELIMINAR';
+    
+    const formularioValido = tieneContenido && checkboxMarcado && textoConfirmacion;
+    
+    if (btnEliminarContenidoAccion) {
+      btnEliminarContenidoAccion.disabled = !formularioValido;
+    }
+  }
+  
+  // Event listeners para validación
+  if (confirmarEliminacionCheck) {
+    confirmarEliminacionCheck.addEventListener('change', validarFormularioEliminacion);
+  }
+  
+  if (confirmacionTextoInput) {
+    confirmacionTextoInput.addEventListener('input', validarFormularioEliminacion);
+  }
+  
+  // Resetear formulario de eliminación
+  function resetearFormularioEliminacion() {
+    if (contenidoAEliminarInput) contenidoAEliminarInput.value = '';
+    if (confirmarEliminacionCheck) confirmarEliminacionCheck.checked = false;
+    if (confirmacionTextoInput) confirmacionTextoInput.value = '';
+    if (contenidoSeleccionadoInfo) contenidoSeleccionadoInfo.style.display = 'none';
+    contenidoSeleccionadoData = null;
+    validarFormularioEliminacion();
+  }
+  
+  // Función principal de eliminación
+  async function eliminarContenido() {
+    if (!contenidoSeleccionadoData) {
+      return;
+    }
+    
+    const { nombre, tipo } = contenidoSeleccionadoData;
+    
+    // Confirmación final
+    const confirmacionFinal = confirm(
+      `⚠️ ÚLTIMA CONFIRMACIÓN ⚠️\n\n` +
+      `¿Estás COMPLETAMENTE SEGURO de que quieres eliminar "${nombre}"?\n\n` +
+      `Esta acción es IRREVERSIBLE y eliminará:\n` +
+      `• Toda la información del ${tipo}\n` +
+      `• Todos los capítulos y contenido asociado\n` +
+      `• Todos los comentarios\n` +
+      `• Datos de visitas y estadísticas\n\n` +
+      `Escribe "SÍ, ELIMINAR" en la siguiente ventana si estás seguro.`
+    );
+    
+    if (!confirmacionFinal) {
+      return;
+    }
+    
+    const confirmacionTextoFinal = prompt(
+      `Para confirmar la eliminación de "${nombre}", escribe exactamente:\nSÍ, ELIMINAR`
+    );
+    
+    if (confirmacionTextoFinal !== 'SÍ, ELIMINAR') {
+      alert('Confirmación incorrecta. Eliminación cancelada.');
+      return;
+    }
+    
+    try {
+      // Mostrar indicador de carga
+      if (btnEliminarContenidoAccion) {
+        btnEliminarContenidoAccion.disabled = true;
+        btnEliminarContenidoAccion.innerHTML = '<i class="bi bi-hourglass-split"></i> Eliminando...';
+      }
+      
+      const ruta = tipo === 'manga' ? 'mangas' : 'novelas';
+      
+      // Eliminar el contenido principal
+      await remove(ref(db, `${ruta}/${nombre}`));
+      
+      // Eliminar comentarios asociados
+      try {
+        await remove(ref(db, `comentarios/${nombre}`));
+      } catch (error) {
+        console.warn('No se pudieron eliminar los comentarios o no existían:', error);
+      }
+      
+      // Eliminar de favoritos de usuarios (si existe esa funcionalidad)
+      try {
+        const usuariosSnapshot = await get(ref(db, 'usuarios'));
+        if (usuariosSnapshot.exists()) {
+          const usuarios = usuariosSnapshot.val();
+          const promesasEliminacion = [];
+          
+          Object.keys(usuarios).forEach(uid => {
+            if (usuarios[uid].favoritos && usuarios[uid].favoritos[nombre]) {
+              promesasEliminacion.push(
+                remove(ref(db, `usuarios/${uid}/favoritos/${nombre}`))
+              );
+            }
+          });
+          
+          if (promesasEliminacion.length > 0) {
+            await Promise.all(promesasEliminacion);
+          }
+        }
+      } catch (error) {
+        console.warn('Error al eliminar de favoritos:', error);
+      }
+      
+      alert(`✅ "${nombre}" ha sido eliminado completamente del sistema.`);
+      
+      // Resetear formulario y recargar listas
+      resetearFormularioEliminacion();
+      cargarContenidoPorTipo(tipoContenidoActual);
+      cargarMangasEnDatalist();
+      cargarNovelasEnDatalist();
+      
+    } catch (error) {
+      console.error('Error al eliminar contenido:', error);
+      alert(`❌ Error al eliminar "${nombre}": ${error.message}`);
+    } finally {
+      // Restaurar botón
+      if (btnEliminarContenidoAccion) {
+        btnEliminarContenidoAccion.disabled = false;
+        btnEliminarContenidoAccion.innerHTML = '<i class="bi bi-trash-fill"></i> Eliminar Contenido';
+      }
+    }
+  }
+  
+  // Event listeners para botones de eliminación
+  if (btnEliminarContenidoAccion) {
+    btnEliminarContenidoAccion.addEventListener('click', eliminarContenido);
+  }
+  
+  if (btnCancelarEliminacion) {
+    btnCancelarEliminacion.addEventListener('click', () => {
+      resetearFormularioEliminacion();
+    });
+  }
+  
+  // Cargar contenido inicial cuando se abra la sección
+  if (btnEliminarContenido) {
+    btnEliminarContenido.addEventListener('click', () => {
+      cargarContenidoPorTipo(tipoContenidoActual);
+      resetearFormularioEliminacion();
+    });
+  }
+
 
 }

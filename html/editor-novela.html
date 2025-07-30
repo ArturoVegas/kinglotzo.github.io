@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Editor de Novelas - White Pearl</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../styles/editor-novela.css">
+</head>
+<body class="bg-dark text-light">
+
+  <div class="container-fluid">
+    <!-- Header del Editor -->
+    <div class="editor-header d-flex justify-content-between align-items-center p-3 border-bottom border-secondary">
+      <div class="d-flex align-items-center">
+        <button id="btnVolver" class="btn btn-outline-light me-3">
+          <i class="fas fa-arrow-left"></i> Volver al Admin
+        </button>
+        <h3 class="mb-0">Editor de Novelas</h3>
+      </div>
+      <div class="d-flex gap-2">
+        <button id="btnPreview" class="btn btn-outline-info hover-lift">
+          <i class="fas fa-eye"></i> Vista Previa
+        </button>
+        <button id="btnGuardarBorrador" class="btn btn-outline-warning hover-lift">
+          <i class="fas fa-save"></i> Guardar Borrador
+        </button>
+        <button id="btnPublicar" class="btn btn-success hover-lift">
+          <i class="fas fa-upload"></i> Publicar Capítulo
+        </button>
+      </div>
+    </div>
+
+    <div class="row g-0">
+      <!-- Panel de Información del Capítulo -->
+      <div class="col-md-3 sidebar p-3">
+        <h5>Información del Capítulo</h5>
+        
+        <div class="mb-3">
+          <label for="novelaSeleccionada" class="form-label">Novela</label>
+          <input list="listaNovelas" class="form-control" id="novelaSeleccionada" required />
+          <datalist id="listaNovelas"></datalist>
+        </div>
+
+        <div class="mb-3">
+          <label for="numeroCapitulo" class="form-label">Número de Capítulo</label>
+          <input type="number" class="form-control" id="numeroCapitulo" required />
+        </div>
+
+        <div class="mb-3">
+          <label for="tituloCapitulo" class="form-label">Título del Capítulo (opcional)</label>
+          <input type="text" class="form-control" id="tituloCapitulo" placeholder="Ej: El despertar" />
+        </div>
+
+        <hr class="border-secondary">
+
+        <!-- Herramientas de Imagen -->
+        <h6>Herramientas</h6>
+        <div class="mb-3">
+          <label for="imagenSubir" class="form-label">Subir Imagen</label>
+          <input type="file" class="form-control form-control-sm" id="imagenSubir" accept="image/*" />
+          <small class="text-muted">Se copiará el enlace automáticamente</small>
+        </div>
+
+        <div class="mb-3">
+          <label for="enlaceGenerado" class="form-label">Enlace Generado</label>
+          <div class="input-group">
+            <input type="text" class="form-control form-control-sm" id="enlaceGenerado" readonly />
+            <button class="btn btn-outline-info btn-sm" id="btnCopiarEnlace">
+              <i class="fas fa-copy"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Resumen de Imágenes Subidas -->
+        <div id="resumen-imagenes-container" class="mt-4">
+          <h6>Imágenes Subidas</h6>
+          <ul id="lista-imagenes-subidas" class="list-group" style="max-height: 200px; overflow-y: auto;">
+            <!-- Las imágenes subidas se añadirán aquí -->
+          </ul>
+        </div>
+
+        <!-- Estadísticas -->
+        <hr class="border-secondary">
+        <div class="stats">
+          <small class="text-muted">
+            <div>Palabras: <span id="contadorPalabras">0</span></div>
+            <div>Caracteres: <span id="contadorCaracteres">0</span></div>
+            <div>Párrafos: <span id="contadorParrafos">0</span></div>
+          </small>
+        </div>
+      </div>
+
+      <!-- Editor Principal -->
+      <div class="col-md-9">
+        <div style="height: calc(100vh - 80px);">
+          <!-- Barra de Herramientas -->
+          <div class="toolbar bg-secondary p-2 border-bottom border-dark">
+            <div class="btn-group me-2" role="group">
+              <button type="button" class="btn btn-sm btn-outline-light" data-command="bold" title="Negrita">
+                <i class="fas fa-bold"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-outline-light" data-command="italic" title="Cursiva">
+                <i class="fas fa-italic"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-outline-light" data-command="underline" title="Subrayado">
+                <i class="fas fa-underline"></i>
+              </button>
+            </div>
+
+            <div class="btn-group me-2" role="group">
+              <button type="button" class="btn btn-sm btn-outline-light" data-command="justifyLeft" title="Alinear Izquierda">
+                <i class="fas fa-align-left"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-outline-light" data-command="justifyCenter" title="Centrar">
+                <i class="fas fa-align-center"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-outline-light" data-command="justifyRight" title="Alinear Derecha">
+                <i class="fas fa-align-right"></i>
+              </button>
+            </div>
+
+            <div class="btn-group me-2" role="group">
+              <select class="form-select form-select-sm" id="fontSelect" style="width: 140px;">
+                <option value="Arial">Arial</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Times New Roman">Times New Roman</option>
+                <option value="Courier New">Courier New</option>
+                <option value="Verdana">Verdana</option>
+              </select>
+            </div>
+
+            <div class="btn-group me-2" role="group">
+              <select class="form-select form-select-sm" id="sizeSelect" style="width: 70px;">
+                <option value="12">12px</option>
+                <option value="14" selected>14px</option>
+                <option value="16">16px</option>
+                <option value="18">18px</option>
+                <option value="20">20px</option>
+                <option value="24">24px</option>
+              </select>
+            </div>
+
+            <div class="btn-group me-2" role="group">
+              <button type="button" class="btn btn-sm btn-outline-light" id="btnSeparador" title="Insertar Separador">
+                <i class="fas fa-minus"></i> Separador
+              </button>
+              <button type="button" class="btn btn-sm btn-outline-light" id="btnSaltoLinea" title="Salto de Línea">
+                <i class="fas fa-level-down-alt"></i> Salto
+              </button>
+            </div>
+
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-sm btn-outline-light" data-command="undo" title="Deshacer">
+                <i class="fas fa-undo"></i>
+              </button>
+              <button type="button" class="btn btn-sm btn-outline-light" data-command="redo" title="Rehacer">
+                <i class="fas fa-redo"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Área de Escritura -->
+          <div style="height: calc(100% - 50px); overflow-y: auto;">
+            <div 
+              id="editor" 
+              contenteditable="true" 
+              class="editor-content"
+              style="min-height: 100%; padding: 20px; font-family: Georgia; font-size: 14px; line-height: 1.6; outline: none; background: #1a1a1a; color: #e0e0e0;"
+              spellcheck="true">
+              <p>Comienza a escribir tu historia aquí...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de Vista Previa -->
+  <div class="modal fade" id="previewModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content bg-dark text-light">
+        <div class="modal-header border-secondary">
+          <h5 class="modal-title">Vista Previa del Capítulo</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div id="previewContent" style="font-family: Georgia; font-size: 16px; line-height: 1.8;" class="prose">
+            <!-- El contenido de la vista previa se insertará aquí -->
+          </div>
+        </div>
+        <div class="modal-footer border-secondary">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <button type="button" class="btn btn-success" id="btnConfirmarPublicacion">Confirmar Publicación</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="../java/editor-novela.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

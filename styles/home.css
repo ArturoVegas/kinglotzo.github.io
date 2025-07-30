@@ -1437,6 +1437,87 @@ body #carrusel-populares .popular-card-wrapper.animated {
   z-index: 2;
 }
 
+/* === BADGES DE TIPO DE OBRA === */
+.badge.bg-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+  border: none;
+  border-radius: 12px;
+  padding: 0.4rem 0.8rem;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+  transition: all 0.3s ease;
+}
+
+.badge.bg-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+/* Estilos específicos para tipos */
+.badge-manga {
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%) !important;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+}
+
+.badge-novela {
+  background: linear-gradient(135deg, #5f27cd 0%, #341f97 100%) !important;
+  box-shadow: 0 2px 8px rgba(95, 39, 205, 0.3);
+}
+
+/* Badge de tipo posicionada sobre la imagen */
+.tipo-badge {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  z-index: 3;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  width: auto; /* Asegura que el ancho se ajuste al contenido */
+  display: inline-block; /* Permite que el padding funcione correctamente */
+}
+
+.tipo-badge:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4);
+}
+
+/* Manga - Azul */
+.tipo-badge.badge-manga {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.85) 0%, rgba(29, 78, 216, 0.9) 100%) !important;
+  color: #ffffff !important;
+  border-color: rgba(59, 130, 246, 0.5) !important;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.25);
+}
+
+.tipo-badge.badge-manga:hover {
+  box-shadow: 0 6px 25px rgba(59, 130, 246, 0.4);
+}
+
+/* Novela - Amarillo */
+.tipo-badge.badge-novela {
+  background: linear-gradient(135deg, rgba(251, 191, 36, 0.9) 0%, rgba(245, 158, 11, 0.95) 100%) !important;
+  color: #1a1a1a !important;
+  border-color: rgba(251, 191, 36, 0.5) !important;
+  box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+  font-weight: 700;
+}
+
+.tipo-badge.badge-novela:hover {
+  box-shadow: 0 6px 25px rgba(251, 191, 36, 0.5);
+}
+
 .card-title {
   font-size: 1.1rem;
   font-weight: 600;
@@ -2771,6 +2852,35 @@ body.standard-version .page-loader .loader-text {
   background: rgba(156, 163, 175, 0.9);
   color: #ffffff;
   border-color: rgba(156, 163, 175, 0.3);
+}
+
+/* Badge de tipo (manga/novela) */
+.tipo-badge {
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  z-index: 3;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.manga-badge {
+  background: rgba(59, 130, 246, 0.9);
+  color: #ffffff;
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.novela-badge {
+  background: rgba(234, 179, 8, 0.9);
+  color: #ffffff;
+  border-color: rgba(234, 179, 8, 0.3);
 }
 
 /* Overlay mejorado */

@@ -52,10 +52,11 @@ function crearContainerToast() {
   return container;
 }
 
-async function incrementarVisitas(nombreManga) {
+async function incrementarVisitas(nombreManga, tipo = 'manga') {
   if (!nombreManga) return;
 
-  const vistasRef = ref(db, `mangas/${nombreManga}/vistas`);
+  const collection = tipo === "novela" ? "novelas" : "mangas";
+  const vistasRef = ref(db, `${collection}/${nombreManga}/vistas`);
 
   try {
     await runTransaction(vistasRef, (valorActual) => {
@@ -180,10 +181,12 @@ async function agregarMangaALista(lista) {
   `;
 
   try {
-    // Obtener datos actuales del manga desde /mangas
-    const mangaSnap = await get(ref(db, `mangas/${nombreManga}`));
+    // Obtener datos actuales del contenido desde la colección correspondiente
+    const tipo = obtenerTipoDesdeURL();
+    const collection = tipo === "novela" ? "novelas" : "mangas";
+    const mangaSnap = await get(ref(db, `${collection}/${nombreManga}`));
     if (!mangaSnap.exists()) {
-      mostrarNotificacion("El manga no existe en la base de datos.", "error");
+      mostrarNotificacion(`El ${tipo} no existe en la base de datos.`, "error");
       dropdown.innerHTML = originalContent;
       return;
     }
@@ -214,7 +217,12 @@ async function agregarMangaALista(lista) {
 
 function obtenerNombreMangaDesdeURL() {
   const params = new URLSearchParams(window.location.search);
-  return params.get("manga");
+  return params.get("id");
+}
+
+function obtenerTipoDesdeURL() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("tipo") || "manga";
 }
 
 async function alternarCapituloVisto(uid, nombreManga, capitulo, yaVisto) {
@@ -231,10 +239,12 @@ async function cargarInfoManga() {
   if (!portadaEl) return;
 
   const nombreManga = obtenerNombreMangaDesdeURL();
+  const tipo = obtenerTipoDesdeURL();
   if (!nombreManga) return;
 
   try {
-    const snapshot = await get(ref(db, `mangas/${nombreManga}`));
+    const collection = tipo === "novela" ? "novelas" : "mangas";
+    const snapshot = await get(ref(db, `${collection}/${nombreManga}`));
     if (!snapshot.exists()) {
       alert("Manga no encontrado.");
       return;
@@ -293,7 +303,8 @@ async function cargarInfoManga() {
           li.className = "list-group-item p-0 rectangulo-item d-flex justify-content-between align-items-center";
 
           const enlace = document.createElement("a");
-          enlace.href = `../html/vermangas.html?manga=${encodeURIComponent(nombreManga)}&cap=${encodeURIComponent(clave)}`;
+          const tipoParam = tipo === "novela" ? "novela" : "manga";
+          enlace.href = `../html/vermangas.html?${tipoParam}=${encodeURIComponent(nombreManga)}&cap=${encodeURIComponent(clave)}`;
           enlace.className = "enlace-cap py-2 px-3 flex-grow-1 text-decoration-none text-reset";
           enlace.textContent = `Capítulo ${clave}`;
 
@@ -341,7 +352,7 @@ if (user) {
       }
     }
 
-    await incrementarVisitas(nombreManga);
+    await incrementarVisitas(nombreManga, tipo);
     controlarListaVisual();
 
   } catch (error) {

@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Explora nuestra extensa biblioteca de manga y novelas traducidas al español. White Pearl Translation - Tu fuente confiable de contenido de alta calidad." />
+  <meta name="keywords" content="manga, novelas, traducción, español, White Pearl Translation, lectura online, biblioteca" />
+  <meta name="author" content="White Pearl Translation" />
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="Biblioteca - White Pearl Translation" />
+  <meta property="og:description" content="Descubre nuestra colección completa de manga y novelas traducidas con la mejor calidad." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="../Recursos/imagenes/whitePearltranslation.png" />
+  
+  <!-- Performance optimizations -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <title>Biblioteca - White Pearl Translation</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+
+  <!-- CSS personalizado -->
+  <link rel="stylesheet" href="../styles/home.css" />
+</head>
+<body>
+  <div class="main-wrapper">
+    <nav class="navbar navbar-expand-lg row-personalizada px-4">
+      <div class="container-fluid">
+        <!-- Logo con contenedor mejorado -->
+        <div class="logo-container">
+          <a class="navbar-brand d-flex align-items-center" href="../index.html">
+            <img src="../Recursos/imagenes/imagen al principio.png" alt="Logo White Pearl Translation" class="img-fluid logo-img me-2" />
+            <img src="../Recursos/imagenes/whitePearltranslation.png" alt="Nombre Scan White Pearl Translation" class="img-fluid nombre-img" />
+          </a>
+        </div>
+        
+        <!-- Botón de alternancia de versión junto al logo (solo desktop) -->
+        <button id="version-toggle-btn" class="btn btn-outline-warning ms-3 d-none d-lg-inline-flex" 
+                style="height: 38px; font-size: 0.8rem;" title="Alternar versión del sitio">
+          <i id="version-icon" class="bi bi-lightning me-1"></i>
+          <span id="version-text">Estándar</span>
+        </button>
+
+        <!-- Indicador de conexión -->
+        <div class="connection-status d-none d-md-block">
+          <div class="status-indicator">
+            <div class="status-dot" id="connection-dot"></div>
+            <span class="status-text" id="connection-text"></span>
+          </div>
+        </div>
+
+        <!-- Botón hamburguesa personalizado -->
+        <button
+          class="custom-toggler d-lg-none ms-auto"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarContent"
+          aria-controls="navbarContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="toggler-line"></span>
+          <span class="toggler-line"></span>
+          <span class="toggler-line"></span>
+        </button>
+
+        <!-- Menú colapsable -->
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <ul class="navbar-nav flex-column flex-lg-row w-100 justify-content-center align-items-center" role="menu">
+            <li class="nav-item" role="none">
+              <a class="nav-link active" href="../html/biblioteca.html" role="menuitem">
+                <i class="bi bi-collection me-2"></i>
+                <span>Biblioteca</span>
+              </a>
+            </li>
+            <!-- Botón de versión solo para móviles -->
+            <li class="nav-item d-lg-none" role="none">
+              <button id="version-toggle-btn-mobile" class="btn btn-outline-warning w-100 mt-2" 
+                      style="font-size: 0.85rem;" title="Alternar versión del sitio">
+                <i id="version-icon-mobile" class="bi bi-lightning me-2"></i>
+                <span id="version-text-mobile">Cambiar a Estándar</span>
+              </button>
+            </li>
+          </ul>
+          <form
+            id="form-buscar"
+            class="d-flex mt-3 mt-md-0 ms-md-auto w-100 w-md-50 align-items-center"
+            role="search"
+            aria-label="Formulario de búsqueda"
+          >
+            <div class="position-relative flex-grow-1">
+              <input
+                id="input-buscar"
+                class="form-control border-dark"
+                type="search"
+                placeholder="🔍 Buscar manga o novela..."
+                aria-label="Buscar manga o novela"
+                autocomplete="off"
+              />
+              <ul class="autocomplete-list" id="autocomplete-list"></ul>
+            </div>
+            
+            <div class="dropdown ms-2">
+              <button
+                class="btn btn-outline-light dropdown-toggle"
+                type="button"
+                id="authDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                style="height: 38px; font-size: 0.8rem;"
+              >
+                <i class="bi bi-person-circle me-1"></i>Cuenta
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="authDropdown" role="menu">
+                <li role="none">
+                  <a class="dropdown-item" href="../html/auth.html" role="menuitem">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>Iniciar sesión
+                  </a>
+                </li>
+                <li role="none">
+                  <a class="dropdown-item" href="../html/auth.html" role="menuitem">
+                    <i class="bi bi-person-plus me-2"></i>Registrarse
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </form>
+        </div>
+      </div>
+    </nav>
+
+    <main class="main-content">
+
+  <!-- Contenido principal -->
+  <div class="container my-4">
+    <div class="row justify-content-center align-items-start">
+      <!-- Biblioteca -->
+      <div class="col-12 col-lg-8">
+        <div class="p-3 rounded">
+          <h5 class="text-light mb-3 maspopulares">
+            <i class="bi bi-collection me-2"></i>Biblioteca Digital
+          </h5>
+
+          <!-- Filtros de tipo de contenido -->
+          <div class="d-flex flex-wrap gap-3 mb-3">
+            <div class="btn-group" role="group" aria-label="Tipo de contenido">
+              <button type="button" class="btn btn-outline-info active" id="btnTodos" data-tipo="">
+                <i class="bi bi-grid-3x3-gap me-2"></i>Todos
+              </button>
+              <button type="button" class="btn btn-outline-info" id="btnMangas" data-tipo="manga">
+                <i class="bi bi-book me-2"></i>Mangas
+              </button>
+              <button type="button" class="btn btn-outline-info" id="btnNovelas" data-tipo="novela">
+                <i class="bi bi-journal-text me-2"></i>Novelas
+              </button>
+            </div>
+          </div>
+
+          <!-- Contenedor filtros en fila -->
+          <div class="d-flex flex-wrap gap-3 mb-3">
+            <div class="dropdown">
+              <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownGeneroBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                Filtrar por Género
+              </button>
+              <ul class="dropdown-menu p-2" id="dropdown-genero" style="max-height: 300px; overflow-y: auto;">
+                <!-- Géneros aquí -->
+              </ul>
+            </div>
+
+            <div class="dropdown">
+              <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" id="btnEstadoFiltro">
+                Estado Todo
+              </button>
+              <ul class="dropdown-menu" id="listaEstado">
+                <li><a class="dropdown-item" href="javascript:void(0)" data-estado="">Todos</a></li>
+                <li><a class="dropdown-item" href="javascript:void(0)" data-estado="En emisión">En emisión</a></li>
+                <li><a class="dropdown-item" href="javascript:void(0)" data-estado="Finalizado">Finalizado</a></li>
+                <li><a class="dropdown-item" href="javascript:void(0)" data-estado="Pausado">Pausado</a></li>
+              </ul>
+            </div>
+
+            <div class="dropdown">
+              <button class="btn btn-primary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" id="btnFrecuenciaFiltro">
+                Frecuencia Todo
+              </button>
+              <ul class="dropdown-menu" id="listaFrecuencia">
+                <li><a class="dropdown-item" href="javascript:void(0)" data-frecuencia="">Todos</a></li>
+                <li><a class="dropdown-item" href="javascript:void(0)" data-frecuencia="Semanal">Semanal</a></li>
+                <li><a class="dropdown-item" href="javascript:void(0)" data-frecuencia="Mensual">Mensual</a></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Tarjetas -->
+          <div id="contenedor-items" class="row mt-4 g-3 row-cols-2 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">
+            <!-- Tarjetas dinámicas aquí -->
+          </div>
+
+          <!-- Paginación -->
+          <nav class="mt-4" aria-label="Paginación">
+            <ul class="pagination justify-content-center" id="paginacion">
+              <li class="page-item disabled"><a class="page-link" href="javascript:void(0)" id="btnAnterior">Anterior</a></li>
+              <li class="page-item active"><a class="page-link" href="javascript:void(0)" id="paginaActual">1</a></li>
+              <li class="page-item"><a class="page-link" href="javascript:void(0)" id="btnSiguiente">Siguiente</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+
+      <!-- Noticias -->
+      <div class="col-12 col-lg-4 mb-4 mb-lg-0 d-flex flex-column">
+        <h5 class="text-center mb-3 maspopulares">Noticias</h5>
+        <div id="carouselNoticias" class="carousel slide flex-grow-1" data-bs-ride="carousel" style="min-height: 400px;">
+          <div class="carousel-inner rounded h-100">
+            <div class="carousel-item active h-100">
+              <img src="../Recursos/imagenes/istockphoto-1181476528-612x612.jpg" class="d-block w-100 rounded h-100 object-fit-cover" alt="Noticia 1" />
+              <div class="carousel-caption d-none d-md-block bg-dark bg-opacity-50 rounded">
+                <p>¡Nuevo proyecto en camino!</p>
+              </div>
+            </div>
+            <!-- Más items si quieres -->
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselNoticias" data-bs-slide="prev" aria-label="Anterior noticia">
+            <span class="carousel-control-prev-icon"></span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselNoticias" data-bs-slide="next" aria-label="Siguiente noticia">
+            <span class="carousel-control-next-icon"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer-redes py-4 mt-4 w-100">
+      <div class="container text-center">
+        <h5 class="mb-3 text-light">Síguenos en nuestras redes</h5>
+        <div class="d-flex justify-content-center gap-4">
+          <a href="https://web.facebook.com/profile.php?id=61556342730848" target="_blank" class="text-decoration-none text-light fs-3" rel="noopener noreferrer" aria-label="Facebook">
+            <i class="bi bi-facebook"></i>
+          </a>
+          <a href="https://discord.com/invite/sJJZkrkXz6" target="_blank" class="text-decoration-none text-light fs-3" rel="noopener noreferrer" aria-label="Discord">
+            <i class="bi bi-discord"></i>
+          </a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="../java/biblioteca.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
